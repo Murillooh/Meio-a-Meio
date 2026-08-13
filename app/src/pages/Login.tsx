@@ -81,9 +81,9 @@ export default function Login() {
           <div className="login-hero">
             <div className="login-hero-inner">
               <div className="login-badge">
-                <span className="login-ring"></span>
-                <span className="login-ring r2"></span>
+                <span className="login-badge-glow"></span>
                 <div className="login-badge-core">
+                  <span className="login-badge-shine"></span>
                   <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 11.5 12 4l8 7.5"/>
                     <path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/>
