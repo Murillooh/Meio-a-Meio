@@ -13,10 +13,8 @@
   background: #050403;
   color: var(--cream);
   font-family: 'Inter', -apple-system, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  display: block;
+  height: 100dvh;
   width: 100vw;
   margin: 0;
   padding: 0;
