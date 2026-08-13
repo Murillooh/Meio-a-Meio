@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0;background:#e6ded1;font-family:'Instrument Sans',system-ui,sans-serif;color:#2e2a24}
+a{color:#c05f3c;text-decoration:none}a:hover{color:#a44b2c}
+input,select{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:48px 24px;box-sizing:border-box">
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="padding:13px;border-radius:62px;background:linear-gradient(160deg,#efe7da,#c9bfae 45%,#e3dacb);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 30px 70px rgba(46,42,36,.28),inset 0 0 0 2px rgba(0,0,0,.12)">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;background:#faf6ef;overflow:auto;padding:58px 20px 40px;box-sizing:border-box;animation:fadeUp .3s ease both">
+
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-size:12.5px;color:#8a7f6d">Agosto · a casa está bem</div>
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;letter-spacing:-.01em;margin-top:2px">Casa dos Almeida</div>
+    </div>
+    <div style="display:flex">
+      <div style="width:34px;height:34px;border-radius:50%;background:#c05f3c;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;border:2px solid #faf6ef">M</div>
+      <div style="width:34px;height:34px;border-radius:50%;background:#6b7a53;color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;border:2px solid #faf6ef;margin-left:-10px">T</div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;padding:22px;border-radius:26px;background:#fffdf9;box-shadow:0 1px 2px rgba(46,42,36,.06),0 12px 28px rgba(46,42,36,.07)">
+    <div style="font-size:13px;color:#8a7f6d">Tudo somado, hoje vocês têm</div>
+    <div style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;letter-spacing:-.02em;margin-top:4px;line-height:1">R$ 28.417,62</div>
+    <div style="display:flex;gap:6px;align-items:center;margin-top:12px;font-size:12.5px;color:#6b7a53">
+      <span style="width:7px;height:7px;border-radius:50%;background:#6b7a53"></span>
+      R$ 1.240 a mais que no mês passado
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:#8a7f6d;margin:24px 0 12px">Para onde o dinheiro foi</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:22px;background:#fffdf9;box-shadow:0 1px 2px rgba(46,42,36,.05)">
+      <div style="width:42px;height:42px;border-radius:16px;background:#f3e3d5;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#c05f3c">E</div>
+      <div style="flex:1">
+        <div style="font-size:15.5px;font-weight:500">Escola do Théo</div>
+        <div style="font-size:12.5px;color:#8a7f6d;margin-top:1px">mensalidade e material</div>
+      </div>
+      <div style="font-size:15px;font-weight:500">R$ 1.869</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:22px;background:#fffdf9;box-shadow:0 1px 2px rgba(46,42,36,.05)">
+      <div style="width:42px;height:42px;border-radius:16px;background:#e2e8dc;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#5c6b46">C</div>
+      <div style="flex:1">
+        <div style="font-size:15.5px;font-weight:500">A casa</div>
+        <div style="font-size:12.5px;color:#8a7f6d;margin-top:1px">mercado, luz, água</div>
+      </div>
+      <div style="font-size:15px;font-weight:500">R$ 1.061</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:22px;background:#fffdf9;box-shadow:0 1px 2px rgba(46,42,36,.05)">
+      <div style="width:42px;height:42px;border-radius:16px;background:#f0e0e4;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',Georgia,serif;font-size:19px;color:#a8546a">R</div>
+      <div style="flex:1">
+        <div style="font-size:15.5px;font-weight:500">Reserva</div>
+        <div style="font-size:12.5px;color:#8a7f6d;margin-top:1px">guardado neste mês</div>
+      </div>
+      <div style="font-size:15px;font-weight:500;color:#6b7a53">+ R$ 2.400</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:20px;border-radius:26px;background:#f3ece0;border:1px solid #e4d9c6">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:20px">O cofrinho da família</div>
+      <div style="font-size:12.5px;color:#8a7f6d">meta R$ 42.000</div>
+    </div>
+    <div style="height:14px;border-radius:99px;background:#e4d9c6;margin-top:14px;overflow:hidden">
+      <div style="height:100%;width:47%;border-radius:99px;background:linear-gradient(90deg,#d98a5f,#c05f3c);transform-origin:left;animation:grow .6s ease both"></div>
+    </div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:12px">
+      <div style="font-size:24px;font-weight:600">R$ 19.740</div>
+      <div style="font-size:13px;color:#6b7a53">2,8 meses tranquilos</div>
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:#8a7f6d;margin:24px 0 12px">Quem cuidou de quê</div>
+  <div style="padding:18px 20px;border-radius:24px;background:#fffdf9;box-shadow:0 1px 2px rgba(46,42,36,.05);display:flex;flex-direction:column;gap:16px">
+    <div>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+        <div style="width:26px;height:26px;border-radius:50%;background:#c05f3c;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center">M</div>
+        <span style="font-size:14.5px;font-weight:500">Marina</span>
+        <span style="margin-left:auto;font-size:14px;color:#8a7f6d">R$ 3.269</span>
+      </div>
+      <div style="height:9px;border-radius:99px;background:#f3e3d5;overflow:hidden"><div style="height:100%;width:78%;border-radius:99px;background:#c05f3c;transform-origin:left;animation:grow .5s ease both"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+        <div style="width:26px;height:26px;border-radius:50%;background:#6b7a53;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center">T</div>
+        <span style="font-size:14.5px;font-weight:500">Tiago</span>
+        <span style="margin-left:auto;font-size:14px;color:#8a7f6d">R$ 2.561</span>
+      </div>
+      <div style="height:9px;border-radius:99px;background:#e2e8dc;overflow:hidden"><div style="height:100%;width:61%;border-radius:99px;background:#6b7a53;transform-origin:left;animation:grow .5s ease both"></div></div>
+    </div>
+  </div>
+
+  <div style="height:76px"></div>
+</div>
+
+<div style="position:absolute;left:16px;right:16px;bottom:26px;display:flex;align-items:center;gap:4px;padding:7px;border-radius:26px;background:#fffdf9;box-shadow:0 6px 22px rgba(46,42,36,.14)">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;border-radius:19px;background:#f3e3d5;color:#c05f3c;font-size:10.5px;font-weight:500"><span style="font-size:16px;line-height:1">◉</span>Início</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;color:#a89c88;font-size:10.5px"><span style="font-size:16px;line-height:1">≡</span>Gastos</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;color:#a89c88;font-size:10.5px"><span style="font-size:16px;line-height:1">◈</span>Cofrinho</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;color:#a89c88;font-size:10.5px"><span style="font-size:16px;line-height:1">▤</span>Contas</div>
+</div>
+</x-import>
+</div>
+<div style="font-size:12.5px;color:#6f6653">Direção A · caderno de cozinha — creme, terracota e oliva</div>
+</div>
+</div>
+</x-dc>
+</body>
+</html>

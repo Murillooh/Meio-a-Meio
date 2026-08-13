@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0;background:#0c0c0b;font-family:Inter,system-ui,sans-serif;color:#f4f2ec}
+a{color:#d4a017;text-decoration:none}a:hover{color:#e8b839}
+input{font-family:inherit}
+input::placeholder{color:rgba(244,242,236,.32)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;gap:56px;align-items:flex-start;padding:56px 64px;box-sizing:border-box">
+
+<div style="display:flex;flex-direction:column;gap:18px;align-items:center">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;justify-content:center;padding:0 32px 40px;animation:fadeUp .35s ease both">
+  <div style="display:flex;flex-direction:column;gap:10px;align-items:center;margin-bottom:38px">
+    <div style="width:56px;height:56px;border-radius:18px;background:linear-gradient(160deg,#d4a017,#8c6a0c);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;color:#0c0c0b">C</div>
+    <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Casa</div>
+    <div style="font-size:14px;color:rgba(244,242,236,.5);text-align:center;text-wrap:pretty">A rotina da família em um só lugar</div>
+  </div>
+
+  <button onClick="{{ signInGoogle }}" style="display:flex;align-items:center;justify-content:center;gap:10px;height:52px;border-radius:14px;border:1px solid rgba(244,242,236,.16);background:rgba(244,242,236,.04);color:#f4f2ec;font-size:15px;font-weight:500;cursor:pointer" style-hover="background:rgba(244,242,236,.09)">
+    <span style="width:20px;height:20px;border-radius:50%;background:#fff;color:#0c0c0b;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center">G</span>
+    Continuar com Google
+  </button>
+
+  <div style="display:flex;align-items:center;gap:12px;margin:22px 0">
+    <div style="flex:1;height:1px;background:rgba(244,242,236,.1)"></div>
+    <div style="font-size:11px;letter-spacing:.12em;color:rgba(244,242,236,.35)">OU</div>
+    <div style="flex:1;height:1px;background:rgba(244,242,236,.1)"></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <input type="email" placeholder="e-mail" value="{{ email }}" onChange="{{ setEmail }}" style="height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+    <input type="password" placeholder="senha" value="{{ password }}" onChange="{{ setPassword }}" style="height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+    <sc-if value="{{ error }}">
+      <div style="display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ error }}</div>
+    </sc-if>
+    <button onClick="{{ signInEmail }}" style="height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px" style-hover="background:#e8b839">Entrar</button>
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:6px;margin-top:22px;font-size:13px;color:rgba(244,242,236,.45)">
+    <span>Não tem conta?</span><a href="#">Criar agora</a>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isChoose }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;padding:78px 26px 40px;animation:fadeUp .35s ease both">
+  <div style="font-size:13px;color:#d4a017;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Passo 1 de 2</div>
+  <div style="font-size:27px;font-weight:600;letter-spacing:-.02em;line-height:1.2">Olá, {{ userName }}</div>
+  <div style="font-size:15px;color:rgba(244,242,236,.5);margin-top:8px;text-wrap:pretty">Você ainda não faz parte de uma casa. Comece uma nova ou entre na casa de quem te convidou.</div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;margin-top:30px">
+    <button onClick="{{ goCreate }}" style="text-align:left;padding:20px;border-radius:18px;border:1px solid rgba(212,160,23,.35);background:linear-gradient(150deg,rgba(212,160,23,.12),rgba(212,160,23,.03));color:#f4f2ec;cursor:pointer" style-hover="border-color:#d4a017">
+      <div style="font-size:17px;font-weight:600">Criar uma nova casa</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.55);margin-top:6px">Você define o nome e recebe um código para convidar o resto da família.</div>
+    </button>
+    <button onClick="{{ goJoin }}" style="text-align:left;padding:20px;border-radius:18px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;cursor:pointer" style-hover="border-color:rgba(244,242,236,.3)">
+      <div style="font-size:17px;font-weight:600">Entrar com código de convite</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.55);margin-top:6px">Tenho um código de 6 caracteres.</div>
+    </button>
+  </div>
+
+  <div style="margin-top:auto;font-size:12.5px;color:rgba(244,242,236,.3);text-align:center">Entrou como {{ email }} · <a href="#" onClick="{{ signOut }}">sair</a></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCreate }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;padding:78px 26px 40px;animation:fadeUp .35s ease both">
+  <button onClick="{{ goChoose }}" style="align-self:flex-start;background:none;border:none;color:rgba(244,242,236,.5);font-size:14px;cursor:pointer;padding:0;margin-bottom:20px">← Voltar</button>
+  <div style="font-size:27px;font-weight:600;letter-spacing:-.02em">Nova casa</div>
+  <div style="font-size:15px;color:rgba(244,242,236,.5);margin-top:8px">Dê um nome e diga qual é o seu papel.</div>
+
+  <div style="font-size:12px;letter-spacing:.1em;color:rgba(244,242,236,.4);margin:28px 0 10px;text-transform:uppercase">Nome da casa</div>
+  <input placeholder="Casa dos Almeida" value="{{ houseName }}" onChange="{{ setHouseName }}" style="height:54px;padding:0 16px;border-radius:14px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:16px;outline:none" style-focus="border-color:#d4a017" />
+
+  <div style="font-size:12px;letter-spacing:.1em;color:rgba(244,242,236,.4);margin:26px 0 10px;text-transform:uppercase">Seu papel</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <button onClick="{{ pickPai }}" style="{{ paiStyle }}">Pai</button>
+    <button onClick="{{ pickMae }}" style="{{ maeStyle }}">Mãe</button>
+  </div>
+
+  <sc-if value="{{ error }}">
+    <div style="margin-top:18px;padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ error }}</div>
+  </sc-if>
+
+  <button onClick="{{ createHouse }}" style="margin-top:auto;height:54px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Criar casa</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isInvite }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;justify-content:center;padding:0 26px 40px;animation:fadeUp .35s ease both">
+  <div style="text-align:center;font-size:13px;color:#d4a017;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Casa criada</div>
+  <div style="text-align:center;font-size:27px;font-weight:600;letter-spacing:-.02em;margin-top:10px">{{ houseName }}</div>
+  <div style="text-align:center;font-size:15px;color:rgba(244,242,236,.5);margin-top:8px;text-wrap:pretty">Compartilhe este código com quem mora com você. Ele vale para novos membros.</div>
+
+  <div style="margin:32px 0 8px;padding:26px 18px;border-radius:22px;border:1px dashed rgba(212,160,23,.5);background:linear-gradient(150deg,rgba(212,160,23,.14),rgba(212,160,23,.03));display:flex;flex-direction:column;align-items:center;gap:14px">
+    <div style="font-family:ui-monospace,Menlo,monospace;font-size:40px;font-weight:700;letter-spacing:.16em;color:#e8b839">{{ inviteCode }}</div>
+    <button onClick="{{ copyCode }}" style="height:40px;padding:0 18px;border-radius:12px;border:1px solid rgba(212,160,23,.4);background:transparent;color:#e8b839;font-size:13.5px;font-weight:600;cursor:pointer" style-hover="background:rgba(212,160,23,.12)">{{ copyLabel }}</button>
+  </div>
+
+  <button onClick="{{ enterApp }}" style="margin-top:26px;height:54px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Ir para a casa</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isJoin }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;padding:78px 26px 40px;animation:fadeUp .35s ease both">
+  <button onClick="{{ goChoose }}" style="align-self:flex-start;background:none;border:none;color:rgba(244,242,236,.5);font-size:14px;cursor:pointer;padding:0;margin-bottom:20px">← Voltar</button>
+  <div style="font-size:27px;font-weight:600;letter-spacing:-.02em">Código de convite</div>
+  <div style="font-size:15px;color:rgba(244,242,236,.5);margin-top:8px">Digite os 6 caracteres que você recebeu.</div>
+
+  <input placeholder="A1B2C3" value="{{ joinCode }}" onChange="{{ setJoinCode }}" maxLength="{{ 6 }}" style="margin-top:28px;height:70px;text-align:center;border-radius:16px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#e8b839;font-family:ui-monospace,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:.18em;outline:none" style-focus="border-color:#d4a017" />
+
+  <sc-if value="{{ error }}">
+    <div style="margin-top:16px;padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ error }}</div>
+  </sc-if>
+
+  <div style="font-size:12.5px;color:rgba(244,242,236,.32);margin-top:16px;text-wrap:pretty">Seu papel é definido por quem criou a casa depois que você entrar.</div>
+
+  <button onClick="{{ joinHouse }}" style="margin-top:auto;height:54px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:16px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Entrar na casa</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}">
+<div style="height:100%;box-sizing:border-box;background:#0c0c0b;display:flex;flex-direction:column;padding:74px 22px 34px;animation:fadeUp .35s ease both">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">{{ roleLabel }}</div>
+      <div style="font-size:24px;font-weight:600;letter-spacing:-.02em;margin-top:4px">{{ houseName }}</div>
+    </div>
+    <div style="width:40px;height:40px;border-radius:50%;background:rgba(212,160,23,.16);border:1px solid rgba(212,160,23,.4);color:#e8b839;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initial }}</div>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;margin-top:20px;padding:12px 14px;border-radius:14px;background:rgba(232,124,144,.09);border:1px solid rgba(232,124,144,.26)">
+    <div style="width:6px;height:6px;border-radius:50%;background:#f0a3b1"></div>
+    <div style="font-size:13.5px;color:#f0a3b1">Nada pendente por aqui — as tabelas ainda não existem.</div>
+  </div>
+
+  <div style="margin-top:22px;padding:20px;border-radius:18px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Membros</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:34px;height:34px;border-radius:50%;background:rgba(212,160,23,.16);color:#e8b839;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initial }}</div>
+      <div style="flex:1;font-size:14.5px">{{ userName }}</div>
+      <div style="font-size:12.5px;color:#d4a017">{{ roleLabel }}</div>
+    </div>
+    <div style="height:1px;background:rgba(244,242,236,.07)"></div>
+    <div style="display:flex;align-items:center;gap:12px;color:rgba(244,242,236,.4)">
+      <div style="width:34px;height:34px;border-radius:50%;border:1px dashed rgba(244,242,236,.25);display:flex;align-items:center;justify-content:center;font-size:15px">+</div>
+      <div style="flex:1;font-size:14.5px">Convidar com o código {{ inviteCode }}</div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;display:flex;gap:10px">
+    <button onClick="{{ signOut }}" style="flex:1;height:48px;border-radius:14px;border:1px solid rgba(244,242,236,.14);background:transparent;color:rgba(244,242,236,.6);font-size:14px;cursor:pointer" style-hover="color:#f4f2ec">Sair</button>
+    <button onClick="{{ restart }}" style="flex:1;height:48px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Reiniciar fluxo</button>
+  </div>
+</div>
+</sc-if>
+
+</x-import>
+<div style="font-size:12px;color:rgba(244,242,236,.35)">Protótipo clicável · e-mail/senha aceitam qualquer valor</div>
+</div>
+
+<div style="max-width:520px;display:flex;flex-direction:column;gap:26px;padding-top:8px">
+  <div>
+    <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d4a017;font-weight:600">Fluxo de autenticação</div>
+    <h1 style="font-size:34px;font-weight:600;letter-spacing:-.03em;margin:10px 0 0;line-height:1.15">Login → household → app protegido</h1>
+    <p style="font-size:15px;line-height:1.6;color:rgba(244,242,236,.55);text-wrap:pretty">Tema escuro <span style="color:#d4a017">#0c0c0b</span> / dourado <span style="color:#d4a017">#d4a017</span> / alerta <span style="color:#f0a3b1">rosa suave</span>, Inter. Cada tela abaixo mapeia 1:1 para uma rota do scaffold.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <button onClick="{{ goLogin }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Login</button>
+    <button onClick="{{ goChoose }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Sem household</button>
+    <button onClick="{{ goCreate }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Criar casa</button>
+    <button onClick="{{ goInvite }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Código gerado</button>
+    <button onClick="{{ goJoin }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Entrar por código</button>
+    <button onClick="{{ goApp }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">App protegido</button>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">AuthContext</div>
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.6">{ user, member: { role: 'pai' | 'mae' }, household, loading, signInWithGoogle, signInWithPassword, createHousehold, joinHousehold, signOut }</div>
+    </div>
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">Rota protegida</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.6">sem user → /login · user sem household → /onboarding · user + household → app</div>
+    </div>
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">Código do projeto</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.6">O scaffold Vite + TS + Tailwind + Supabase + TanStack Query está em <span style="font-family:ui-monospace,Menlo,monospace;color:#d4a017">/app</span> neste projeto — baixe, <span style="font-family:ui-monospace,Menlo,monospace">npm i</span>, <span style="font-family:ui-monospace,Menlo,monospace">npm run dev</span>. Nenhuma tabela é criada; só o consumo está pronto.</div>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { screen: 'login', email: '', password: '', houseName: '', role: null, joinCode: '', inviteCode: '——————', error: '', copied: false };
+
+  set = (k) => (e) => this.setState({ [k]: e.target.value, error: '' });
+  go = (screen) => () => this.setState({ screen, error: '' });
+
+  gen() {
+    const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    return Array.from({ length: 6 }, () => a[Math.floor(Math.random() * a.length)]).join('');
+  }
+
+  roleBtn(active) {
+    return 'height:52px;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;' + (active
+      ? 'border:1px solid #d4a017;background:rgba(212,160,23,.16);color:#e8b839;'
+      : 'border:1px solid rgba(244,242,236,.12);background:#141412;color:rgba(244,242,236,.65);');
+  }
+
+  renderVals() {
+    const s = this.state;
+    const name = s.email ? s.email.split('@')[0] : 'Marina';
+    return {
+      isLogin: s.screen === 'login', isChoose: s.screen === 'choose', isCreate: s.screen === 'create',
+      isInvite: s.screen === 'invite', isJoin: s.screen === 'join', isApp: s.screen === 'app',
+      email: s.email, password: s.password, houseName: s.houseName || 'Casa dos Almeida',
+      joinCode: s.joinCode, inviteCode: s.inviteCode, error: s.error,
+      userName: name, initial: name.charAt(0).toUpperCase(),
+      roleLabel: s.role === 'mae' ? 'Mãe' : 'Pai',
+      copyLabel: s.copied ? 'Copiado' : 'Copiar código',
+      paiStyle: this.roleBtn(s.role === 'pai'), maeStyle: this.roleBtn(s.role === 'mae'),
+      setEmail: this.set('email'), setPassword: this.set('password'), setHouseName: this.set('houseName'),
+      setJoinCode: (e) => this.setState({ joinCode: e.target.value.toUpperCase().slice(0, 6), error: '' }),
+      goLogin: this.go('login'), goChoose: this.go('choose'), goCreate: this.go('create'),
+      goJoin: this.go('join'), goApp: this.go('app'),
+      goInvite: () => this.setState({ screen: 'invite', error: '', inviteCode: this.state.inviteCode === '——————' ? this.gen() : this.state.inviteCode }),
+      signInGoogle: () => this.setState({ screen: 'choose', email: this.state.email || 'marina@gmail.com', error: '' }),
+      signInEmail: () => {
+        const { email, password } = this.state;
+        if (!email.includes('@') || password.length < 4) return this.setState({ error: 'Informe um e-mail válido e senha de 4+ caracteres.' });
+        this.setState({ screen: 'choose', error: '' });
+      },
+      pickPai: () => this.setState({ role: 'pai', error: '' }),
+      pickMae: () => this.setState({ role: 'mae', error: '' }),
+      createHouse: () => {
+        if (!this.state.houseName.trim()) return this.setState({ error: 'Dê um nome para a casa.' });
+        if (!this.state.role) return this.setState({ error: 'Escolha se você é pai ou mãe.' });
+        this.setState({ screen: 'invite', inviteCode: this.gen(), copied: false, error: '' });
+      },
+      joinHouse: () => {
+        if (this.state.joinCode.length !== 6) return this.setState({ error: 'O código tem 6 caracteres.' });
+        this.setState({ screen: 'app', inviteCode: this.state.joinCode, role: this.state.role || 'mae', error: '' });
+      },
+      copyCode: () => { try { navigator.clipboard.writeText(this.state.inviteCode); } catch (e) {} this.setState({ copied: true }); },
+      enterApp: this.go('app'),
+      signOut: this.go('login'),
+      restart: () => this.setState({ screen: 'login', email: '', password: '', houseName: '', role: null, joinCode: '', inviteCode: '——————', copied: false, error: '' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

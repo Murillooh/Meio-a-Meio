@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0;background:#26251f;font-family:Inter,system-ui,sans-serif;color:#f4f2ec;overflow-x:hidden}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{width:0;height:0;display:none}
+a{color:#d4a017;text-decoration:none}a:hover{color:#e8b839}
+input,select{font-family:inherit}
+input::placeholder{color:rgba(244,242,236,.32)}
+select option{background:#141412;color:#f4f2ec}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;justify-content:center;padding:40px 32px;box-sizing:border-box">
+
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="padding:13px;border-radius:62px;background:linear-gradient(160deg,#4a4740,#171613 45%,#3b3934);box-shadow:0 0 0 1px rgba(255,255,255,.09),0 30px 70px rgba(0,0,0,.55),inset 0 0 0 2px rgba(0,0,0,.6)">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+<div style="position:relative;height:100%;background:#0c0c0b;overflow:hidden">
+
+<div style="height:100%;overflow:auto;padding:58px 20px 96px;box-sizing:border-box">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">agosto de 2026</div>
+  <div style="font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:4px">Casa dos Almeida</div>
+
+  <div style="margin-top:18px;padding:20px;border-radius:20px;border:1px solid rgba(212,160,23,.35);background:linear-gradient(150deg,rgba(212,160,23,.14),rgba(212,160,23,.02))">
+    <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.42)">Saldo consolidado</div>
+    <div style="font-family:ui-monospace,Menlo,monospace;font-size:34px;font-weight:700;letter-spacing:-.02em;color:#e8b839;margin-top:8px;line-height:1">{{ saldoTotal }}</div>
+    <div style="font-size:12.5px;color:rgba(244,242,236,.5);margin-top:10px">3 contas conectadas · <a href="#">gerenciar</a></div>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Por finalidade</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+    <div style="padding:13px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#d4a017"></span><span style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.42)">Escola</span></div>
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:14.5px;font-weight:600">{{ totEscola }}</div>
+      <div style="font-size:10.5px;color:rgba(244,242,236,.32)">no mês</div>
+    </div>
+    <div style="padding:13px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#f0a3b1"></span><span style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.42)">Emerg.</span></div>
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:14.5px;font-weight:600">{{ totEmerg }}</div>
+      <div style="font-size:10.5px;color:rgba(244,242,236,.32)">no mês</div>
+    </div>
+    <div style="padding:13px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#8ab0a0"></span><span style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.42)">Casa</span></div>
+      <div style="font-family:ui-monospace,Menlo,monospace;font-size:14.5px;font-weight:600">{{ totGeral }}</div>
+      <div style="font-size:10.5px;color:rgba(244,242,236,.32)">no mês</div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Divisão pai × mãe</div>
+  <div style="padding:18px;border-radius:18px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:18px">
+    <sc-for list="{{ divisao }}" as="d" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-size:14.5px;font-weight:500">{{ d.nome }}</span>
+          <span style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">{{ d.papel }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:48px;font-size:11px;color:rgba(244,242,236,.4)">Aportou</span>
+          <div style="flex:1;height:8px;border-radius:99px;background:rgba(244,242,236,.07);overflow:hidden">
+            <div style="height:100%;border-radius:99px;background:#d4a017;transform-origin:left;animation:grow .5s ease both;width:{{ d.aporteW }}"></div>
+          </div>
+          <span style="width:82px;text-align:right;font-family:ui-monospace,Menlo,monospace;font-size:12px">{{ d.aporte }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:48px;font-size:11px;color:rgba(244,242,236,.4)">Gastou</span>
+          <div style="flex:1;height:8px;border-radius:99px;background:rgba(244,242,236,.07);overflow:hidden">
+            <div style="height:100%;border-radius:99px;background:#f0a3b1;transform-origin:left;animation:grow .5s ease both;width:{{ d.gastoW }}"></div>
+          </div>
+          <span style="width:82px;text-align:right;font-family:ui-monospace,Menlo,monospace;font-size:12px">{{ d.gasto }}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 10px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Últimos lançamentos</div>
+    <a href="#" onClick="{{ goTx }}" style="font-size:12.5px">ver tudo</a>
+  </div>
+  <div style="border-radius:18px;background:#141412;border:1px solid rgba(244,242,236,.08);overflow:hidden">
+    <sc-for list="{{ recent }}" as="t" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:11px;padding:13px 15px;border-top:1px solid rgba(244,242,236,.05)">
+        <span style="width:6px;height:6px;border-radius:50%;background:{{ t.cor }}"></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.descricao }}</div>
+          <div style="font-size:11.5px;color:rgba(244,242,236,.35)">{{ t.meta }}</div>
+        </div>
+        <span style="font-family:ui-monospace,Menlo,monospace;font-size:13.5px;color:{{ t.valorCor }}">{{ t.valorFmt }}</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTx }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Transações</div>
+    <button onClick="{{ openModal }}" style="height:36px;padding:0 14px;border-radius:11px;border:none;background:#d4a017;color:#0c0c0b;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">+ Nova</button>
+  </div>
+
+  <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+    <button onClick="{{ prevMonth }}" style="background:none;border:none;color:rgba(244,242,236,.55);font-size:18px;cursor:pointer;padding:0 6px">‹</button>
+    <span style="font-size:14px;font-weight:500">{{ monthLabel }}</span>
+    <button onClick="{{ nextMonth }}" style="background:none;border:none;color:rgba(244,242,236,.55);font-size:18px;cursor:pointer;padding:0 6px">›</button>
+  </div>
+
+  <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <select value="{{ fConta }}" onChange="{{ setConta }}" style="height:42px;padding:0 10px;border-radius:12px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:12.5px;outline:none;appearance:none">
+      <option value="">Conta</option>
+      <option value="Nubank">Nubank</option>
+      <option value="Itaú">Itaú</option>
+      <option value="Caixa">Caixa</option>
+    </select>
+    <select value="{{ fCategoria }}" onChange="{{ setCategoria }}" style="height:42px;padding:0 10px;border-radius:12px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:12.5px;outline:none;appearance:none">
+      <option value="">Categoria</option>
+      <option value="none">Sem categoria</option>
+      <option value="Escola">Escola</option>
+      <option value="Emergência">Emergência</option>
+      <option value="Casa">Casa</option>
+    </select>
+    <select value="{{ fAutor }}" onChange="{{ setAutor }}" style="height:42px;padding:0 10px;border-radius:12px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-size:12.5px;outline:none;appearance:none">
+      <option value="">Autor</option>
+      <option value="pai">Pai</option>
+      <option value="mae">Mãe</option>
+    </select>
+  </div>
+
+  <sc-if value="{{ hasFiltros }}">
+    <button onClick="{{ limparFiltros }}" style="margin-top:9px;background:none;border:none;padding:0;color:rgba(244,242,236,.35);font-size:12px;cursor:pointer;font-family:inherit" style-hover="color:#d4a017">{{ limparLabel }}</button>
+  </sc-if>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 10px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">{{ txCountLabel }}</div>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:{{ txTotalCor }}">{{ txTotal }}</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ filtered }}" as="t" hint-placeholder-count="5">
+      <div style="padding:14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:32px;height:32px;border-radius:50%;flex:none;background:{{ t.chip }}"></span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.descricao }}</div>
+            <div style="font-size:11.5px;color:rgba(244,242,236,.35)">{{ t.meta }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:14px;color:{{ t.valorCor }}">{{ t.valorFmt }}</span>
+            <span style="font-size:10.5px;color:rgba(244,242,236,.3)">{{ t.origemLabel }}</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ t.cor }}"></span>
+          <select value="{{ t.categoria }}" onChange="{{ t.setCategoria }}" style="max-width:150px;height:28px;padding:0 8px;border-radius:9px;border:1px solid rgba(244,242,236,.12);background:rgba(0,0,0,.35);color:rgba(244,242,236,.62);font-size:11.5px;font-family:inherit;outline:none;appearance:none" style-focus="border-color:#d4a017">
+            <option value="">Sem categoria</option>
+            <option value="Escola">Escola</option>
+            <option value="Emergência">Emergência</option>
+            <option value="Casa">Casa</option>
+          </select>
+          <button onClick="{{ t.criarRegra }}" style="background:none;border:none;color:rgba(244,242,236,.32);font-size:11px;cursor:pointer;font-family:inherit;padding:0" style-hover="color:#d4a017">criar regra</button>
+          <sc-if value="{{ t.autoLabel }}">
+            <span style="margin-left:auto;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(212,160,23,.6)">{{ t.autoLabel }}</span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{ isEmpty }}">
+      <div style="padding:32px 16px;border-radius:16px;border:1px dashed rgba(244,242,236,.14);text-align:center;font-size:13.5px;color:rgba(244,242,236,.35)">Nada por aqui com esses filtros.</div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCat }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Categorias e regras</div>
+  <div style="font-size:14px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.55;text-wrap:pretty">Criadas com a casa. As regras categorizam sozinhas o que vem do banco — sem match, a transação fica sem categoria.</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+    <sc-for list="{{ categorias }}" as="c" hint-placeholder-count="3">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+        <span style="width:36px;height:36px;border-radius:12px;background:{{ c.chip }};border:1px solid {{ c.borda }}"></span>
+        <div style="flex:1">
+          <div style="font-size:15px">{{ c.nome }}</div>
+          <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.35)">{{ c.tipo }}</div>
+        </div>
+        <span style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:rgba(244,242,236,.3)">{{ c.icone }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 10px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Regras</div>
+    <button onClick="{{ novaRegra }}" style="background:none;border:none;padding:0;color:#d4a017;font-size:12.5px;cursor:pointer;font-family:inherit">+ nova regra</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ regras }}" as="r" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+        <div style="flex:1;min-width:0">
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.padrao }}</div>
+          <div style="font-size:11.5px;color:rgba(244,242,236,.35);margin-top:3px">→ {{ r.categoria }}</div>
+        </div>
+        <button onClick="{{ r.remover }}" style="background:none;border:none;color:rgba(244,242,236,.3);font-size:11.5px;cursor:pointer;font-family:inherit" style-hover="color:#f0a3b1">excluir</button>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCofre }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Cofrinho</div>
+    <button onClick="{{ toggleSetup }}" style="background:none;border:none;color:rgba(244,242,236,.4);font-size:12.5px;cursor:pointer;font-family:inherit" style-hover="color:#d4a017">{{ setupLabel }}</button>
+  </div>
+
+  <sc-if value="{{ cofreSetup }}">
+  <div style="margin-top:16px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:14.5px;color:rgba(244,242,236,.55);line-height:1.6;text-wrap:pretty">Defina quanto a casa gasta por mês e onde a reserva precisa chegar. A recomendação comum é de 6 meses de despesa.</div>
+    <label style="display:flex;flex-direction:column;gap:7px">
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Despesa mensal média</span>
+      <input value="{{ despesaStr }}" onChange="{{ setDespesa }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-family:ui-monospace,Menlo,monospace;font-size:16px;outline:none" style-focus="border-color:#d4a017" />
+    </label>
+    <label style="display:flex;flex-direction:column;gap:7px">
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Meta da reserva</span>
+      <input value="{{ metaStr }}" onChange="{{ setMeta }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#141412;color:#f4f2ec;font-family:ui-monospace,Menlo,monospace;font-size:16px;outline:none" style-focus="border-color:#d4a017" />
+    </label>
+    <button onClick="{{ useSugestao }}" style="align-self:flex-start;background:none;border:none;color:#d4a017;font-size:12.5px;cursor:pointer;font-family:inherit;padding:0">{{ sugestaoLabel }}</button>
+    <button onClick="{{ salvarFundo }}" style="height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Salvar reserva</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ cofreView }}">
+  <div>
+    <div style="position:relative;overflow:hidden;margin-top:16px;padding:24px 22px;border-radius:26px;border:1px solid rgba(212,160,23,.32);background:linear-gradient(180deg,rgba(212,160,23,.14),rgba(212,160,23,.01))">
+      <div style="position:absolute;left:-60px;top:-90px;width:220px;height:220px;border-radius:50%;filter:blur(46px);opacity:.65;background:radial-gradient(circle,rgba(212,160,23,.45),transparent 70%);pointer-events:none"></div>
+      <div style="position:relative">
+        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,242,236,.42)">Reserva de emergência</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:42px;font-weight:700;letter-spacing:-.03em;line-height:1;color:#e8b839;margin-top:10px">{{ saldoCofre }}</div>
+        <div style="font-size:13px;color:rgba(244,242,236,.5);margin-top:9px">de {{ metaFmt }} · <span style="color:#d4a017">{{ pctLabel }}</span> da meta</div>
+
+        <div style="margin-top:18px;height:16px;border-radius:99px;background:rgba(0,0,0,.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);overflow:hidden">
+          <div style="height:100%;border-radius:99px;transition:width .9s cubic-bezier(.22,1,.36,1);background:linear-gradient(90deg,#8c6a0c,#d4a017 55%,#f4d47a);box-shadow:0 0 18px rgba(212,160,23,.55),0 0 42px rgba(212,160,23,.28);width:{{ progW }}"></div>
+        </div>
+
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px">
+          <div>
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:26px;font-weight:600;line-height:1">{{ mesesLabel }}</div>
+            <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin-top:5px">meses de reserva</div>
+          </div>
+          <div style="font-size:12px;color:rgba(244,242,236,.35);text-align:right">falta {{ faltaFmt }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px">
+      <button onClick="{{ openDeposito }}" style="height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">Depositar</button>
+      <button onClick="{{ openSaque }}" style="height:52px;border-radius:14px;border:1px solid rgba(232,124,144,.32);background:rgba(232,124,144,.09);color:#f0a3b1;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:rgba(232,124,144,.16)">Sacar</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px">
+      <div style="padding:14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+        <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Despesa média/mês</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:15px;margin-top:6px">{{ despesaFmt }}</div>
+      </div>
+      <div style="padding:14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+        <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Movimentações</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:15px;margin-top:6px">{{ depCount }}</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Histórico</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <sc-for list="{{ depositos }}" as="d" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+          <span style="width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;background:{{ d.chipBg }};color:{{ d.cor }}">{{ d.seta }}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.nota }}</div>
+            <div style="font-size:11.5px;color:rgba(244,242,236,.35)">{{ d.meta }}</div>
+          </div>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:14.5px;color:{{ d.cor }}">{{ d.valorFmt }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ depOpen }}">
+<div style="position:absolute;inset:0;z-index:70;display:flex;align-items:flex-end">
+  <div onClick="{{ closeDep }}" style="position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(3px)"></div>
+  <div style="position:relative;width:100%;background:#141412;border-top:1px solid rgba(244,242,236,.12);border-radius:26px 26px 0 0;padding:16px 20px 34px;animation:sheetUp .28s cubic-bezier(.32,.72,0,1) both;box-sizing:border-box">
+    <div style="width:38px;height:4px;border-radius:99px;background:rgba(244,242,236,.16);margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;letter-spacing:-.01em">{{ depTitle }}</div>
+      <button onClick="{{ closeDep }}" style="background:none;border:none;color:rgba(244,242,236,.4);font-size:15px;cursor:pointer">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Valor</span>
+        <div style="position:relative">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:rgba(244,242,236,.32)">R$</span>
+          <input placeholder="0,00" value="{{ dValor }}" onChange="{{ setDValor }}" style="height:52px;width:100%;box-sizing:border-box;padding:0 12px 0 42px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-family:ui-monospace,Menlo,monospace;font-size:17px;outline:none" style-focus="border-color:#d4a017" />
+        </div>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Data</span>
+          <input type="date" value="{{ dData }}" onChange="{{ setDData }}" style="height:52px;padding:0 12px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:14px;outline:none;color-scheme:dark" style-focus="border-color:#d4a017" />
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Autor</span>
+          <select value="{{ dAutor }}" onChange="{{ setDAutor }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none;appearance:none">
+            <option value="mae">Marina (Mãe)</option>
+            <option value="pai">Tiago (Pai)</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Nota <span style="text-transform:none;letter-spacing:0;color:rgba(244,242,236,.28)">opcional</span></span>
+        <input placeholder="{{ notaPlaceholder }}" value="{{ dNota }}" onChange="{{ setDNota }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+      </label>
+      <sc-if value="{{ depError }}">
+        <div style="padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ depError }}</div>
+      </sc-if>
+      <button onClick="{{ saveDep }}" style="{{ depBtnStyle }}">{{ depBtnLabel }}</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ regraOpen }}">
+<div style="position:absolute;inset:0;z-index:80;display:flex;align-items:flex-end">
+  <div onClick="{{ closeRegra }}" style="position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(3px)"></div>
+  <div style="position:relative;width:100%;background:#141412;border-top:1px solid rgba(244,242,236,.12);border-radius:26px 26px 0 0;padding:16px 20px 34px;animation:sheetUp .28s cubic-bezier(.32,.72,0,1) both;box-sizing:border-box">
+    <div style="width:38px;height:4px;border-radius:99px;background:rgba(244,242,236,.16);margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:19px;font-weight:600;letter-spacing:-.01em">Criar regra</div>
+      <button onClick="{{ closeRegra }}" style="background:none;border:none;color:rgba(244,242,236,.4);font-size:15px;cursor:pointer">✕</button>
+    </div>
+    <sc-if value="{{ regraOrigem }}">
+      <div style="font-size:13px;color:rgba(244,242,236,.45);margin-bottom:14px">A partir de <span style="color:#f4f2ec">{{ regraOrigem }}</span></div>
+    </sc-if>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Se a descrição contém</span>
+        <input placeholder="MENSALIDADE" value="{{ rPadrao }}" onChange="{{ setRPadrao }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-family:ui-monospace,Menlo,monospace;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+      </label>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Categoria</span>
+        <select value="{{ rCategoria }}" onChange="{{ setRCategoria }}" style="height:52px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none;appearance:none">
+          <option value="Escola">Escola</option>
+          <option value="Emergência">Emergência</option>
+          <option value="Casa">Casa</option>
+        </select>
+      </label>
+      <sc-if value="{{ regraError }}">
+        <div style="padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ regraError }}</div>
+      </sc-if>
+      <button onClick="{{ salvarRegra }}" style="height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit" style-hover="background:#e8b839">Criar regra</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAjustes }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Configurações</div>
+  <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.5">Casa, pessoas e as regras que o app usa para organizar o dinheiro.</div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Seu perfil</div>
+  <div style="padding:16px;border-radius:18px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:44px;height:44px;border-radius:50%;background:rgba(212,160,23,.16);border:1px solid rgba(212,160,23,.4);color:#e8b839;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center">M</div>
+      <div style="min-width:0">
+        <div style="font-size:14.5px">marina@gmail.com</div>
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin-top:2px">{{ papelAtual }}</div>
+      </div>
+    </div>
+    <label style="display:flex;flex-direction:column;gap:7px">
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Como aparece na casa</span>
+      <input value="{{ meuNome }}" onChange="{{ setMeuNome }}" style="height:50px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+    </label>
+    <div>
+      <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin-bottom:8px">Papel</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button onClick="{{ setPai }}" style="{{ paiSet }}">Pai</button>
+        <button onClick="{{ setMae }}" style="{{ maeSet }}">Mãe</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">A casa</div>
+  <div style="padding:16px;border-radius:18px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:13px">
+    <div style="font-size:16px">Casa dos Almeida</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:14px;border:1px dashed rgba(212,160,23,.4);background:rgba(212,160,23,.06)">
+      <div>
+        <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Código de convite</div>
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:20px;font-weight:700;letter-spacing:.14em;color:#e8b839;margin-top:4px">K7M2QP</div>
+      </div>
+      <button onClick="{{ copiarConvite }}" style="height:36px;padding:0 12px;border-radius:11px;border:1px solid rgba(244,242,236,.14);background:rgba(244,242,236,.04);color:#f4f2ec;font-size:12.5px;cursor:pointer;font-family:inherit">{{ copiarLabel }}</button>
+    </div>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Membros</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ membros }}" as="m" hint-placeholder-count="2">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:15px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+        <div style="width:34px;height:34px;border-radius:50%;background:rgba(212,160,23,.16);color:#e8b839;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ m.inicial }}</div>
+        <div style="flex:1;font-size:14.5px">{{ m.nome }}</div>
+        <div style="font-size:12px;color:#d4a017">{{ m.papel }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Organização</div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ atalhos }}" as="a" hint-placeholder-count="4">
+      <button onClick="{{ a.ir }}" style="display:flex;align-items:center;gap:12px;min-height:64px;padding:0 14px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);color:#f4f2ec;cursor:pointer;text-align:left;font-family:inherit" style-hover="border-color:rgba(212,160,23,.4)">
+        <div style="flex:1">
+          <div style="font-size:14.5px">{{ a.titulo }}</div>
+          <div style="font-size:11.5px;color:rgba(244,242,236,.35);margin-top:2px">{{ a.detalhe }}</div>
+        </div>
+        <span style="color:rgba(244,242,236,.3);font-size:16px">›</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38);margin:22px 0 10px">Conta</div>
+  <button style="width:100%;height:52px;border-radius:14px;border:1px solid rgba(244,242,236,.14);background:rgba(244,242,236,.04);color:#f4f2ec;font-size:15px;cursor:pointer;font-family:inherit" style-hover="background:rgba(244,242,236,.09)">Sair desta conta</button>
+  <div style="text-align:center;font-size:11.5px;color:rgba(244,242,236,.28);margin-top:16px">Casa · dados de sandbox · v0.1</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isContas }}">
+<div style="animation:fadeUp .3s ease both">
+  <div style="font-size:26px;font-weight:600;letter-spacing:-.02em">Contas</div>
+  <div style="margin-top:16px;padding:18px;border-radius:18px;border:1px solid rgba(212,160,23,.3);background:linear-gradient(150deg,rgba(212,160,23,.12),rgba(212,160,23,.02))">
+    <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.42)">Total</div>
+    <div style="font-family:ui-monospace,Menlo,monospace;font-size:26px;font-weight:700;color:#e8b839;margin-top:6px">{{ saldoTotal }}</div>
+  </div>
+  <button onClick="{{ conectarBanco }}" style="margin-top:12px;width:100%;height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer" style-hover="background:#e8b839">{{ conectarLabel }}</button>
+  <div style="text-align:center;font-size:11.5px;color:rgba(244,242,236,.32);margin-top:8px">Ambiente sandbox — conectores de teste do Pluggy</div>
+  <sc-if value="{{ syncMsg }}">
+    <div style="margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(212,160,23,.32);background:rgba(212,160,23,.1);color:#e8b839;font-size:13px">{{ syncMsg }}</div>
+  </sc-if>
+
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <sc-for list="{{ contas }}" as="a" hint-placeholder-count="3">
+      <div style="padding:15px;border-radius:16px;background:#141412;border:1px solid rgba(244,242,236,.08);display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-size:15px">{{ a.banco }}</div>
+            <div style="font-size:11.5px;color:rgba(244,242,236,.35)">{{ a.tipo }} · BRL</div>
+          </div>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:14px">{{ a.saldo }}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.3)">open finance</span>
+          <button onClick="{{ a.sync }}" style="height:34px;padding:0 12px;border-radius:11px;border:1px solid rgba(244,242,236,.14);background:rgba(244,242,236,.04);color:#f4f2ec;font-size:12.5px;cursor:pointer;font-family:inherit" style-hover="background:rgba(244,242,236,.1)">{{ a.syncLabel }}</button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <button onClick="{{ goCat }}" style="margin-top:16px;width:100%;height:48px;border-radius:14px;border:1px solid rgba(244,242,236,.14);background:rgba(244,242,236,.04);color:#f4f2ec;font-size:14px;cursor:pointer" style-hover="background:rgba(244,242,236,.09)">Gerenciar categorias →</button>
+</div>
+</sc-if>
+
+</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(12,12,11,.94);backdrop-filter:blur(12px);border-top:1px solid rgba(244,242,236,.09);padding-bottom:22px">
+  <button onClick="{{ goHome }}" style="{{ tabHome }}"><span style="font-size:17px;line-height:1">◉</span>Início</button>
+  <button onClick="{{ goTx }}" style="{{ tabTx }}"><span style="font-size:17px;line-height:1">≡</span>Transações</button>
+  <button onClick="{{ goCofre }}" style="{{ tabCofre }}"><span style="font-size:17px;line-height:1">◈</span>Cofrinho</button>
+  <button onClick="{{ goContas }}" style="{{ tabContas }}"><span style="font-size:17px;line-height:1">▤</span>Contas</button>
+  <button onClick="{{ goAjustes }}" style="{{ tabAjustes }}"><span style="font-size:17px;line-height:1">⚙</span>Ajustes</button>
+</div>
+
+<sc-if value="{{ modalOpen }}">
+<div style="position:absolute;inset:0;z-index:60;display:flex;align-items:flex-end">
+  <div onClick="{{ closeModal }}" style="position:absolute;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(3px)"></div>
+  <div style="position:relative;width:100%;background:#141412;border-top:1px solid rgba(244,242,236,.12);border-radius:26px 26px 0 0;padding:16px 20px 34px;animation:sheetUp .28s cubic-bezier(.32,.72,0,1) both;max-height:88%;overflow:auto;box-sizing:border-box">
+    <div style="width:38px;height:4px;border-radius:99px;background:rgba(244,242,236,.16);margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;letter-spacing:-.01em">Nova transação</div>
+      <button onClick="{{ closeModal }}" style="background:none;border:none;color:rgba(244,242,236,.4);font-size:15px;cursor:pointer">✕</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:14px;border:1px solid rgba(244,242,236,.1)">
+      <button onClick="{{ pickSaida }}" style="{{ saidaStyle }}">Saída</button>
+      <button onClick="{{ pickEntrada }}" style="{{ entradaStyle }}">Entrada</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:16px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Descrição</span>
+        <input placeholder="Material escolar" value="{{ nDesc }}" onChange="{{ setDesc }}" style="height:50px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none" style-focus="border-color:#d4a017" />
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Valor</span>
+          <div style="position:relative">
+            <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:rgba(244,242,236,.32)">R$</span>
+            <input placeholder="0,00" value="{{ nValor }}" onChange="{{ setValor }}" style="height:50px;width:100%;box-sizing:border-box;padding:0 12px 0 42px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-family:ui-monospace,Menlo,monospace;font-size:16px;outline:none" style-focus="border-color:#d4a017" />
+          </div>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Data</span>
+          <input type="date" value="{{ nData }}" onChange="{{ setData }}" style="height:50px;padding:0 12px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:14px;outline:none;color-scheme:dark" style-focus="border-color:#d4a017" />
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Categoria</span>
+        <select value="{{ nCategoria }}" onChange="{{ setNCategoria }}" style="height:50px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none;appearance:none">
+          <option value="Escola">Escola</option>
+          <option value="Emergência">Emergência</option>
+          <option value="Casa">Casa</option>
+          <option value="">Sem categoria</option>
+        </select>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Autor</span>
+          <select value="{{ nAutor }}" onChange="{{ setNAutor }}" style="height:50px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none;appearance:none">
+            <option value="mae">Marina (Mãe)</option>
+            <option value="pai">Tiago (Pai)</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,242,236,.38)">Conta</span>
+          <select value="{{ nConta }}" onChange="{{ setNConta }}" style="height:50px;padding:0 14px;border-radius:13px;border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:#f4f2ec;font-size:15px;outline:none;appearance:none">
+            <option value="Nubank">Nubank</option>
+            <option value="Itaú">Itaú</option>
+            <option value="Caixa">Caixa</option>
+            <option value="">Nenhuma</option>
+          </select>
+        </label>
+      </div>
+      <sc-if value="{{ modalError }}">
+        <div style="padding:10px 12px;border-radius:12px;background:rgba(232,124,144,.1);border:1px solid rgba(232,124,144,.28);color:#f0a3b1;font-size:13px">{{ modalError }}</div>
+      </sc-if>
+      <button onClick="{{ saveTx }}" style="height:52px;border-radius:14px;border:none;background:#d4a017;color:#0c0c0b;font-size:15px;font-weight:600;cursor:pointer;margin-top:2px" style-hover="background:#e8b839">Salvar transação</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+</div>
+<div style="font-size:12px;color:rgba(244,242,236,.4)">Protótipo clicável · filtros e modal funcionam com dados mock</div>
+</div>
+
+<div style="display:none">
+  <div>
+    <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d4a017;font-weight:600">Dashboard + transações</div>
+    <h1 style="font-size:34px;font-weight:600;letter-spacing:-.03em;margin:10px 0 0;line-height:1.15">O mês da casa em uma tela</h1>
+    <p style="font-size:15px;line-height:1.6;color:rgba(244,242,236,.55);text-wrap:pretty">Saldo consolidado no topo, três baldes por finalidade, divisão pai × mãe em barras comparativas e os últimos lançamentos. Tab bar fixa com Início, Transações, Cofrinho e Contas.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <button onClick="{{ goHome }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Início</button>
+    <button onClick="{{ goTx }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Transações</button>
+    <button onClick="{{ openModal }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Modal nova transação</button>
+    <button onClick="{{ goCat }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Categorias</button>
+    <button onClick="{{ goContas }}" style="padding:9px 14px;border-radius:10px;border:1px solid rgba(244,242,236,.14);background:#141412;color:#f4f2ec;font-size:13px;cursor:pointer" style-hover="border-color:#d4a017">Contas</button>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">Código entregue</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.65">
+        <span style="font-family:ui-monospace,Menlo,monospace;color:#d4a017">pages/Dashboard.tsx</span>, <span style="font-family:ui-monospace,Menlo,monospace;color:#d4a017">Transactions.tsx</span>, <span style="font-family:ui-monospace,Menlo,monospace;color:#d4a017">Categories.tsx</span>, <span style="font-family:ui-monospace,Menlo,monospace;color:#d4a017">Accounts.tsx</span> · UI reutilizável em <span style="font-family:ui-monospace,Menlo,monospace">components/ui</span> (Card, Modal, Button, Input/Select/MoneyInput) · queries e mutations em <span style="font-family:ui-monospace,Menlo,monospace">hooks/useHouseholdData.ts</span>.
+      </div>
+    </div>
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">React Query</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.65">Chaves por household + filtros; <span style="font-family:ui-monospace,Menlo,monospace">invalidateQueries(['transactions'])</span> após criar, editar ou excluir. Join único traz categoria, member e conta em cada linha.</div>
+    </div>
+    <div style="padding:16px 18px;border-radius:14px;background:#141412;border:1px solid rgba(244,242,236,.08)">
+      <div style="font-size:14px;font-weight:600">Convenção de valores</div>
+      <div style="font-size:13.5px;color:rgba(244,242,236,.5);margin-top:6px;line-height:1.65">Saída grava <span style="font-family:ui-monospace,Menlo,monospace">valor</span> negativo, entrada positivo — os cards por finalidade somam o módulo, a divisão pai × mãe separa aporte de gasto. Tudo formatado com <span style="font-family:ui-monospace,Menlo,monospace">Intl.NumberFormat('pt-BR')</span>.</div>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const CORES = { 'Escola': '#d4a017', 'Emergência': '#f0a3b1', 'Casa': '#8ab0a0' };
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'home', month: '2026-08',
+    fConta: '', fCategoria: '', fAutor: '',
+    modalOpen: false, saida: true,
+    syncing: null, syncMsg: '', conectando: false,
+    meuNome: 'Marina', meuPapel: 'mae', convCopiado: false,
+    regraOpen: false, regraOrigem: '', rPadrao: '', rCategoria: 'Escola', regraError: '',
+    regras: [
+      { id: 1, padrao: 'MENSALIDADE', categoria: 'Escola' },
+      { id: 2, padrao: 'ESCOLA', categoria: 'Escola' },
+      { id: 3, padrao: 'RESERVA', categoria: 'Emergência' },
+      { id: 4, padrao: 'SUPERMERCADO', categoria: 'Casa' },
+      { id: 5, padrao: 'ENERGIA', categoria: 'Casa' },
+    ],
+    cofreSetup: false, meta: 42000, despesa: 7000,
+    metaStr: '42000', despesaStr: '7000',
+    depOpen: false, depTipo: 'deposito', dValor: '', dData: '2026-08-13', dAutor: 'mae', dNota: '', depError: '',
+    depositos: [
+      { id: 1, valor: 1500, tipo: 'deposito', data: '2026-08-12', nota: 'Aporte extra 13º', autor: 'pai' },
+      { id: 2, valor: 900, tipo: 'deposito', data: '2026-08-05', nota: 'Aporte mensal', autor: 'mae' },
+      { id: 3, valor: 620, tipo: 'saque', data: '2026-07-22', nota: 'Consulta odontológica', autor: 'mae' },
+      { id: 4, valor: 900, tipo: 'deposito', data: '2026-07-05', nota: 'Aporte mensal', autor: 'pai' },
+      { id: 5, valor: 4200, tipo: 'deposito', data: '2026-06-28', nota: 'Início da reserva', autor: 'pai' },
+    ],
+    nDesc: '', nValor: '', nData: '2026-08-13', nCategoria: 'Escola', nAutor: 'mae', nConta: 'Nubank',
+    modalError: '',
+    txs: [
+      { id: 1, descricao: 'Mensalidade escola — Théo', valor: -1480, data: '2026-08-05', categoria: 'Escola', autor: 'mae', conta: 'Nubank', origem: 'open_finance', autoCat: true },
+      { id: 2, descricao: 'Aporte reserva', valor: 900, data: '2026-08-05', categoria: 'Emergência', autor: 'pai', conta: 'Itaú', origem: 'manual' },
+      { id: 3, descricao: 'Supermercado Pão de Açúcar', valor: -742.9, data: '2026-08-08', categoria: 'Casa', autor: 'pai', conta: 'Itaú', origem: 'open_finance', autoCat: true },
+      { id: 4, descricao: 'Uniforme e material', valor: -389.5, data: '2026-08-09', categoria: 'Escola', autor: 'mae', conta: 'Nubank', origem: 'manual' },
+      { id: 5, descricao: 'Aporte mensal', valor: 2200, data: '2026-08-02', categoria: '', autor: 'mae', conta: 'Caixa', origem: 'manual' },
+      { id: 6, descricao: 'Conta de luz', valor: -318.4, data: '2026-08-11', categoria: 'Casa', autor: 'pai', conta: 'Caixa', origem: 'open_finance', autoCat: true },
+      { id: 7, descricao: 'Aporte extra 13º', valor: 1500, data: '2026-08-12', categoria: 'Emergência', autor: 'pai', conta: 'Itaú', origem: 'manual' },
+    ],
+  };
+
+  tabStyle(active) {
+    return 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:58px;background:none;border:none;cursor:pointer;font-size:10.5px;font-family:inherit;color:' + (active ? '#d4a017' : 'rgba(244,242,236,.34)') + ';';
+  }
+  segStyle(active, alerta) {
+    const on = alerta ? 'background:rgba(232,124,144,.14);color:#f0a3b1;' : 'background:rgba(212,160,23,.16);color:#e8b839;';
+    return 'height:40px;border-radius:11px;border:none;cursor:pointer;font-size:13.5px;font-weight:600;font-family:inherit;' + (active ? on : 'background:transparent;color:rgba(244,242,236,.38);');
+  }
+  norm(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+
+  autoCategoria(descricao) {
+    const alvo = this.norm(descricao);
+    const r = this.state.regras.slice().sort((a, b) => b.padrao.length - a.padrao.length)
+      .find(r => alvo.includes(this.norm(r.padrao)));
+    return r ? r.categoria : '';
+  }
+
+  regraVals() {
+    const s = this.state;
+    return {
+      regras: s.regras.map(r => ({ ...r, remover: () => this.setState({ regras: this.state.regras.filter(x => x.id !== r.id) }) })),
+      novaRegra: () => this.setState({ regraOpen: true, regraOrigem: '', rPadrao: '', rCategoria: 'Escola', regraError: '' }),
+      regraOpen: s.regraOpen, regraOrigem: s.regraOrigem, regraError: s.regraError,
+      rPadrao: s.rPadrao, rCategoria: s.rCategoria,
+      setRPadrao: (e) => this.setState({ rPadrao: e.target.value.toUpperCase(), regraError: '' }),
+      setRCategoria: (e) => this.setState({ rCategoria: e.target.value }),
+      closeRegra: () => this.setState({ regraOpen: false }),
+      salvarRegra: () => {
+        const p = this.state.rPadrao.trim();
+        if (!p) return this.setState({ regraError: 'Informe o texto a procurar.' });
+        const nova = { id: Date.now(), padrao: p, categoria: this.state.rCategoria };
+        const txs = this.state.txs.map(t => (!t.categoria && this.norm(t.descricao).includes(this.norm(p)) ? { ...t, categoria: nova.categoria, autoCat: true } : t));
+        this.setState({ regras: [nova, ...this.state.regras], txs, regraOpen: false });
+      },
+    };
+  }
+
+  ajustesVals() {
+    const s = this.state;
+    const seg = (active) => 'height:48px;border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;' + (active
+      ? 'border:1px solid #d4a017;background:rgba(212,160,23,.16);color:#e8b839;'
+      : 'border:1px solid rgba(244,242,236,.12);background:#0c0c0b;color:rgba(244,242,236,.6);');
+    return {
+      papelAtual: s.meuPapel === 'mae' ? 'Mãe' : 'Pai',
+      meuNome: s.meuNome,
+      setMeuNome: (e) => this.setState({ meuNome: e.target.value }),
+      paiSet: seg(s.meuPapel === 'pai'), maeSet: seg(s.meuPapel === 'mae'),
+      setPai: () => this.setState({ meuPapel: 'pai' }), setMae: () => this.setState({ meuPapel: 'mae' }),
+      copiarLabel: s.convCopiado ? 'Copiado' : 'Copiar',
+      copiarConvite: () => { try { navigator.clipboard.writeText('K7M2QP'); } catch (e) {} this.setState({ convCopiado: true }); },
+      membros: [
+        { nome: s.meuNome || 'Marina', papel: s.meuPapel === 'mae' ? 'Mãe' : 'Pai', inicial: (s.meuNome || 'M').charAt(0).toUpperCase() },
+        { nome: 'Tiago', papel: s.meuPapel === 'mae' ? 'Pai' : 'Mãe', inicial: 'T' },
+      ],
+      atalhos: [
+        { titulo: 'Categorias', detalhe: '3 ativas', ir: () => this.setState({ tab: 'cat' }) },
+        { titulo: 'Regras de categorização', detalhe: s.regras.length + ' regras', ir: () => this.setState({ tab: 'cat' }) },
+        { titulo: 'Bancos e contas', detalhe: '3 conectadas · ' + BRL.format(28417.62), ir: () => this.setState({ tab: 'contas' }) },
+        { titulo: 'Meta da reserva', detalhe: BRL.format(s.meta), ir: () => this.setState({ tab: 'cofre' }) },
+      ],
+    };
+  }
+
+  row(t) {
+    const label = t.autor === 'mae' ? 'Mãe' : 'Pai';
+    const d = t.data.slice(8) + ' ' + MESES[Number(t.data.slice(5, 7)) - 1].slice(0, 3);
+    const cor = CORES[t.categoria] || 'rgba(244,242,236,.25)';
+    return {
+      ...t, cor, chip: (CORES[t.categoria] || '#f4f2ec') + '24',
+      meta: d + ' · ' + (t.categoria || 'Sem categoria') + ' · ' + label,
+      valorFmt: BRL.format(t.valor), valorCor: t.valor < 0 ? '#f0a3b1' : '#e8b839',
+      origemLabel: t.origem === 'manual' ? 'manual' : 'auto',
+      autoLabel: t.autoCat ? 'regra aplicada' : '',
+      setCategoria: (e) => {
+        const v = e.target.value;
+        this.setState({ txs: this.state.txs.map(x => x.id === t.id ? { ...x, categoria: v, autoCat: false } : x) });
+      },
+      criarRegra: () => this.setState({
+        regraOpen: true, regraOrigem: t.descricao, regraError: '',
+        rCategoria: t.categoria || 'Escola',
+        rPadrao: t.descricao.replace(/[0-9]{2,}/g, ' ').replace(/[^\p{L}\s]/gu, ' ').split(/\s+/).filter(w => w.length > 2).slice(0, 2).join(' ').toUpperCase().trim(),
+      }),
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const mesLabel = MESES[Number(s.month.slice(5, 7)) - 1] + ' de ' + s.month.slice(0, 4);
+    const doMes = s.txs.filter(t => t.data.slice(0, 7) === s.month);
+    const filtered = doMes.filter(t =>
+      (!s.fConta || t.conta === s.fConta) &&
+      (!s.fCategoria || (s.fCategoria === 'none' ? !t.categoria : t.categoria === s.fCategoria)) &&
+      (!s.fAutor || t.autor === s.fAutor));
+    const nFiltros = [s.fConta, s.fCategoria, s.fAutor].filter(Boolean).length;
+    const somaTipo = (cat) => doMes.filter(t => t.categoria === cat).reduce((a, t) => a + Math.abs(t.valor), 0);
+    const porAutor = (autor) => {
+      const mine = doMes.filter(t => t.autor === autor);
+      return {
+        aporte: mine.filter(t => t.valor > 0).reduce((a, t) => a + t.valor, 0),
+        gasto: mine.filter(t => t.valor < 0).reduce((a, t) => a + Math.abs(t.valor), 0),
+      };
+    };
+    const pai = porAutor('pai'), mae = porAutor('mae');
+    const maxA = Math.max(1, pai.aporte, mae.aporte), maxG = Math.max(1, pai.gasto, mae.gasto);
+    const linha = (nome, papel, v) => ({
+      nome, papel,
+      aporte: BRL.format(v.aporte), gasto: BRL.format(v.gasto),
+      aporteW: Math.round((v.aporte / maxA) * 100) + '%', gastoW: Math.round((v.gasto / maxG) * 100) + '%',
+    });
+    const total = filtered.reduce((a, t) => a + t.valor, 0);
+
+    return {
+      isHome: s.tab === 'home', isTx: s.tab === 'tx', isCat: s.tab === 'cat', isCofre: s.tab === 'cofre', isContas: s.tab === 'contas',
+      tabHome: this.tabStyle(s.tab === 'home'), tabTx: this.tabStyle(s.tab === 'tx'),
+      tabCofre: this.tabStyle(s.tab === 'cofre'), tabContas: this.tabStyle(s.tab === 'contas'),
+      goHome: () => this.setState({ tab: 'home' }), goTx: () => this.setState({ tab: 'tx' }),
+      goCat: () => this.setState({ tab: 'cat' }), goCofre: () => this.setState({ tab: 'cofre' }),
+      goContas: () => this.setState({ tab: 'contas' }),
+
+      saldoTotal: BRL.format(28417.62),
+      totEscola: BRL.format(somaTipo('Escola')), totEmerg: BRL.format(somaTipo('Emergência')), totGeral: BRL.format(somaTipo('Casa')),
+      divisao: [linha('Tiago', 'Pai', pai), linha('Marina', 'Mãe', mae)],
+      recent: doMes.slice().sort((a, b) => b.data.localeCompare(a.data)).slice(0, 5).map(t => this.row(t)),
+      contas: [
+        { banco: 'Nubank', tipo: 'Conta corrente', saldo: BRL.format(9240.18) },
+        { banco: 'Itaú', tipo: 'Conta conjunta', saldo: BRL.format(12980.44) },
+        { banco: 'Caixa', tipo: 'Poupança', saldo: BRL.format(6197) },
+      ].map((c, i) => ({
+        ...c,
+        syncLabel: s.syncing === i ? 'Sincronizando…' : 'Sincronizar',
+        sync: () => { this.setState({ syncing: i, syncMsg: '' }); setTimeout(() => this.setState({ syncing: null, syncMsg: '3 lançamentos importados de ' + c.banco + '.' }), 900); },
+      })),
+      conectarLabel: s.conectando ? 'Abrindo Pluggy…' : '+ Conectar banco',
+      conectarBanco: () => { this.setState({ conectando: true, syncMsg: '' }); setTimeout(() => this.setState({ conectando: false, syncMsg: '2 contas importadas do sandbox.' }), 1100); },
+      syncMsg: s.syncMsg,
+      categorias: [
+        { nome: 'Escola', tipo: 'escola', chip: '#d4a01730', borda: '#d4a01766', icone: 'graduation-cap' },
+        { nome: 'Emergência', tipo: 'emergencia', chip: '#f0a3b130', borda: '#f0a3b166', icone: 'shield' },
+        { nome: 'Casa', tipo: 'geral', chip: '#8ab0a030', borda: '#8ab0a066', icone: 'home' },
+      ],
+
+      monthLabel: mesLabel,
+      prevMonth: () => this.setState({ month: this.shift(-1) }), nextMonth: () => this.setState({ month: this.shift(1) }),
+      fConta: s.fConta, fCategoria: s.fCategoria, fAutor: s.fAutor,
+      setConta: (e) => this.setState({ fConta: e.target.value }),
+      setCategoria: (e) => this.setState({ fCategoria: e.target.value }),
+      setAutor: (e) => this.setState({ fAutor: e.target.value }),
+      filtered: filtered.slice().sort((a, b) => b.data.localeCompare(a.data)).map(t => this.row(t)),
+      isEmpty: filtered.length === 0,
+      txCountLabel: filtered.length + (filtered.length === 1 ? ' lançamento' : ' lançamentos'),
+      txTotal: BRL.format(total), txTotalCor: total < 0 ? '#f0a3b1' : '#e8b839',
+
+      ...this.cofreVals(),
+      ...this.regraVals(),
+      ...this.ajustesVals(),
+      isAjustes: s.tab === 'ajustes',
+      tabAjustes: this.tabStyle(s.tab === 'ajustes'),
+      goAjustes: () => this.setState({ tab: 'ajustes' }),
+      hasFiltros: nFiltros > 0,
+      limparLabel: 'limpar ' + nFiltros + (nFiltros === 1 ? ' filtro' : ' filtros'),
+      limparFiltros: () => this.setState({ fConta: '', fCategoria: '', fAutor: '' }),
+
+      modalOpen: s.modalOpen, modalError: s.modalError,
+      openModal: () => this.setState({ modalOpen: true, tab: 'tx', modalError: '', nDesc: '', nValor: '' }),
+      closeModal: () => this.setState({ modalOpen: false }),
+      saidaStyle: this.segStyle(s.saida, true), entradaStyle: this.segStyle(!s.saida, false),
+      pickSaida: () => this.setState({ saida: true }), pickEntrada: () => this.setState({ saida: false }),
+      nDesc: s.nDesc, nValor: s.nValor, nData: s.nData, nCategoria: s.nCategoria, nAutor: s.nAutor, nConta: s.nConta,
+      setDesc: (e) => this.setState({ nDesc: e.target.value, modalError: '' }),
+      setValor: (e) => this.setState({ nValor: e.target.value.replace(/[^\d,.]/g, ''), modalError: '' }),
+      setData: (e) => this.setState({ nData: e.target.value }),
+      setNCategoria: (e) => this.setState({ nCategoria: e.target.value }),
+      setNAutor: (e) => this.setState({ nAutor: e.target.value }),
+      setNConta: (e) => this.setState({ nConta: e.target.value }),
+      saveTx: () => {
+        const n = Number(String(this.state.nValor).replace(/\./g, '').replace(',', '.'));
+        if (!this.state.nDesc.trim()) return this.setState({ modalError: 'Descreva o lançamento.' });
+        if (!isFinite(n) || n <= 0) return this.setState({ modalError: 'Informe um valor maior que zero.' });
+        const tx = {
+          id: Date.now(), descricao: this.state.nDesc.trim(),
+          valor: this.state.saida ? -Math.abs(n) : Math.abs(n),
+          data: this.state.nData, categoria: this.state.nCategoria,
+          autor: this.state.nAutor, conta: this.state.nConta, origem: 'manual',
+        };
+        this.setState({ txs: [tx, ...this.state.txs], modalOpen: false, nDesc: '', nValor: '', modalError: '' });
+      },
+    };
+  }
+
+  parseNum(v) { return Number(String(v).replace(/\./g, '').replace(',', '.')); }
+
+  cofreVals() {
+    const s = this.state;
+    const saldo = s.depositos.reduce((a, d) => a + (d.tipo === 'saque' ? -d.valor : d.valor), 0);
+    const pct = s.meta > 0 ? Math.min(100, (saldo / s.meta) * 100) : 0;
+    const meses = s.despesa > 0 ? saldo / s.despesa : null;
+    const sug = this.parseNum(s.despesaStr) * 6;
+    return {
+      cofreSetup: s.cofreSetup, cofreView: !s.cofreSetup,
+      setupLabel: s.cofreSetup ? 'cancelar' : 'ajustar meta',
+      toggleSetup: () => this.setState({ cofreSetup: !s.cofreSetup }),
+      metaStr: s.metaStr, despesaStr: s.despesaStr,
+      setMeta: (e) => this.setState({ metaStr: e.target.value.replace(/[^\d,.]/g, '') }),
+      setDespesa: (e) => this.setState({ despesaStr: e.target.value.replace(/[^\d,.]/g, '') }),
+      sugestaoLabel: isFinite(sug) && sug > 0 ? 'usar sugestão de 6 meses (' + BRL.format(sug) + ')' : 'informe a despesa para ver a sugestão',
+      useSugestao: () => { const v = this.parseNum(this.state.despesaStr) * 6; if (isFinite(v) && v > 0) this.setState({ metaStr: String(v) }); },
+      salvarFundo: () => {
+        const meta = this.parseNum(this.state.metaStr), desp = this.parseNum(this.state.despesaStr);
+        if (!isFinite(meta) || meta <= 0 || !isFinite(desp) || desp <= 0) return;
+        this.setState({ meta, despesa: desp, cofreSetup: false });
+      },
+
+      saldoCofre: BRL.format(saldo), metaFmt: BRL.format(s.meta), despesaFmt: BRL.format(s.despesa),
+      pctLabel: Math.round(pct) + '%', progW: pct + '%',
+      mesesLabel: meses === null ? '—' : meses.toFixed(1).replace('.', ','),
+      faltaFmt: BRL.format(Math.max(0, s.meta - saldo)), depCount: s.depositos.length,
+      depositos: s.depositos.slice().sort((a, b) => b.data.localeCompare(a.data)).map(d => {
+        const saque = d.tipo === 'saque';
+        const dia = d.data.slice(8) + ' ' + MESES[Number(d.data.slice(5, 7)) - 1].slice(0, 3);
+        return {
+          ...d, seta: saque ? '↓' : '↑',
+          cor: saque ? '#f0a3b1' : '#e8b839',
+          chipBg: saque ? 'rgba(232,124,144,.12)' : 'rgba(212,160,23,.16)',
+          nota: d.nota || (saque ? 'Saque' : 'Depósito'),
+          meta: dia + ' · ' + (d.autor === 'mae' ? 'Marina (Mãe)' : 'Tiago (Pai)'),
+          valorFmt: (saque ? '−' : '+') + BRL.format(d.valor),
+        };
+      }),
+
+      depOpen: s.depOpen, depError: s.depError,
+      depTitle: s.depTipo === 'deposito' ? 'Depositar na reserva' : 'Sacar da reserva',
+      depBtnLabel: s.depTipo === 'deposito' ? 'Confirmar depósito' : 'Confirmar saque',
+      depBtnStyle: 'height:52px;border-radius:14px;cursor:pointer;font-size:15px;font-weight:600;font-family:inherit;margin-top:2px;' + (s.depTipo === 'deposito'
+        ? 'border:none;background:#d4a017;color:#0c0c0b;'
+        : 'border:1px solid rgba(232,124,144,.34);background:rgba(232,124,144,.12);color:#f0a3b1;'),
+      notaPlaceholder: s.depTipo === 'deposito' ? '13º salário' : 'Consulta odontológica',
+      openDeposito: () => this.setState({ depOpen: true, depTipo: 'deposito', dValor: '', dNota: '', depError: '' }),
+      openSaque: () => this.setState({ depOpen: true, depTipo: 'saque', dValor: '', dNota: '', depError: '' }),
+      closeDep: () => this.setState({ depOpen: false }),
+      dValor: s.dValor, dData: s.dData, dAutor: s.dAutor, dNota: s.dNota,
+      setDValor: (e) => this.setState({ dValor: e.target.value.replace(/[^\d,.]/g, ''), depError: '' }),
+      setDData: (e) => this.setState({ dData: e.target.value }),
+      setDAutor: (e) => this.setState({ dAutor: e.target.value }),
+      setDNota: (e) => this.setState({ dNota: e.target.value }),
+      saveDep: () => {
+        const n = this.parseNum(this.state.dValor);
+        if (!isFinite(n) || n <= 0) return this.setState({ depError: 'Informe um valor maior que zero.' });
+        const d = { id: Date.now(), valor: Math.abs(n), tipo: this.state.depTipo, data: this.state.dData, nota: this.state.dNota.trim(), autor: this.state.dAutor };
+        this.setState({ depositos: [d, ...this.state.depositos], depOpen: false, dValor: '', dNota: '' });
+      },
+    };
+  }
+
+  shift(delta) {
+    const [y, m] = this.state.month.split('-').map(Number);
+    const d = new Date(y, m - 1 + delta, 1);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+}
+</script>
+</body>
+</html>

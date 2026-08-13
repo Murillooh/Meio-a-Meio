@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Serif&display=swap">
+<style>
+body{margin:0;font-family:'Bricolage Grotesque',system-ui,sans-serif;transition:background .45s ease}
+a{text-decoration:none}
+input,select,button{font-family:inherit}
+*{scrollbar-width:none;-ms-overflow-style:none}
+*::-webkit-scrollbar{width:0;height:0;display:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:48px 24px;box-sizing:border-box;background:{{ pageBg }};transition:background .45s ease">
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="padding:13px;border-radius:62px;background:{{ bezel }};box-shadow:0 0 0 1px rgba(255,255,255,.09),0 30px 70px rgba(0,0,0,.42),inset 0 0 0 2px rgba(0,0,0,.4);transition:background .45s ease">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ isDark }}" hint-size="402px,874px">
+<div style="position:relative;height:100%;overflow:hidden;background:{{ bg }};color:{{ ink }};transition:background .45s ease,color .45s ease">
+<div style="height:100%;overflow:auto;padding:58px 20px 40px;box-sizing:border-box">
+
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+    <div style="min-width:0">
+      <div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">{{ kicker }}</div>
+      <div style="font-size:27px;font-weight:600;letter-spacing:-.02em;margin-top:5px;font-family:{{ titleFont }}">{{ tituloTela }}</div>
+    </div>
+    <button onClick="{{ toggleTema }}" title="Trocar o tema" style="width:44px;height:44px;flex:none;border-radius:50%;cursor:pointer;font-size:17px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .3s ease;border:1px solid {{ chipBorder }};background:{{ chipBg }};color:{{ accent }}">{{ temaIcone }}</button>
+  </div>
+
+  <sc-if value="{{ ehInicio }}" hint-placeholder-val="{{ true }}">
+  <div style="margin-top:16px;padding:20px;border-radius:22px;background:{{ heroBg }};border:1px solid {{ heroBorder }};box-shadow:{{ heroShadow }};transition:all .45s ease">
+    <div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">Saldo consolidado</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;margin-top:7px;line-height:1;color:{{ heroInk }}">{{ saldoTotal }}</div>
+    <div style="font-size:12.5px;color:{{ muted }};margin-top:10px">{{ contasLabel }} · <a href="#" onClick="{{ irContas }}" style="color:{{ accent }}">gerenciar</a></div>
+  </div>
+
+  <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }};margin:22px 0 10px">Por finalidade</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+    <sc-for list="{{ baldes }}" as="b" hint-placeholder-count="3">
+      <button onClick="{{ b.ver }}" style="text-align:left;cursor:pointer;padding:13px;border-radius:16px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};color:{{ ink }};display:flex;flex-direction:column;gap:6px">
+        <span style="display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ b.cor }}"></span>
+          <span style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:{{ muted }}">{{ b.rotulo }}</span>
+        </span>
+        <span style="font-size:14px;font-weight:600">{{ b.valor }}</span>
+        <span style="font-size:10.5px;color:{{ muted }}">no mês</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }};margin:22px 0 10px">Divisão pai × mãe</div>
+  <div style="padding:18px;border-radius:20px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};display:flex;flex-direction:column;gap:18px">
+    <sc-for list="{{ pessoas }}" as="p" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-size:15px;font-weight:600">{{ p.nome }}</span>
+          <span style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:{{ muted }}">{{ p.papel }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:46px;font-size:11px;color:{{ muted }}">Aportou</span>
+          <div style="flex:1;height:8px;border-radius:99px;overflow:hidden;background:{{ trackBg }}"><div style="height:100%;border-radius:99px;background:{{ accent }};width:{{ p.aporteW }};transform-origin:left;animation:grow .5s ease both"></div></div>
+          <span style="width:78px;text-align:right;font-size:12px">{{ p.aporte }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:46px;font-size:11px;color:{{ muted }}">Gastou</span>
+          <div style="flex:1;height:8px;border-radius:99px;overflow:hidden;background:{{ trackBg }}"><div style="height:100%;border-radius:99px;background:{{ alerta }};width:{{ p.gastoW }};transform-origin:left;animation:grow .5s ease both"></div></div>
+          <span style="width:78px;text-align:right;font-size:12px">{{ p.gasto }}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">Últimos lançamentos</div>
+    <a href="#" onClick="{{ irGastos }}" style="font-size:12.5px;color:{{ accent }}">ver tudo</a>
+  </div>
+  <div style="border-radius:20px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};overflow:hidden">
+    <sc-for list="{{ recentes }}" as="l" hint-placeholder-count="5">
+      <div style="display:flex;align-items:center;gap:11px;padding:13px 15px;border-top:1px solid {{ cardBorder }}">
+        <span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ l.cor }}"></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.descricao }}</div>
+          <div style="font-size:11.5px;color:{{ muted }};margin-top:1px">{{ l.meta }}</div>
+        </div>
+        <span style="font-size:13.5px;font-weight:500;color:{{ l.valorCor }}">{{ l.valorFmt }}</span>
+      </div>
+    </sc-for>
+    <sc-if value="{{ semRecentes }}">
+      <div style="padding:26px 16px;text-align:center;font-size:13px;color:{{ muted }}">Nenhum lançamento neste mês.</div>
+    </sc-if>
+  </div>
+  <div style="height:84px"></div>
+  </sc-if>
+
+  <sc-if value="{{ ehGastos }}">
+  <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:16px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }}">
+    <button onClick="{{ mesAnterior }}" style="background:none;border:none;cursor:pointer;font-size:19px;padding:0 8px;color:{{ muted }}">‹</button>
+    <span style="font-size:14px;font-weight:500;text-transform:capitalize">{{ mesLabel }}</span>
+    <button onClick="{{ mesProximo }}" style="background:none;border:none;cursor:pointer;font-size:19px;padding:0 8px;color:{{ muted }}">›</button>
+  </div>
+
+  <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <select value="{{ fConta }}" onChange="{{ setFConta }}" style="{{ filtroStyle }}">
+      <option value="">Conta</option>
+      <sc-for list="{{ nomesContas }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+    </select>
+    <select value="{{ fCategoria }}" onChange="{{ setFCategoria }}" style="{{ filtroStyle }}">
+      <option value="">Categoria</option>
+      <option value="none">Sem categoria</option>
+      <sc-for list="{{ nomesCategorias }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+    </select>
+    <select value="{{ fAutor }}" onChange="{{ setFAutor }}" style="{{ filtroStyle }}">
+      <option value="">Autor</option>
+      <option value="pai">Pai</option>
+      <option value="mae">Mãe</option>
+    </select>
+  </div>
+
+  <sc-if value="{{ temFiltros }}">
+    <button onClick="{{ limparFiltros }}" style="margin-top:9px;background:none;border:none;padding:0;cursor:pointer;font-size:12px;color:{{ accent }}">{{ limparLabel }}</button>
+  </sc-if>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">{{ contagemLabel }}</div>
+    <span style="font-size:13px;font-weight:600;color:{{ totalCor }}">{{ totalFmt }}</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ filtradas }}" as="t" hint-placeholder-count="5">
+      <div style="padding:14px;border-radius:18px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="width:34px;height:34px;border-radius:12px;flex:none;background:{{ t.chip }}"></span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.descricao }}</div>
+            <div style="font-size:11.5px;color:{{ muted }};margin-top:1px">{{ t.meta }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+            <span style="font-size:14.5px;font-weight:500;color:{{ t.valorCor }}">{{ t.valorFmt }}</span>
+            <button onClick="{{ t.excluir }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:11px;color:{{ muted }}">excluir</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ t.cor }}"></span>
+          <select value="{{ t.categoria }}" onChange="{{ t.setCategoria }}" style="{{ inlineSelectStyle }}">
+            <option value="">Sem categoria</option>
+            <sc-for list="{{ nomesCategorias }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+          </select>
+          <button onClick="{{ t.criarRegra }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:11px;color:{{ muted }}">criar regra</button>
+          <sc-if value="{{ t.autoLabel }}">
+            <span style="margin-left:auto;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:{{ accent }}">{{ t.autoLabel }}</span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{ semFiltradas }}">
+      <div style="padding:34px 16px;border-radius:18px;border:1px dashed {{ chipBorder }};text-align:center;font-size:13.5px;color:{{ muted }}">Nada por aqui com esses filtros.</div>
+    </sc-if>
+  </div>
+  <div style="height:96px"></div>
+  </sc-if>
+
+  <sc-if value="{{ ehCofrinho }}">
+  <sc-if value="{{ cofreConfigurado }}" hint-placeholder-val="{{ true }}">
+  <div style="margin-top:16px;padding:22px;border-radius:24px;background:{{ heroBg }};border:1px solid {{ heroBorder }};box-shadow:{{ heroShadow }}">
+    <div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">Guardado até agora</div>
+    <div style="font-size:38px;font-weight:700;letter-spacing:-.02em;margin-top:7px;line-height:1;color:{{ heroInk }}">{{ cofreSaldo }}</div>
+    <div style="height:16px;border-radius:99px;margin-top:18px;overflow:hidden;background:{{ trackBg }}">
+      <div style="height:100%;border-radius:99px;background:{{ barFill }};box-shadow:{{ barGlow }};width:{{ cofreProgresso }};transform-origin:left;transition:width .6s cubic-bezier(.22,1,.36,1);animation:grow .6s ease both"></div>
+    </div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:11px">
+      <span style="font-size:12.5px;color:{{ muted }}">{{ cofrePercent }} da meta {{ cofreMeta }}</span>
+      <span style="font-size:13px;font-weight:600;color:{{ sageInk }}">{{ cofreMeses }}</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+    <button onClick="{{ abrirDeposito }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Depositar</button>
+    <button onClick="{{ abrirSaque }}" style="height:52px;border-radius:16px;cursor:pointer;font-size:15px;font-weight:600;background:{{ card }};border:1px solid {{ cardBorder }};color:{{ ink }}">Sacar</button>
+  </div>
+
+  <button onClick="{{ abrirConfigCofre }}" style="margin-top:10px;width:100%;height:46px;border-radius:15px;cursor:pointer;font-size:13.5px;background:none;border:1px dashed {{ chipBorder }};color:{{ muted }}">Ajustar meta e despesa mensal</button>
+
+  <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }};margin:22px 0 10px">Histórico de aportes</div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ depositos }}" as="d" hint-placeholder-count="3">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }}">
+        <span style="width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;background:{{ d.chip }};color:{{ d.cor }}">{{ d.sinal }}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14.5px">{{ d.titulo }}</div>
+          <div style="font-size:11.5px;color:{{ muted }};margin-top:1px">{{ d.meta }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+          <span style="font-size:14.5px;font-weight:500;color:{{ d.cor }}">{{ d.valorFmt }}</span>
+          <button onClick="{{ d.excluir }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:11px;color:{{ muted }}">excluir</button>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{ semDepositos }}">
+      <div style="padding:34px 16px;border-radius:18px;border:1px dashed {{ chipBorder }};text-align:center;font-size:13.5px;color:{{ muted }}">Nenhum aporte ainda. O primeiro depósito começa a contar os meses de reserva.</div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ cofreSemConfig }}">
+  <div style="margin-top:18px;padding:22px;border-radius:24px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};display:flex;flex-direction:column;gap:16px">
+    <div>
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">Vamos montar a reserva</div>
+      <div style="font-size:13.5px;color:{{ muted }};margin-top:6px;line-height:1.55">Diga quanto a casa gasta por mês e qual valor vocês querem ter guardado.</div>
+    </div>
+    <label style="display:flex;flex-direction:column;gap:7px">
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:{{ muted }}">Despesa mensal média</span>
+      <input value="{{ cDespesa }}" onChange="{{ setCDespesa }}" placeholder="7.000" style="{{ inputStyle }}" />
+    </label>
+    <label style="display:flex;flex-direction:column;gap:7px">
+      <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:{{ muted }}">Meta de reserva</span>
+      <input value="{{ cMeta }}" onChange="{{ setCMeta }}" placeholder="42.000" style="{{ inputStyle }}" />
+    </label>
+    <sc-if value="{{ cofreErro }}">
+      <div style="{{ erroStyle }}">{{ cofreErro }}</div>
+    </sc-if>
+    <button onClick="{{ salvarConfigCofre }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Salvar</button>
+  </div>
+  </sc-if>
+  <div style="height:96px"></div>
+  </sc-if>
+
+  <sc-if value="{{ ehContas }}">
+  <div style="margin-top:16px;padding:20px;border-radius:22px;background:{{ heroBg }};border:1px solid {{ heroBorder }};box-shadow:{{ heroShadow }}">
+    <div style="font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">Total nas contas</div>
+    <div style="font-size:30px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:{{ heroInk }}">{{ saldoTotal }}</div>
+  </div>
+
+  <button onClick="{{ conectarBanco }}" style="margin-top:12px;width:100%;height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">{{ conectarLabel }}</button>
+  <div style="text-align:center;font-size:11.5px;color:{{ muted }};margin-top:8px">Ambiente sandbox — conectores de teste do Pluggy</div>
+  <sc-if value="{{ avisoBanco }}">
+    <div style="margin-top:12px;padding:11px 13px;border-radius:14px;background:{{ chipBg }};border:1px solid {{ chipBorder }};font-size:13px;color:{{ accent }}">{{ avisoBanco }}</div>
+  </sc-if>
+
+  <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }};margin:22px 0 10px">Conectadas</div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ contas }}" as="a" hint-placeholder-count="3">
+      <div style="padding:15px;border-radius:18px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }};display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div style="min-width:0">
+            <div style="font-size:15px">{{ a.banco }}</div>
+            <div style="font-size:11.5px;color:{{ muted }};margin-top:1px">{{ a.tipo }} · BRL</div>
+          </div>
+          <span style="font-size:14.5px;font-weight:500">{{ a.saldoFmt }}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:{{ muted }}">open finance</span>
+          <button onClick="{{ a.sincronizar }}" style="height:36px;padding:0 13px;border-radius:12px;cursor:pointer;font-size:12.5px;background:{{ chipBg }};border:1px solid {{ chipBorder }};color:{{ accent }}">{{ a.syncLabel }}</button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="height:96px"></div>
+  </sc-if>
+
+  <sc-if value="{{ ehCategorias }}">
+  <button onClick="{{ irAjustes }}" style="margin-top:14px;background:none;border:none;padding:0;cursor:pointer;font-size:13.5px;color:{{ muted }}">← Ajustes</button>
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">{{ catContagem }}</div>
+    <button onClick="{{ abrirNovaCategoria }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:12.5px;color:{{ accent }}">+ nova</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ categorias }}" as="c" hint-placeholder-count="3">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }}">
+        <span style="width:36px;height:36px;border-radius:13px;flex:none;background:{{ c.chip }};border:1px solid {{ c.borda }}"></span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px">{{ c.nome }}</div>
+          <div style="font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:{{ muted }};margin-top:2px">{{ c.tipo }}</div>
+        </div>
+        <button onClick="{{ c.excluir }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:11.5px;color:{{ muted }}">excluir</button>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:{{ muted }}">{{ regraContagem }}</div>
+    <button onClick="{{ novaRegra }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:12.5px;color:{{ accent }}">+ nova regra</button>
+  </div>
+  <div style="font-size:12.5px;color:{{ muted }};line-height:1.55;margin-bottom:10px">Se a descrição contém o texto da regra, a categoria é aplicada sozinha ao importar do banco.</div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ regras }}" as="r" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:16px;background:{{ card }};border:1px solid {{ cardBorder }};box-shadow:{{ cardShadow }}">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.padrao }}</div>
+          <div style="font-size:11.5px;color:{{ muted }};margin-top:3px">→ {{ r.categoria }}</div>
+        </div>
+        <button onClick="{{ r.excluir }}" style="background:none;border:none;padding:0;cursor:pointer;font-size:11.5px;color:{{ muted }}">excluir</button>
+      </div>
+    </sc-for>
+  </div>
+  <button onClick="{{ reaplicarRegras }}" style="margin-top:12px;width:100%;height:48px;border-radius:16px;cursor:pointer;font-size:14px;background:{{ card }};border:1px solid {{ cardBorder }};color:{{ ink }}">Reaplicar nas sem categoria</button>
+  <sc-if value="{{ avisoRegras }}">
+    <div style="margin-top:10px;padding:11px 13px;border-radius:14px;background:{{ chipBg }};border:1px solid {{ chipBorder }};font-size:13px;color:{{ accent }}">{{ avisoRegras }}</div>
+  </sc-if>
+  <div style="height:96px"></div>
+  </sc-if>
+
+  <sc-if value="{{ ehAjustes }}">
+  <div style="margin-top:18px;display:flex;flex-direction:column;gap:26px">
+
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:56px;height:56px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;background:{{ accent }};color:{{ onAccent }}">{{ minhaInicial }}</div>
+      <div style="min-width:0">
+        <div style="font-size:18px;font-weight:600">{{ meuNome }}</div>
+        <div style="font-size:12.5px;color:{{ muted }};margin-top:2px">{{ meuEmail }} · {{ papelLabel }}</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="{{ grupoLabel }}">Perfil</div>
+      <div style="{{ grupoStyle }}">
+        <div style="{{ rowStyle }}">
+          <span style="font-size:14.5px;flex:none">Nome</span>
+          <input value="{{ meuNome }}" onChange="{{ setMeuNome }}" style="{{ rowInputStyle }}" />
+        </div>
+        <div style="{{ rowTop }}">
+          <span style="font-size:14.5px;flex:1">Papel na casa</span>
+          <div style="display:flex;gap:6px;padding:3px;border-radius:12px;background:{{ trackBg }}">
+            <button onClick="{{ setPai }}" style="{{ paiStyle }}">Pai</button>
+            <button onClick="{{ setMae }}" style="{{ maeStyle }}">Mãe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="{{ grupoLabel }}">Casa dos Almeida</div>
+      <div style="{{ grupoStyle }}">
+        <div style="{{ rowStyle }}">
+          <span style="flex:1;min-width:0">
+            <span style="display:block;font-size:14.5px">Código de convite</span>
+            <span style="display:block;font-size:11.5px;color:{{ muted }};margin-top:2px">para quem mora com você</span>
+          </span>
+          <span style="font-size:16px;font-weight:700;letter-spacing:.12em;color:{{ accent }}">K7M2QP</span>
+          <button onClick="{{ copiarConvite }}" style="height:34px;padding:0 12px;border-radius:11px;cursor:pointer;font-size:12.5px;font-weight:600;border:1px solid {{ chipBorder }};background:{{ chipBg }};color:{{ accent }}">{{ copiarLabel }}</button>
+        </div>
+        <sc-for list="{{ membros }}" as="m" hint-placeholder-count="2">
+          <div style="{{ rowTop }}">
+            <div style="width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:{{ m.cor }};color:{{ m.onCor }}">{{ m.inicial }}</div>
+            <span style="flex:1;font-size:14.5px;color:{{ ink }}">{{ m.nome }}</span>
+            <span style="font-size:12.5px;color:{{ muted }}">{{ m.papel }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="{{ grupoLabel }}">Aparência</div>
+      <div style="{{ grupoStyle }}">
+        <button onClick="{{ setEscuro }}" style="{{ temaEscuroStyle }}">
+          <span style="width:28px;height:28px;border-radius:50%;flex:none;background:#1c1512;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center"><span style="width:12px;height:12px;border-radius:50%;background:#f0a06a"></span></span>
+          <span style="flex:1;text-align:left;font-size:14.5px">Noite acolhedora</span>
+          <span style="font-size:12px;color:{{ escuroMarca }}">●</span>
+        </button>
+        <button onClick="{{ setClaro }}" style="{{ temaClaroStyle }}">
+          <span style="width:28px;height:28px;border-radius:50%;flex:none;background:#faf6ef;border:1px solid rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center"><span style="width:12px;height:12px;border-radius:50%;background:#c05f3c"></span></span>
+          <span style="flex:1;text-align:left;font-size:14.5px">Caderno de cozinha</span>
+          <span style="font-size:12px;color:{{ claroMarca }}">●</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div style="{{ grupoLabel }}">Organização</div>
+      <div style="{{ grupoStyle }}">
+        <sc-for list="{{ atalhos }}" as="a" hint-placeholder-count="4">
+          <button onClick="{{ a.ir }}" style="{{ a.estilo }}">
+            <span style="flex:1;text-align:left">
+              <span style="display:block;font-size:14.5px">{{ a.titulo }}</span>
+              <span style="display:block;font-size:11.5px;margin-top:2px;color:{{ muted }}">{{ a.detalhe }}</span>
+            </span>
+            <span style="color:{{ muted }};font-size:17px">›</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+
+    <button onClick="{{ sair }}" style="height:52px;border-radius:18px;cursor:pointer;font-size:15px;background:{{ card }};border:1px solid {{ cardBorder }};color:{{ ink }}">Sair desta conta</button>
+    <div style="text-align:center;font-size:11.5px;color:{{ muted }}">Casa · dados de sandbox · v0.1</div>
+    <div style="height:76px"></div>
+  </div>
+  </sc-if>
+
+</div>
+
+<div style="position:absolute;left:16px;right:16px;bottom:26px;display:flex;align-items:center;gap:4px;padding:7px;border-radius:26px;background:{{ tabBg }};border:1px solid {{ tabBorder }};box-shadow:{{ tabShadow }};backdrop-filter:blur(12px);transition:all .45s ease">
+  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+    <button onClick="{{ t.ir }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0;border:none;cursor:pointer;border-radius:19px;font-size:10.5px;background:{{ t.bg }};color:{{ t.cor }};font-weight:{{ t.peso }}"><span style="font-size:16px;line-height:1">{{ t.glifo }}</span>{{ t.label }}</button>
+  </sc-for>
+</div>
+
+<sc-if value="{{ mostrarFab }}">
+  <button onClick="{{ abrirNovaTx }}" style="position:absolute;right:20px;bottom:104px;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;font-size:26px;line-height:1;background:{{ accent }};color:{{ onAccent }};box-shadow:0 10px 26px rgba(0,0,0,.35)">+</button>
+</sc-if>
+
+<sc-if value="{{ txModal }}">
+<div style="position:absolute;inset:0;z-index:60;display:flex;align-items:flex-end">
+  <div onClick="{{ fecharNovaTx }}" style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:99px;background:{{ trackBg }};margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">Nova transação</div>
+      <button onClick="{{ fecharNovaTx }}" style="background:none;border:none;cursor:pointer;font-size:15px;color:{{ muted }}">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:15px;border:1px solid {{ cardBorder }}">
+      <button onClick="{{ pickSaida }}" style="{{ saidaStyle }}">Saída</button>
+      <button onClick="{{ pickEntrada }}" style="{{ entradaStyle }}">Entrada</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px;margin-top:15px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Descrição</span>
+        <input value="{{ nDesc }}" onChange="{{ setNDesc }}" placeholder="Material escolar" style="{{ inputStyle }}" />
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Valor</span>
+          <input value="{{ nValor }}" onChange="{{ setNValor }}" placeholder="0,00" style="{{ inputStyle }}" />
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Data</span>
+          <input type="date" value="{{ nData }}" onChange="{{ setNData }}" style="{{ inputStyle }}" />
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Categoria</span>
+        <select value="{{ nCategoria }}" onChange="{{ setNCategoria }}" style="{{ inputStyle }}">
+          <option value="">Sem categoria</option>
+          <sc-for list="{{ nomesCategorias }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+        </select>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Autor</span>
+          <select value="{{ nAutor }}" onChange="{{ setNAutor }}" style="{{ inputStyle }}">
+            <option value="mae">Mãe</option>
+            <option value="pai">Pai</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Conta</span>
+          <select value="{{ nConta }}" onChange="{{ setNConta }}" style="{{ inputStyle }}">
+            <sc-for list="{{ nomesContas }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+            <option value="">Nenhuma</option>
+          </select>
+        </label>
+      </div>
+      <sc-if value="{{ txErro }}"><div style="{{ erroStyle }}">{{ txErro }}</div></sc-if>
+      <button onClick="{{ salvarTx }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Salvar transação</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ depModal }}">
+<div style="position:absolute;inset:0;z-index:60;display:flex;align-items:flex-end">
+  <div onClick="{{ fecharDep }}" style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:99px;background:{{ trackBg }};margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">{{ depTitulo }}</div>
+      <button onClick="{{ fecharDep }}" style="background:none;border:none;cursor:pointer;font-size:15px;color:{{ muted }}">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Valor</span>
+        <input value="{{ dValor }}" onChange="{{ setDValor }}" placeholder="0,00" style="{{ inputStyle }}" />
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Data</span>
+          <input type="date" value="{{ dData }}" onChange="{{ setDData }}" style="{{ inputStyle }}" />
+        </label>
+        <label style="display:flex;flex-direction:column;gap:7px">
+          <span style="{{ labelStyle }}">Autor</span>
+          <select value="{{ dAutor }}" onChange="{{ setDAutor }}" style="{{ inputStyle }}">
+            <option value="mae">Mãe</option>
+            <option value="pai">Pai</option>
+          </select>
+        </label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Nota</span>
+        <input value="{{ dNota }}" onChange="{{ setDNota }}" placeholder="13º salário" style="{{ inputStyle }}" />
+      </label>
+      <sc-if value="{{ depErro }}"><div style="{{ erroStyle }}">{{ depErro }}</div></sc-if>
+      <button onClick="{{ salvarDep }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ depBtnBg }};color:{{ depBtnInk }}">{{ depBtnLabel }}</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ cofreModal }}">
+<div style="position:absolute;inset:0;z-index:60;display:flex;align-items:flex-end">
+  <div onClick="{{ fecharConfigCofre }}" style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:99px;background:{{ trackBg }};margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">Meta da reserva</div>
+      <button onClick="{{ fecharConfigCofre }}" style="background:none;border:none;cursor:pointer;font-size:15px;color:{{ muted }}">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Despesa mensal média</span>
+        <input value="{{ cDespesa }}" onChange="{{ setCDespesa }}" style="{{ inputStyle }}" />
+      </label>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Meta de reserva</span>
+        <input value="{{ cMeta }}" onChange="{{ setCMeta }}" style="{{ inputStyle }}" />
+      </label>
+      <sc-if value="{{ cofreErro }}"><div style="{{ erroStyle }}">{{ cofreErro }}</div></sc-if>
+      <button onClick="{{ salvarConfigCofre }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Salvar</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ regraModal }}">
+<div style="position:absolute;inset:0;z-index:70;display:flex;align-items:flex-end">
+  <div onClick="{{ fecharRegra }}" style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:99px;background:{{ trackBg }};margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">Criar regra</div>
+      <button onClick="{{ fecharRegra }}" style="background:none;border:none;cursor:pointer;font-size:15px;color:{{ muted }}">✕</button>
+    </div>
+    <sc-if value="{{ regraOrigem }}">
+      <div style="font-size:13px;color:{{ muted }};margin-bottom:13px">A partir de <span style="color:{{ ink }}">{{ regraOrigem }}</span></div>
+    </sc-if>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Se a descrição contém</span>
+        <input value="{{ rPadrao }}" onChange="{{ setRPadrao }}" placeholder="MENSALIDADE" style="{{ inputStyle }}" />
+      </label>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Categoria</span>
+        <select value="{{ rCategoria }}" onChange="{{ setRCategoria }}" style="{{ inputStyle }}">
+          <sc-for list="{{ nomesCategorias }}" as="c" hint-placeholder-count="3"><option value="{{ c }}">{{ c }}</option></sc-for>
+        </select>
+      </label>
+      <sc-if value="{{ regraErro }}"><div style="{{ erroStyle }}">{{ regraErro }}</div></sc-if>
+      <button onClick="{{ salvarRegra }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Criar regra</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ catModal }}">
+<div style="position:absolute;inset:0;z-index:70;display:flex;align-items:flex-end">
+  <div onClick="{{ fecharCategoria }}" style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px)"></div>
+  <div style="{{ sheetStyle }}">
+    <div style="width:38px;height:4px;border-radius:99px;background:{{ trackBg }};margin:0 auto 14px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:19px;font-weight:600;font-family:{{ titleFont }}">Nova categoria</div>
+      <button onClick="{{ fecharCategoria }}" style="background:none;border:none;cursor:pointer;font-size:15px;color:{{ muted }}">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px">
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Nome</span>
+        <input value="{{ catNome }}" onChange="{{ setCatNome }}" placeholder="Mercado" style="{{ inputStyle }}" />
+      </label>
+      <label style="display:flex;flex-direction:column;gap:7px">
+        <span style="{{ labelStyle }}">Tipo</span>
+        <select value="{{ catTipo }}" onChange="{{ setCatTipo }}" style="{{ inputStyle }}">
+          <option value="escola">escola</option>
+          <option value="emergencia">emergência</option>
+          <option value="geral">geral</option>
+          <option value="livre">livre</option>
+        </select>
+      </label>
+      <div>
+        <div style="{{ labelStyle }};margin-bottom:9px">Cor</div>
+        <div style="display:flex;gap:10px">
+          <sc-for list="{{ opcoesCor }}" as="o" hint-placeholder-count="5">
+            <button onClick="{{ o.escolher }}" style="width:36px;height:36px;border-radius:50%;cursor:pointer;background:{{ o.cor }};border:2px solid {{ o.borda }}"></button>
+          </sc-for>
+        </div>
+      </div>
+      <sc-if value="{{ catErro }}"><div style="{{ erroStyle }}">{{ catErro }}</div></sc-if>
+      <button onClick="{{ salvarCategoria }}" style="height:52px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:600;background:{{ accent }};color:{{ onAccent }}">Criar categoria</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+</div>
+<div style="font-size:12.5px;color:{{ legendInk }}">Protótipo completo · todas as telas e ações funcionam com dados locais</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;temaInicial&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;escuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;escuro&quot;,&quot;tsType&quot;:&quot;'escuro' | 'claro'&quot;,&quot;section&quot;:&quot;Tema&quot;}}">
+const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const HOJE = '2026-08-13';
+
+const TEMAS = {
+  claro: {
+    nome: 'Caderno de cozinha — creme e terracota',
+    pageBg: '#e6ded1', bezel: 'linear-gradient(160deg,#efe7da,#c9bfae 45%,#e3dacb)',
+    bg: '#faf6ef', ink: '#2e2a24', muted: '#8a7f6d', legendInk: '#6f6653',
+    accent: '#c05f3c', onAccent: '#ffffff', sage: '#6b7a53', onSage: '#ffffff', sageInk: '#5c6b46',
+    alerta: '#a8546a', alertaBg: '#f7e7ea',
+    titleFont: "'Instrument Serif',Georgia,serif",
+    heroBg: '#fffdf9', heroBorder: 'rgba(46,42,36,.07)', heroShadow: '0 1px 2px rgba(46,42,36,.06),0 12px 28px rgba(46,42,36,.07)', heroInk: '#2e2a24',
+    card: '#fffdf9', cardBorder: 'rgba(46,42,36,.08)', cardShadow: '0 1px 2px rgba(46,42,36,.05)',
+    trackBg: '#e4d9c6', barFill: 'linear-gradient(90deg,#d98a5f,#c05f3c)', barGlow: 'none',
+    chipBg: '#f3e3d5', chipBorder: 'rgba(192,95,60,.28)',
+    tabBg: '#fffdf9', tabBorder: 'rgba(46,42,36,.06)', tabShadow: '0 6px 22px rgba(46,42,36,.14)',
+    tabOff: '#a89c88', tabOnBg: '#f3e3d5',
+    cores: { Escola: '#c05f3c', 'Emergência': '#a8546a', Casa: '#5c6b46', Mercado: '#8a6b3f', Lazer: '#5f7f8c' },
+  },
+  escuro: {
+    nome: 'Noite acolhedora — marrom quente e pêssego',
+    pageBg: '#3a2c26', bezel: 'linear-gradient(160deg,#6b564c,#241a16 45%,#54423a)',
+    bg: '#1c1512', ink: '#f5ece3', muted: '#a4907f', legendInk: '#c4b2a4',
+    accent: '#f0a06a', onAccent: '#2b1c15', sage: '#9db89a', onSage: '#1e2b1e', sageInk: '#9db89a',
+    alerta: '#e292a6', alertaBg: 'rgba(226,146,166,.12)',
+    titleFont: "'Bricolage Grotesque',system-ui,sans-serif",
+    heroBg: 'linear-gradient(155deg,#33241d,#241a16)', heroBorder: 'rgba(240,160,106,.22)', heroShadow: 'none', heroInk: '#f7b98c',
+    card: '#291e19', cardBorder: 'rgba(245,236,227,.08)', cardShadow: 'none',
+    trackBg: 'rgba(245,236,227,.09)', barFill: 'linear-gradient(90deg,#f0a06a,#e0794a)', barGlow: '0 0 16px rgba(240,160,106,.45)',
+    chipBg: 'rgba(240,160,106,.14)', chipBorder: 'rgba(240,160,106,.3)',
+    tabBg: 'rgba(48,35,29,.96)', tabBorder: 'rgba(245,236,227,.1)', tabShadow: 'none',
+    tabOff: '#8d7969', tabOnBg: 'rgba(240,160,106,.18)',
+    cores: { Escola: '#f0a06a', 'Emergência': '#e292a6', Casa: '#9db89a', Mercado: '#d9b382', Lazer: '#8fb3c4' },
+  },
+};
+
+const PALETA = ['#c05f3c', '#a8546a', '#5c6b46', '#8a6b3f', '#5f7f8c'];
+
+class Component extends DCLogic {
+  state = {
+    tema: this.props.temaInicial === 'claro' ? 'claro' : 'escuro',
+    tab: 'inicio', mes: '2026-08',
+    meuNome: 'Marina', papel: 'mae', copiado: false,
+
+    contas: [
+      { id: 'c1', banco: 'Nubank', tipo: 'Conta corrente', saldo: 9240.18 },
+      { id: 'c2', banco: 'Itaú', tipo: 'Conta conjunta', saldo: 12980.44 },
+      { id: 'c3', banco: 'Caixa', tipo: 'Poupança', saldo: 6197 },
+    ],
+    sincronizando: null, avisoBanco: '', conectando: false,
+
+    categorias: [
+      { id: 'k1', nome: 'Escola', tipo: 'escola', cor: '#c05f3c' },
+      { id: 'k2', nome: 'Emergência', tipo: 'emergencia', cor: '#a8546a' },
+      { id: 'k3', nome: 'Casa', tipo: 'geral', cor: '#5c6b46' },
+    ],
+    regras: [
+      { id: 'r1', padrao: 'MENSALIDADE', categoria: 'Escola' },
+      { id: 'r2', padrao: 'ESCOLA', categoria: 'Escola' },
+      { id: 'r3', padrao: 'RESERVA', categoria: 'Emergência' },
+      { id: 'r4', padrao: 'SUPERMERCADO', categoria: 'Casa' },
+      { id: 'r5', padrao: 'ENERGIA', categoria: 'Casa' },
+    ],
+    avisoRegras: '',
+
+    txs: [
+      { id: 1, descricao: 'Mensalidade escola — Théo', valor: -1480, data: '2026-08-05', categoria: 'Escola', autor: 'mae', conta: 'Nubank', auto: true },
+      { id: 2, descricao: 'Aporte mensal', valor: 2200, data: '2026-08-02', categoria: '', autor: 'mae', conta: 'Caixa', auto: false },
+      { id: 3, descricao: 'Supermercado Pão de Açúcar', valor: -742.9, data: '2026-08-08', categoria: 'Casa', autor: 'pai', conta: 'Itaú', auto: true },
+      { id: 4, descricao: 'Uniforme e material', valor: -389.5, data: '2026-08-09', categoria: 'Escola', autor: 'mae', conta: 'Nubank', auto: false },
+      { id: 5, descricao: 'Conta de luz', valor: -318.4, data: '2026-08-11', categoria: 'Casa', autor: 'pai', conta: 'Caixa', auto: true },
+      { id: 6, descricao: 'Aporte extra 13º', valor: 1500, data: '2026-08-12', categoria: 'Emergência', autor: 'pai', conta: 'Itaú', auto: false },
+      { id: 7, descricao: 'Salário Tiago', valor: 2400, data: '2026-08-05', categoria: '', autor: 'pai', conta: 'Itaú', auto: false },
+    ],
+    fConta: '', fCategoria: '', fAutor: '',
+
+    depositos: [
+      { id: 'd1', valor: 900, tipo: 'deposito', data: '2026-08-05', nota: 'Aporte do mês', autor: 'pai' },
+      { id: 'd2', valor: 1500, tipo: 'deposito', data: '2026-08-12', nota: '13º salário', autor: 'pai' },
+      { id: 'd3', valor: 17340, tipo: 'deposito', data: '2026-07-02', nota: 'Saldo acumulado', autor: 'mae' },
+    ],
+    meta: 42000, despesa: 7000, cofreOk: true,
+    cDespesa: '7.000', cMeta: '42.000', cofreErro: '', cofreModal: false,
+
+    txModal: false, saida: true, txErro: '',
+    nDesc: '', nValor: '', nData: HOJE, nCategoria: 'Escola', nAutor: 'mae', nConta: 'Nubank',
+
+    depModal: false, depTipo: 'deposito', dValor: '', dData: HOJE, dNota: '', dAutor: 'mae', depErro: '',
+    regraModal: false, regraOrigem: '', rPadrao: '', rCategoria: 'Escola', regraErro: '',
+    catModal: false, catNome: '', catTipo: 'geral', catCor: PALETA[0], catErro: '',
+  };
+
+  norm(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  num(s) { const n = Number(String(s).replace(/\./g, '').replace(',', '.')); return isFinite(n) ? n : NaN; }
+  mesLabel(m) { return MESES[Number(m.slice(5, 7)) - 1] + ' de ' + m.slice(0, 4); }
+  dia(iso) { return iso.slice(8) + ' ' + MESES[Number(iso.slice(5, 7)) - 1].slice(0, 3); }
+  papelLabel(p) { return p === 'mae' ? 'Mãe' : 'Pai'; }
+  shift(d) {
+    const [y, m] = this.state.mes.split('-').map(Number);
+    const dt = new Date(y, m - 1 + d, 1);
+    return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0');
+  }
+  corDe(t, nome) { return t.cores[nome] || t.muted; }
+  autoCategoria(descricao) {
+    const alvo = this.norm(descricao);
+    const r = this.state.regras.slice().sort((a, b) => b.padrao.length - a.padrao.length)
+      .find((x) => alvo.includes(this.norm(x.padrao)));
+    return r ? r.categoria : '';
+  }
+
+  renderVals() {
+    const s = this.state;
+    const t = TEMAS[s.tema];
+    const escuro = s.tema === 'escuro';
+    const nomesCategorias = s.categorias.map((c) => c.nome);
+    const nomesContas = s.contas.map((c) => c.banco);
+
+    const inputStyle = 'height:50px;padding:0 14px;border-radius:14px;border:1px solid ' + t.cardBorder +
+      ';background:' + t.bg + ';color:' + t.ink + ';font-size:15px;outline:none;box-sizing:border-box;width:100%;color-scheme:' + (escuro ? 'dark' : 'light') + ';';
+    const labelStyle = 'font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:' + t.muted;
+    const erroStyle = 'padding:10px 12px;border-radius:13px;background:' + t.alertaBg + ';border:1px solid ' + t.alerta + '44;color:' + t.alerta + ';font-size:13px';
+    const sheetStyle = 'position:relative;width:100%;box-sizing:border-box;max-height:90%;overflow:auto;padding:16px 20px 34px;' +
+      'border-radius:28px 28px 0 0;background:' + t.card + ';border-top:1px solid ' + t.cardBorder + ';color:' + t.ink +
+      ';animation:sheetUp .28s cubic-bezier(.32,.72,0,1) both;';
+    const seg = (on, alerta) => 'height:42px;border-radius:12px;border:none;cursor:pointer;font-size:13.5px;font-weight:600;' +
+      (on ? ('background:' + (alerta ? t.alertaBg : t.chipBg) + ';color:' + (alerta ? t.alerta : t.accent) + ';')
+          : ('background:transparent;color:' + t.muted + ';'));
+    const segPapel = (on) => 'height:34px;padding:0 16px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;' + (on
+      ? 'background:' + t.card + ';color:' + t.accent + ';box-shadow:0 1px 3px rgba(0,0,0,.2);'
+      : 'background:transparent;color:' + t.muted + ';');
+    const grupoStyle = 'border-radius:18px;overflow:hidden;background:' + t.card + ';border:1px solid ' + t.cardBorder + ';box-shadow:' + t.cardShadow + ';';
+    const grupoLabel = 'font-size:11px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:' + t.muted + ';margin:0 4px 8px;';
+    const rowStyle = 'display:flex;align-items:center;gap:11px;min-height:56px;padding:10px 16px;box-sizing:border-box;';
+    const rowInputStyle = 'flex:1;height:38px;padding:0 12px;border-radius:10px;text-align:right;border:1px solid ' + t.cardBorder +
+      ';background:' + t.bg + ';color:' + t.ink + ';font-size:14.5px;outline:none;min-width:0;';
+    const rowTop = rowStyle + 'border-top:1px solid ' + t.cardBorder + ';';
+    const temaCard = (on, topo) => rowStyle + 'width:100%;border:none;cursor:pointer;background:' + (on ? t.chipBg : 'transparent') + ';color:' + t.ink + ';' + (topo ? 'border-top:1px solid ' + t.cardBorder + ';' : '');
+
+    // ----- dados derivados -----
+    const saldoTotal = s.contas.reduce((a, c) => a + c.saldo, 0);
+    const doMes = s.txs.filter((x) => x.data.slice(0, 7) === s.mes);
+    const somaCat = (nome) => doMes.filter((x) => x.categoria === nome).reduce((a, x) => a + Math.abs(x.valor), 0);
+    const porAutor = (autor) => {
+      const mine = doMes.filter((x) => x.autor === autor);
+      return {
+        aporte: mine.filter((x) => x.valor > 0).reduce((a, x) => a + x.valor, 0),
+        gasto: mine.filter((x) => x.valor < 0).reduce((a, x) => a + Math.abs(x.valor), 0),
+      };
+    };
+    const pai = porAutor('pai'), mae = porAutor('mae');
+    const maxA = Math.max(1, pai.aporte, mae.aporte), maxG = Math.max(1, pai.gasto, mae.gasto);
+    const linhaPessoa = (nome, papel, v) => ({
+      nome, papel,
+      aporte: BRL.format(v.aporte), gasto: BRL.format(v.gasto),
+      aporteW: Math.round((v.aporte / maxA) * 100) + '%', gastoW: Math.round((v.gasto / maxG) * 100) + '%',
+    });
+
+    const linha = (x) => ({
+      ...x,
+      cor: this.corDe(t, x.categoria), chip: this.corDe(t, x.categoria) + '2e',
+      meta: this.dia(x.data) + ' · ' + (x.categoria || 'Sem categoria') + ' · ' + this.papelLabel(x.autor),
+      valorFmt: (x.valor < 0 ? '-' : '') + BRL.format(Math.abs(x.valor)),
+      valorCor: x.valor < 0 ? t.alerta : t.accent,
+      autoLabel: x.auto ? 'regra aplicada' : '',
+      setCategoria: (e) => this.setState({ txs: s.txs.map((y) => y.id === x.id ? { ...y, categoria: e.target.value, auto: false } : y) }),
+      excluir: () => this.setState({ txs: s.txs.filter((y) => y.id !== x.id) }),
+      criarRegra: () => this.setState({
+        regraModal: true, regraOrigem: x.descricao, regraErro: '',
+        rCategoria: x.categoria || nomesCategorias[0] || '',
+        rPadrao: x.descricao.replace(/[0-9]{2,}/g, ' ').replace(/[^\p{L}\s]/gu, ' ').split(/\s+/).filter((w) => w.length > 2).slice(0, 2).join(' ').toUpperCase().trim(),
+      }),
+    });
+
+    const filtradas = doMes.filter((x) =>
+      (!s.fConta || x.conta === s.fConta) &&
+      (!s.fCategoria || (s.fCategoria === 'none' ? !x.categoria : x.categoria === s.fCategoria)) &&
+      (!s.fAutor || x.autor === s.fAutor)
+    ).sort((a, b) => b.data.localeCompare(a.data));
+    const nFiltros = [s.fConta, s.fCategoria, s.fAutor].filter(Boolean).length;
+    const totalFiltrado = filtradas.reduce((a, x) => a + x.valor, 0);
+
+    const cofreSaldo = s.depositos.reduce((a, d) => a + (d.tipo === 'saque' ? -d.valor : d.valor), 0);
+    const progresso = s.meta > 0 ? Math.min(100, (cofreSaldo / s.meta) * 100) : 0;
+    const meses = s.despesa > 0 ? cofreSaldo / s.despesa : 0;
+
+    const titulos = { inicio: 'Casa dos Almeida', gastos: 'Transações', cofrinho: 'Cofrinho', contas: 'Contas', ajustes: 'Configurações', categorias: 'Categorias e regras' };
+    const kickers = {
+      inicio: this.mesLabel(s.mes), gastos: 'todos os lançamentos', cofrinho: 'reserva de emergência',
+      contas: 'open finance · sandbox', ajustes: 'casa, pessoas e regras', categorias: 'como o app organiza',
+    };
+
+    const tab = (glifo, label, id) => ({
+      glifo, label, ir: () => this.setState({ tab: id }),
+      bg: s.tab === id ? t.tabOnBg : 'transparent',
+      cor: s.tab === id ? t.accent : t.tabOff,
+      peso: s.tab === id ? '500' : '400',
+    });
+
+    return {
+      // tema
+      ...t, isDark: escuro, temaIcone: escuro ? '☾' : '☀',
+      toggleTema: () => this.setState({ tema: escuro ? 'claro' : 'escuro' }),
+      setClaro: () => this.setState({ tema: 'claro' }), setEscuro: () => this.setState({ tema: 'escuro' }),
+      temaEscuroStyle: temaCard(escuro, false), temaClaroStyle: temaCard(!escuro, true),
+      escuroMarca: escuro ? t.accent : 'transparent', claroMarca: escuro ? 'transparent' : t.accent,
+      inputStyle, labelStyle, erroStyle, sheetStyle,
+      grupoStyle, grupoLabel, rowStyle, rowTop, rowInputStyle,
+      meuEmail: this.norm(s.meuNome || 'voce').replace(/\s+/g, '.') + '@gmail.com',
+      papelLabel: this.papelLabel(s.papel),
+      filtroStyle: 'height:42px;padding:0 10px;border-radius:13px;border:1px solid ' + t.cardBorder + ';background:' + t.card + ';color:' + t.ink + ';font-size:12.5px;outline:none;appearance:none;',
+      inlineSelectStyle: 'max-width:150px;height:28px;padding:0 8px;border-radius:9px;border:1px solid ' + t.cardBorder + ';background:' + t.bg + ';color:' + t.muted + ';font-size:11.5px;outline:none;appearance:none;',
+
+      // navegação
+      tituloTela: titulos[s.tab], kicker: kickers[s.tab],
+      ehInicio: s.tab === 'inicio', ehGastos: s.tab === 'gastos', ehCofrinho: s.tab === 'cofrinho',
+      ehContas: s.tab === 'contas', ehAjustes: s.tab === 'ajustes', ehCategorias: s.tab === 'categorias',
+      mostrarFab: s.tab === 'gastos' || s.tab === 'inicio',
+      irContas: () => this.setState({ tab: 'contas' }), irGastos: () => this.setState({ tab: 'gastos' }),
+      irAjustes: () => this.setState({ tab: 'ajustes' }),
+      tabs: [
+        tab('◉', 'Início', 'inicio'), tab('≡', 'Gastos', 'gastos'), tab('◈', 'Cofrinho', 'cofrinho'),
+        tab('▤', 'Contas', 'contas'), tab('⚙', 'Ajustes', 'ajustes'),
+      ],
+
+      // início
+      saldoTotal: BRL.format(saldoTotal),
+      contasLabel: s.contas.length + (s.contas.length === 1 ? ' conta conectada' : ' contas conectadas'),
+      baldes: [
+        { rotulo: 'Escola', valor: BRL.format(somaCat('Escola')), cor: this.corDe(t, 'Escola'), ver: () => this.setState({ tab: 'gastos', fCategoria: 'Escola' }) },
+        { rotulo: 'Emerg.', valor: BRL.format(somaCat('Emergência')), cor: this.corDe(t, 'Emergência'), ver: () => this.setState({ tab: 'gastos', fCategoria: 'Emergência' }) },
+        { rotulo: 'Casa', valor: BRL.format(somaCat('Casa')), cor: this.corDe(t, 'Casa'), ver: () => this.setState({ tab: 'gastos', fCategoria: 'Casa' }) },
+      ],
+      pessoas: [linhaPessoa('Tiago', 'Pai', pai), linhaPessoa(s.meuNome || 'Marina', 'Mãe', mae)],
+      recentes: doMes.slice().sort((a, b) => b.data.localeCompare(a.data)).slice(0, 5).map(linha),
+      semRecentes: doMes.length === 0,
+
+      // gastos
+      mesLabel: this.mesLabel(s.mes),
+      mesAnterior: () => this.setState({ mes: this.shift(-1) }), mesProximo: () => this.setState({ mes: this.shift(1) }),
+      fConta: s.fConta, fCategoria: s.fCategoria, fAutor: s.fAutor,
+      setFConta: (e) => this.setState({ fConta: e.target.value }),
+      setFCategoria: (e) => this.setState({ fCategoria: e.target.value }),
+      setFAutor: (e) => this.setState({ fAutor: e.target.value }),
+      temFiltros: nFiltros > 0, limparLabel: 'limpar ' + nFiltros + (nFiltros === 1 ? ' filtro' : ' filtros'),
+      limparFiltros: () => this.setState({ fConta: '', fCategoria: '', fAutor: '' }),
+      filtradas: filtradas.map(linha), semFiltradas: filtradas.length === 0,
+      contagemLabel: filtradas.length + (filtradas.length === 1 ? ' lançamento' : ' lançamentos'),
+      totalFmt: (totalFiltrado < 0 ? '-' : '') + BRL.format(Math.abs(totalFiltrado)),
+      totalCor: totalFiltrado < 0 ? t.alerta : t.accent,
+      nomesCategorias, nomesContas,
+
+      // modal transação
+      txModal: s.txModal, txErro: s.txErro,
+      abrirNovaTx: () => this.setState({ txModal: true, txErro: '', nDesc: '', nValor: '', nData: HOJE, nAutor: s.papel, saida: true }),
+      fecharNovaTx: () => this.setState({ txModal: false }),
+      saidaStyle: seg(s.saida, true), entradaStyle: seg(!s.saida, false),
+      pickSaida: () => this.setState({ saida: true }), pickEntrada: () => this.setState({ saida: false }),
+      nDesc: s.nDesc, nValor: s.nValor, nData: s.nData, nCategoria: s.nCategoria, nAutor: s.nAutor, nConta: s.nConta,
+      setNDesc: (e) => this.setState({ nDesc: e.target.value, txErro: '' }),
+      setNValor: (e) => this.setState({ nValor: e.target.value.replace(/[^\d.,]/g, ''), txErro: '' }),
+      setNData: (e) => this.setState({ nData: e.target.value }),
+      setNCategoria: (e) => this.setState({ nCategoria: e.target.value }),
+      setNAutor: (e) => this.setState({ nAutor: e.target.value }),
+      setNConta: (e) => this.setState({ nConta: e.target.value }),
+      salvarTx: () => {
+        const n = this.num(s.nValor);
+        if (!s.nDesc.trim()) return this.setState({ txErro: 'Descreva o lançamento.' });
+        if (!(n > 0)) return this.setState({ txErro: 'Informe um valor maior que zero.' });
+        const tx = {
+          id: Date.now(), descricao: s.nDesc.trim(), valor: s.saida ? -n : n,
+          data: s.nData, categoria: s.nCategoria, autor: s.nAutor, conta: s.nConta, auto: false,
+        };
+        this.setState({ txs: [tx, ...s.txs], txModal: false, mes: s.nData.slice(0, 7) });
+      },
+
+      // cofrinho
+      cofreConfigurado: s.cofreOk, cofreSemConfig: !s.cofreOk,
+      cofreSaldo: BRL.format(cofreSaldo), cofreMeta: BRL.format(s.meta),
+      cofreProgresso: progresso.toFixed(1) + '%',
+      cofrePercent: progresso.toFixed(0) + '%',
+      cofreMeses: meses.toFixed(1).replace('.', ',') + ' meses de reserva',
+      depositos: s.depositos.slice().sort((a, b) => b.data.localeCompare(a.data)).map((d) => ({
+        ...d,
+        sinal: d.tipo === 'saque' ? '−' : '+',
+        cor: d.tipo === 'saque' ? t.alerta : t.sageInk,
+        chip: (d.tipo === 'saque' ? t.alerta : t.sageInk) + '2a',
+        titulo: d.nota || (d.tipo === 'saque' ? 'Saque' : 'Depósito'),
+        meta: this.dia(d.data) + ' · ' + this.papelLabel(d.autor),
+        valorFmt: (d.tipo === 'saque' ? '-' : '+') + BRL.format(d.valor),
+        excluir: () => this.setState({ depositos: s.depositos.filter((x) => x.id !== d.id) }),
+      })),
+      semDepositos: s.depositos.length === 0,
+      abrirDeposito: () => this.setState({ depModal: true, depTipo: 'deposito', dValor: '', dNota: '', dData: HOJE, dAutor: s.papel, depErro: '' }),
+      abrirSaque: () => this.setState({ depModal: true, depTipo: 'saque', dValor: '', dNota: '', dData: HOJE, dAutor: s.papel, depErro: '' }),
+      depModal: s.depModal, depErro: s.depErro,
+      depTitulo: s.depTipo === 'saque' ? 'Sacar da reserva' : 'Depositar na reserva',
+      depBtnLabel: s.depTipo === 'saque' ? 'Registrar saque' : 'Registrar depósito',
+      depBtnBg: s.depTipo === 'saque' ? t.alerta : t.accent,
+      depBtnInk: s.depTipo === 'saque' ? t.bg : t.onAccent,
+      dValor: s.dValor, dData: s.dData, dNota: s.dNota, dAutor: s.dAutor,
+      setDValor: (e) => this.setState({ dValor: e.target.value.replace(/[^\d.,]/g, ''), depErro: '' }),
+      setDData: (e) => this.setState({ dData: e.target.value }),
+      setDNota: (e) => this.setState({ dNota: e.target.value }),
+      setDAutor: (e) => this.setState({ dAutor: e.target.value }),
+      fecharDep: () => this.setState({ depModal: false }),
+      salvarDep: () => {
+        const n = this.num(s.dValor);
+        if (!(n > 0)) return this.setState({ depErro: 'Informe um valor maior que zero.' });
+        if (s.depTipo === 'saque' && n > cofreSaldo) return this.setState({ depErro: 'A reserva tem só ' + BRL.format(cofreSaldo) + '.' });
+        const d = { id: 'd' + Date.now(), valor: n, tipo: s.depTipo, data: s.dData, nota: s.dNota.trim(), autor: s.dAutor };
+        this.setState({ depositos: [d, ...s.depositos], depModal: false });
+      },
+      cofreModal: s.cofreModal, cofreErro: s.cofreErro, cDespesa: s.cDespesa, cMeta: s.cMeta,
+      abrirConfigCofre: () => this.setState({ cofreModal: true, cofreErro: '' }),
+      fecharConfigCofre: () => this.setState({ cofreModal: false }),
+      setCDespesa: (e) => this.setState({ cDespesa: e.target.value.replace(/[^\d.,]/g, ''), cofreErro: '' }),
+      setCMeta: (e) => this.setState({ cMeta: e.target.value.replace(/[^\d.,]/g, ''), cofreErro: '' }),
+      salvarConfigCofre: () => {
+        const meta = this.num(s.cMeta), desp = this.num(s.cDespesa);
+        if (!(desp > 0)) return this.setState({ cofreErro: 'Informe a despesa mensal média.' });
+        if (!(meta > 0)) return this.setState({ cofreErro: 'Informe a meta de reserva.' });
+        this.setState({ meta, despesa: desp, cofreOk: true, cofreModal: false });
+      },
+
+      // contas
+      contas: s.contas.map((a) => ({
+        ...a, saldoFmt: BRL.format(a.saldo),
+        syncLabel: s.sincronizando === a.id ? 'Sincronizando…' : 'Sincronizar',
+        sincronizar: () => {
+          if (s.sincronizando) return;
+          this.setState({ sincronizando: a.id, avisoBanco: '' });
+          setTimeout(() => {
+            const base = [
+              { descricao: 'MENSALIDADE ESCOLA AGOSTO', valor: -1480 },
+              { descricao: 'SUPERMERCADO EXTRA', valor: -212.4 },
+              { descricao: 'ENERGIA ELETRICA', valor: -186.9 },
+            ];
+            const novas = base.map((b, i) => ({
+              id: Date.now() + i, descricao: b.descricao, valor: b.valor, data: HOJE,
+              categoria: this.autoCategoria(b.descricao), autor: null, conta: a.banco, auto: !!this.autoCategoria(b.descricao),
+            }));
+            const existentes = new Set(this.state.txs.map((x) => this.norm(x.descricao) + x.valor));
+            const inserir = novas.filter((x) => !existentes.has(this.norm(x.descricao) + x.valor));
+            this.setState({
+              sincronizando: null,
+              txs: [...inserir, ...this.state.txs],
+              avisoBanco: inserir.length ? inserir.length + ' lançamento(s) importado(s) de ' + a.banco + '.' : 'Nada novo em ' + a.banco + '.',
+            });
+          }, 850);
+        },
+      })),
+      conectarLabel: s.conectando ? 'Abrindo Pluggy…' : '+ Conectar banco',
+      avisoBanco: s.avisoBanco,
+      conectarBanco: () => {
+        if (s.conectando) return;
+        this.setState({ conectando: true, avisoBanco: '' });
+        setTimeout(() => {
+          const nova = { id: 'c' + Date.now(), banco: 'Banco Sandbox', tipo: 'Conta corrente', saldo: 1875.5 };
+          this.setState({ conectando: false, contas: [...this.state.contas, nova], avisoBanco: '1 conta importada do sandbox.' });
+        }, 1000);
+      },
+
+      // categorias e regras
+      catContagem: s.categorias.length + ' categorias',
+      categorias: s.categorias.map((c) => ({
+        ...c, chip: c.cor + '2e', borda: c.cor + '66',
+        excluir: () => this.setState({
+          categorias: s.categorias.filter((x) => x.id !== c.id),
+          txs: s.txs.map((x) => x.categoria === c.nome ? { ...x, categoria: '', auto: false } : x),
+          regras: s.regras.filter((r) => r.categoria !== c.nome),
+        }),
+      })),
+      catModal: s.catModal, catNome: s.catNome, catTipo: s.catTipo, catErro: s.catErro,
+      abrirNovaCategoria: () => this.setState({ catModal: true, catNome: '', catTipo: 'geral', catCor: PALETA[0], catErro: '' }),
+      fecharCategoria: () => this.setState({ catModal: false }),
+      setCatNome: (e) => this.setState({ catNome: e.target.value, catErro: '' }),
+      setCatTipo: (e) => this.setState({ catTipo: e.target.value }),
+      opcoesCor: PALETA.map((cor) => ({ cor, borda: s.catCor === cor ? t.ink : 'transparent', escolher: () => this.setState({ catCor: cor }) })),
+      salvarCategoria: () => {
+        const nome = s.catNome.trim();
+        if (!nome) return this.setState({ catErro: 'Dê um nome para a categoria.' });
+        if (s.categorias.some((c) => this.norm(c.nome) === this.norm(nome))) return this.setState({ catErro: 'Já existe uma categoria com esse nome.' });
+        this.setState({ categorias: [...s.categorias, { id: 'k' + Date.now(), nome, tipo: s.catTipo, cor: s.catCor }], catModal: false });
+      },
+
+      regraContagem: s.regras.length + ' regras',
+      regras: s.regras.map((r) => ({ ...r, excluir: () => this.setState({ regras: s.regras.filter((x) => x.id !== r.id) }) })),
+      regraModal: s.regraModal, regraOrigem: s.regraOrigem, regraErro: s.regraErro, rPadrao: s.rPadrao, rCategoria: s.rCategoria,
+      novaRegra: () => this.setState({ regraModal: true, regraOrigem: '', rPadrao: '', rCategoria: nomesCategorias[0] || '', regraErro: '' }),
+      fecharRegra: () => this.setState({ regraModal: false }),
+      setRPadrao: (e) => this.setState({ rPadrao: e.target.value.toUpperCase(), regraErro: '' }),
+      setRCategoria: (e) => this.setState({ rCategoria: e.target.value }),
+      salvarRegra: () => {
+        const p = s.rPadrao.trim();
+        if (!p) return this.setState({ regraErro: 'Informe o texto a procurar.' });
+        if (s.regras.some((r) => this.norm(r.padrao) === this.norm(p))) return this.setState({ regraErro: 'Já existe uma regra com esse texto.' });
+        const nova = { id: 'r' + Date.now(), padrao: p, categoria: s.rCategoria };
+        const txs = s.txs.map((x) => (!x.categoria && this.norm(x.descricao).includes(this.norm(p))) ? { ...x, categoria: nova.categoria, auto: true } : x);
+        this.setState({ regras: [nova, ...s.regras], txs, regraModal: false });
+      },
+      avisoRegras: s.avisoRegras,
+      reaplicarRegras: () => {
+        let n = 0;
+        const txs = s.txs.map((x) => {
+          if (x.categoria) return x;
+          const cat = this.autoCategoria(x.descricao);
+          if (!cat) return x;
+          n++;
+          return { ...x, categoria: cat, auto: true };
+        });
+        this.setState({ txs, avisoRegras: n ? n + ' transação(ões) categorizada(s).' : 'Nenhuma transação sem categoria casou com as regras.' });
+      },
+
+      // ajustes
+      meuNome: s.meuNome, minhaInicial: (s.meuNome || 'M').charAt(0).toUpperCase(),
+      setMeuNome: (e) => this.setState({ meuNome: e.target.value }),
+      paiStyle: segPapel(s.papel === 'pai'), maeStyle: segPapel(s.papel === 'mae'),
+      setPai: () => this.setState({ papel: 'pai' }), setMae: () => this.setState({ papel: 'mae' }),
+      copiarLabel: s.copiado ? 'Copiado' : 'Copiar',
+      copiarConvite: () => { try { navigator.clipboard.writeText('K7M2QP'); } catch (e) {} this.setState({ copiado: true }); },
+      membros: [
+        { nome: s.meuNome || 'Marina', papel: this.papelLabel(s.papel), inicial: (s.meuNome || 'M').charAt(0).toUpperCase(), cor: t.accent, onCor: t.onAccent },
+        { nome: 'Tiago', papel: s.papel === 'mae' ? 'Pai' : 'Mãe', inicial: 'T', cor: t.sage, onCor: t.onSage },
+      ],
+      atalhos: [
+        { titulo: 'Categorias e regras', detalhe: s.categorias.length + ' categorias · ' + s.regras.length + ' regras', ir: () => this.setState({ tab: 'categorias', avisoRegras: '' }) },
+        { titulo: 'Bancos e contas', detalhe: s.contas.length + ' conectadas · ' + BRL.format(saldoTotal), ir: () => this.setState({ tab: 'contas' }) },
+        { titulo: 'Meta da reserva', detalhe: BRL.format(s.meta) + ' · ' + meses.toFixed(1).replace('.', ',') + ' meses', ir: () => this.setState({ tab: 'cofrinho' }) },
+        { titulo: 'Todos os lançamentos', detalhe: s.txs.length + ' no total', ir: () => this.setState({ tab: 'gastos' }) },
+      ].map((a, i) => ({ ...a, estilo: rowStyle + 'width:100%;cursor:pointer;background:transparent;color:' + t.ink + ';border:none;' + (i ? 'border-top:1px solid ' + t.cardBorder + ';' : '') })),
+      sair: () => this.setState({ tab: 'inicio' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
