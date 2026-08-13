@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Screen } from '@/components/Screen';
 
 export default function Login() {
-  const { user, signInWithGoogle, signInWithPassword, signUpWithPassword } = useAuth();
+  const { user, signInWithPassword, signUpWithPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mode, setMode] = useState<'in' | 'up'>('in');
@@ -35,16 +35,7 @@ export default function Login() {
         <p className="text-center text-sm text-ink-muted">A rotina da família em um só lugar</p>
       </div>
 
-      <button type="button" onClick={() => signInWithGoogle()} className="btn-ghost flex items-center justify-center gap-2.5">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-base">G</span>
-        Continuar com Google
-      </button>
 
-      <div className="my-5 flex items-center gap-3">
-        <div className="h-px flex-1 bg-base-line" />
-        <span className="text-[11px] tracking-[0.12em] text-ink-faint">OU</span>
-        <div className="h-px flex-1 bg-base-line" />
-      </div>
 
       <form onSubmit={submit} className="flex flex-col gap-3">
         <input className="field" type="email" placeholder="e-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
