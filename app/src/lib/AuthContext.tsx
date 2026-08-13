@@ -11,6 +11,7 @@ export interface AuthValue {
   household: Household | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithApple: () => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
   signUpWithPassword: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -83,6 +84,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInWithGoogle: async () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: { redirectTo: window.location.origin },
+      });
+      if (error) throw error;
+    },
+    signInWithApple: async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
         options: { redirectTo: window.location.origin },
       });
       if (error) throw error;
