@@ -55,10 +55,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true;
-    supabase.auth.getSession().then(async ({ data }) => {
+    
+    // Força a tela de splash a ficar visível por no mínimo 2 segundos para tocar a animação
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
+    
+    const authFetch = supabase.auth.getSession().then(async ({ data }) => {
       if (!alive) return;
       setSession(data.session);
       await loadMembership(data.session?.user.id);
+    });
+
+    Promise.all([minDelay, authFetch]).then(() => {
       if (alive) setLoading(false);
     });
 

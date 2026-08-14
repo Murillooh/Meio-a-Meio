@@ -1,6 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { AppLayout } from '@/components/AppLayout';
+import { Splash } from '@/components/Splash';
+import { useAuth } from '@/hooks/useAuth';
 import Login from '@/pages/Login';
 import Onboarding from '@/pages/Onboarding';
 import Dashboard from '@/pages/Dashboard';
@@ -12,6 +14,12 @@ import Rules from '@/pages/Rules';
 import Settings from '@/pages/Settings';
 
 export default function App() {
+  const { loading } = useAuth();
+
+  if (loading) {
+    return <Splash />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
