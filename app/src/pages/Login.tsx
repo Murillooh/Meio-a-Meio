@@ -7,6 +7,9 @@ export default function Login() {
   const { user, signInWithPassword, signUpWithPassword, signInWithApple } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [mode, setMode] = useState<'in' | 'up'>('in');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -47,10 +50,16 @@ export default function Login() {
     setBusy(true);
     setError('');
     try {
-      if (mode === 'in') await signInWithPassword(email, password);
-      else await signUpWithPassword(email, password);
+      if (mode === 'in') {
+        await signInWithPassword(email, password);
+      } else {
+        if (password !== confirmPassword) {
+          throw new Error('As senhas não coincidem');
+        }
+        await signUpWithPassword(email, password, nome, telefone);
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Não foi possível entrar');
+      setError(err instanceof Error ? err.message : 'Não foi possível prosseguir');
     } finally {
       setBusy(false);
     }
@@ -107,7 +116,46 @@ export default function Login() {
 
           <div className="login-card">
             <form onSubmit={submit}>
-              <div>
+              {mode === 'up' && (
+                <>
+                  <div>
+                    <p className="login-field-label">Nome Completo</p>
+                    <div className="login-field">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                      </svg>
+                      <input 
+                        type="text" 
+                        placeholder="Seu nome" 
+                        autoComplete="name" 
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '14px' }}>
+                    <p className="login-field-label">Telefone</p>
+                    <div className="login-field">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                      </svg>
+                      <input 
+                        type="tel" 
+                        placeholder="(11) 90000-0000" 
+                        autoComplete="tel" 
+                        value={telefone}
+                        onChange={(e) => setTelefone(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div style={{ marginTop: mode === 'up' ? '14px' : '0' }}>
                 <p className="login-field-label">E-mail</p>
                 <div className="login-field">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -151,6 +199,27 @@ export default function Login() {
                   </button>
                 </div>
               </div>
+
+              {mode === 'up' && (
+                <div style={{ marginTop: '14px' }}>
+                  <p className="login-field-label">Confirmar Senha</p>
+                  <div className="login-field">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="5" y="11" width="14" height="9" rx="2.5"/>
+                      <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                    </svg>
+                    <input 
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••" 
+                      autoComplete="new-password" 
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={6}
+                    />
+                  </div>
+                </div>
+              )}
 
               {mode === 'in' && (
                 <div className="login-row-end">

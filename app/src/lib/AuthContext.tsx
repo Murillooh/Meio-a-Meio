@@ -13,7 +13,7 @@ export interface AuthValue {
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
-  signUpWithPassword: (email: string, password: string) => Promise<void>;
+  signUpWithPassword: (email: string, password: string, nome?: string, telefone?: string) => Promise<void>;
   signOut: () => Promise<void>;
   createHousehold: (nome: string, papel: Papel) => Promise<Household>;
   joinHousehold: (inviteCode: string, papel?: Papel) => Promise<Household>;
@@ -99,8 +99,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
     },
-    signUpWithPassword: async (email, password) => {
-      const { error } = await supabase.auth.signUp({ email, password });
+    signUpWithPassword: async (email, password, nome, telefone) => {
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: {
+            full_name: nome,
+            phone: telefone
+          }
+        }
+      });
       if (error) throw error;
     },
     signOut: async () => {
