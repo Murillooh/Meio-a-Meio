@@ -26,7 +26,7 @@ export function AppLayout() {
   return (
     <div className="min-h-full bg-base md:flex relative">
       <TabBar />
-      <main className="mx-auto w-full max-w-[420px] px-5 pb-[calc(96px+env(safe-area-inset-bottom))] pt-12 md:max-w-[1080px] md:px-10 md:pb-16 md:pt-14">
+      <main className="mx-auto w-full max-w-[420px] px-5 pb-[calc(88px+env(safe-area-inset-bottom))] pt-12 md:max-w-[1080px] md:px-10 md:pb-16 md:pt-14">
         <Outlet context={{ openTxModal } satisfies AppLayoutContextType} />
       </main>
 
