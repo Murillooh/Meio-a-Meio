@@ -32,8 +32,9 @@ export default function Onboarding() {
       const hh = await createHousehold(name.trim(), role);
       setInvite(hh.invite_code);
       setStep('invite');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Falha ao criar a casa');
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || 'Falha ao criar a casa');
     } finally { setBusy(false); }
   }
 
@@ -43,8 +44,9 @@ export default function Onboarding() {
     try {
       await joinHousehold(code);
       navigate('/', { replace: true });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Falha ao entrar na casa');
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || 'Falha ao entrar na casa');
     } finally { setBusy(false); }
   }
 
