@@ -31,8 +31,20 @@
   <body>
     <div id="root">
       <!-- splash até o React montar -->
-      <div id="boot" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg,#1c1512)">
-        <div style="width:56px;height:56px;border-radius:18px;background:#f0a06a;display:flex;align-items:center;justify-content:center;color:#2b1c15;font:700 24px/1 system-ui,sans-serif">C</div>
+      <div id="boot" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:#f9f3ea;z-index:9999;">
+        <img src="/splash-bg.png" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" />
+        <div style="position:absolute;bottom:3rem;left:50%;width:12rem;transform:translateX(-50%);overflow:hidden;border-radius:9999px;background-color:rgba(0,0,0,0.2);" id="boot-progress">
+          <div style="height:0.375rem;width:50%;border-radius:9999px;background-color:#f0a06a;animation:boot-indeterminate 1.5s infinite ease-in-out;"></div>
+        </div>
+        <style>
+          @keyframes boot-indeterminate {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+          }
+          @media (min-width: 768px) {
+            #boot-progress { bottom: 5rem !important; width: 16rem !important; }
+          }
+        </style>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
