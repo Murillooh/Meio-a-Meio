@@ -7,8 +7,20 @@ export function Splash() {
       
       {/* Logo */}
       <div className="relative z-10 flex flex-col items-center animate-[boot-fade-in_1.2s_cubic-bezier(0.2,0.8,0.2,1)_both]">
-        <h1 className="font-['Fraunces'] font-semibold text-[48px] tracking-[-0.5px] m-0 bg-gradient-to-b from-[#fffaf2] to-[#efc691] bg-clip-text text-transparent">
-          Casa
+        {/* Badge */}
+        <div className="relative w-[72px] h-[72px] mb-6">
+          <div className="absolute -inset-1 bg-[#f4b479]/30 rounded-full blur-[12px]"></div>
+          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white/5 border border-white/10 backdrop-blur-[8px] text-[#efc691]">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/15 via-transparent to-transparent"></div>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="relative z-10">
+              <circle cx="9" cy="12" r="7" />
+              <circle cx="15" cy="12" r="7" />
+            </svg>
+          </div>
+        </div>
+
+        <h1 className="font-['Fraunces'] font-semibold text-[36px] tracking-[-0.5px] m-0 bg-gradient-to-b from-[#fffaf2] to-[#efc691] bg-clip-text text-transparent">
+          Meio a Meio
         </h1>
         
         {/* Loading bar */}

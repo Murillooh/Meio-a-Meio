@@ -38,7 +38,19 @@
         
         <!-- Logo -->
         <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;animation:boot-fade-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;">
-          <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:48px;letter-spacing:-0.5px;margin:0;background:linear-gradient(to bottom, #fffaf2, #efc691);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">Casa</h1>
+          <!-- Badge -->
+          <div style="position:relative;width:72px;height:72px;margin-bottom:24px;">
+            <div style="position:absolute;inset:-4px;background:rgba(244,180,121,0.3);border-radius:50%;filter:blur(12px);"></div>
+            <div style="position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#efc691;">
+              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 50%,transparent 100%);"></div>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style="position:relative;z-index:2;">
+                <circle cx="9" cy="12" r="7" />
+                <circle cx="15" cy="12" r="7" />
+              </svg>
+            </div>
+          </div>
+          
+          <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:36px;letter-spacing:-0.5px;margin:0;background:linear-gradient(to bottom, #fffaf2, #efc691);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">Meio a Meio</h1>
           
           <!-- Loading bar -->
           <div style="margin-top:40px;width:120px;height:2px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;position:relative;">
