@@ -34,20 +34,20 @@ function IOSStatusBar({ dark = false, time = '9:41' }) {
       </div>
       <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 1, paddingRight: 1 }}>
         <svg width="19" height="12" viewBox="0 0 19 12">
-          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
-          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
-          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
-          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
+          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c} />
+          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c} />
+          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c} />
+          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c} />
         </svg>
         <svg width="17" height="12" viewBox="0 0 17 12">
-          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
-          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
-          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
+          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c} />
+          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c} />
+          <circle cx="8.5" cy="10.5" r="1.5" fill={c} />
         </svg>
         <svg width="27" height="13" viewBox="0 0 27 13">
-          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
-          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
-          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
+          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none" />
+          <rect x="2" y="2" width="20" height="9" rx="2" fill={c} />
+          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4" />
         </svg>
       </div>
     </div>
@@ -115,15 +115,15 @@ function IOSNavBar({ title = 'Title', dark = false, trailingIcon = true }) {
         {/* back chevron */}
         {pillIcon(
           <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ marginLeft: -1 }}>
-            <path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
         {/* trailing ellipsis */}
         {trailingIcon && pillIcon(
           <svg width="22" height="6" viewBox="0 0 22 6">
-            <circle cx="3" cy="3" r="2.5" fill={muted}/>
-            <circle cx="11" cy="3" r="2.5" fill={muted}/>
-            <circle cx="19" cy="3" r="2.5" fill={muted}/>
+            <circle cx="3" cy="3" r="2.5" fill={muted} />
+            <circle cx="11" cy="3" r="2.5" fill={muted} />
+            <circle cx="19" cy="3" r="2.5" fill={muted} />
           </svg>
         )}
       </div>
@@ -163,7 +163,7 @@ function IOSListRow({ title, detail, icon, chevron = true, isLast = false, dark 
       {detail && <span style={{ color: sec, marginRight: 6 }}>{detail}</span>}
       {chevron && (
         <svg width="8" height="14" viewBox="0 0 8 14" style={{ flexShrink: 0 }}>
-          <path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )}
       {!isLast && (
@@ -253,9 +253,9 @@ function IOSKeyboard({ dark = false }) {
 
   // special-key icons
   const icons = {
-    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph}/></svg>,
-    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round"/></svg>,
-    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph} /></svg>,
+    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round" /><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round" /></svg>,
+    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>,
   };
 
   const key = (content, { w, flex, ret, fs = 25, k } = {}) => (
@@ -325,12 +325,12 @@ function IOSKeyboard({ dark = false }) {
         padding: '0 6.5px', width: '100%', boxSizing: 'border-box',
         position: 'relative',
       }}>
-        {row(['q','w','e','r','t','y','u','i','o','p'])}
-        {row(['a','s','d','f','g','h','j','k','l'], 20)}
+        {row(['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'])}
+        {row(['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'], 20)}
         <div style={{ display: 'flex', gap: 14.25, alignItems: 'center' }}>
           {key(icons.shift, { w: 45, k: 'shift' })}
           <div style={{ display: 'flex', gap: 6.5, flex: 1 }}>
-            {['z','x','c','v','b','n','m'].map(l => key(l, { flex: true, k: l }))}
+            {['z', 'x', 'c', 'v', 'b', 'n', 'm'].map(l => key(l, { flex: true, k: l }))}
           </div>
           {key(icons.del, { w: 45, k: 'del' })}
         </div>

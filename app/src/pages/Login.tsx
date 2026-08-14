@@ -102,10 +102,7 @@ export default function Login() {
                 <span className="login-badge-glow"></span>
                 <div className="login-badge-core">
                   <span className="login-badge-shine"></span>
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="9" cy="12" r="7" />
-                    <circle cx="15" cy="12" r="7" />
-                  </svg>
+                  <img src="/logo-mam.png" alt="MaM" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', zIndex: 2, borderRadius: '50%' }} />
                 </div>
               </div>
               <h1 className="login-wordmark" style={{ fontSize: '36px' }}>Meio a Meio</h1>
