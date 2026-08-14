@@ -197,12 +197,31 @@ function IOSList({ header, children, dark = false }) {
 }
 
 // ─────────────────────────────────────────────────────────────
+// System Theme Hook
+// ─────────────────────────────────────────────────────────────
+function useSystemTheme() {
+  const [isDark, setIsDark] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      setIsDark(mq.matches);
+      const handler = (e) => setIsDark(e.matches);
+      mq.addEventListener('change', handler);
+      return () => mq.removeEventListener('change', handler);
+    }
+  }, []);
+  return isDark;
+}
+
+// ─────────────────────────────────────────────────────────────
 // Device frame
 // ─────────────────────────────────────────────────────────────
 function IOSDevice({
-  children, width = 402, height = 874, dark = false,
+  children, width = 402, height = 874, dark: darkProp,
   title, keyboard = false,
 }) {
+  const systemDark = useSystemTheme();
+  const dark = darkProp !== undefined ? darkProp : systemDark;
   return (
     // data-om-starter: inert presence marker — Claude Design's starter-usage
     // probe reads it; it renders nothing. Keep it on this root element.
