@@ -71,18 +71,79 @@ export default function Onboarding() {
 
   if (step === 'create') return (
     <Screen>
-      <button onClick={() => setStep('choose')} className="self-start text-sm text-ink-muted">← Voltar</button>
-      <h1 className="mt-5 text-[27px] font-semibold tracking-tight">Nova casa</h1>
-      <p className="mt-2 text-[15px] text-ink-muted">Dê um nome e diga qual é o seu papel.</p>
-      <label className="mt-7 text-xs uppercase tracking-[0.1em] text-ink-faint">Nome da casa</label>
-      <input className="field mt-2.5" placeholder="Casa dos Almeida" value={name} onChange={(e) => setName(e.target.value)} />
-      <span className="mt-6 text-xs uppercase tracking-[0.1em] text-ink-faint">Seu papel</span>
-      <div className="mt-2.5 grid grid-cols-2 gap-3">
-        <button className={roleClass(role === 'pai')} onClick={() => setRole('pai')}>Pai</button>
-        <button className={roleClass(role === 'mae')} onClick={() => setRole('mae')}>Mãe</button>
+      <div className="flex animate-[slideIn_0.5s_ease-out] flex-col h-full w-full">
+        <style>{`
+          @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+          @keyframes popIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        `}</style>
+
+        <button onClick={() => setStep('choose')} className="-ml-3 mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-ink-muted transition-colors hover:bg-base-line/30 active:scale-95" aria-label="Voltar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+
+        <h1 className="text-[32px] font-bold tracking-tight text-ink">Nova casa</h1>
+        <p className="mt-2.5 text-[15.5px] leading-relaxed text-ink-muted">Dê um nome para a casa e escolha o seu papel na família.</p>
+
+        <div className="mt-8 flex flex-col gap-7">
+          <div>
+            <label className="mb-2.5 ml-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">Nome da casa</label>
+            <div className="relative flex items-center">
+              <svg className="absolute left-4 text-ink-faint" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <input 
+                className="field pl-11 bg-base-card/40 shadow-sm transition-all focus:bg-base-card focus:shadow-md" 
+                placeholder="Ex: Casa dos Almeida" 
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                autoComplete="off"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2.5 ml-1 block text-[11px] font-bold uppercase tracking-[0.14em] text-ink-faint">Seu papel</label>
+            <div className="grid grid-cols-2 gap-3.5">
+              <button 
+                className={`relative flex h-[115px] flex-col items-center justify-center gap-3 rounded-2xl border transition-all duration-300 ${role === 'pai' ? 'scale-[1.02] border-accent bg-accent-dim text-accent-bright shadow-[0_4px_20px_-6px_rgba(240,160,106,0.3)]' : 'border-base-line bg-base-card/30 text-ink-muted hover:bg-base-line/30 hover:text-ink'}`} 
+                onClick={() => setRole('pai')}
+              >
+                {role === 'pai' && (
+                  <div className="absolute right-3 top-3 animate-[popIn_0.2s_ease-out] rounded-full bg-accent p-[3px] text-accent-ink">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                )}
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span className="text-[15px] font-semibold tracking-wide">Pai</span>
+              </button>
+              
+              <button 
+                className={`relative flex h-[115px] flex-col items-center justify-center gap-3 rounded-2xl border transition-all duration-300 ${role === 'mae' ? 'scale-[1.02] border-accent bg-accent-dim text-accent-bright shadow-[0_4px_20px_-6px_rgba(240,160,106,0.3)]' : 'border-base-line bg-base-card/30 text-ink-muted hover:bg-base-line/30 hover:text-ink'}`} 
+                onClick={() => setRole('mae')}
+              >
+                {role === 'mae' && (
+                  <div className="absolute right-3 top-3 animate-[popIn_0.2s_ease-out] rounded-full bg-accent p-[3px] text-accent-ink">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                )}
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span className="text-[15px] font-semibold tracking-wide">Mãe</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {error && (
+          <div className="mt-6 flex animate-[popIn_0.3s_ease-out] items-center gap-2.5 rounded-2xl border border-alert-line bg-alert-bg px-4 py-3 text-[13.5px] font-medium text-alert">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {error}
+          </div>
+        )}
+        
+        <div className="mt-auto pt-8">
+          <button className="btn-gold w-full text-[16px] shadow-[0_8px_20px_-6px_rgba(240,160,106,0.4)]" onClick={onCreate} disabled={busy}>
+            {busy ? 'Criando...' : 'Criar casa'}
+          </button>
+        </div>
       </div>
-      {error && <p className="alert mt-4">{error}</p>}
-      <button className="btn-gold mt-auto" onClick={onCreate} disabled={busy}>Criar casa</button>
     </Screen>
   );
 
