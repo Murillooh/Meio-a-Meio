@@ -55,25 +55,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true;
+    let initialBootDone = false;
     
     // Força a tela de splash a ficar visível por no mínimo 2 segundos para tocar a animação
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
-    const authFetch = supabase.auth.getSession().then(async ({ data }) => {
+    const initAuth = async () => {
+      const { data } = await supabase.auth.getSession();
       if (!alive) return;
       setSession(data.session);
       await loadMembership(data.session?.user.id);
-    });
+    };
 
-    Promise.all([minDelay, authFetch]).then(() => {
-      if (alive) setLoading(false);
-    });
-
-    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, next) => {
-      setSession(next);
-      setLoading(true);
-      await loadMembership(next?.user.id);
+    Promise.all([minDelay, initAuth()]).then(() => {
+      if (!alive) return;
+      initialBootDone = true;
       setLoading(false);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, next) => {
+      if (!alive) return;
+      setSession(next);
+      
+      if (!initialBootDone) {
+        // Se ainda estamos no boot, atualiza os dados mas NÃO altera o loading
+        await loadMembership(next?.user.id);
+      } else {
+        // Mudanças de auth pós-boot (ex: login/logout)
+        setLoading(true);
+        await loadMembership(next?.user.id);
+        if (alive) setLoading(false);
+      }
     });
 
     return () => {
