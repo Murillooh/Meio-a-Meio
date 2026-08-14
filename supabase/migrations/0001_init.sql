@@ -15,6 +15,7 @@ create table if not exists public.households (
   id          uuid primary key default gen_random_uuid(),
   nome        text        not null,
   invite_code text        not null unique,
+  created_by  uuid        references auth.users(id) default auth.uid(),
   created_at  timestamptz not null default now()
 );
 
@@ -165,7 +166,7 @@ alter table public.emergency_deposits enable row level security;
 drop policy if exists households_select on public.households;
 create policy households_select on public.households
   for select to authenticated
-  using (id in (select public.current_household_ids()));
+  using (id in (select public.current_household_ids()) or created_by = auth.uid());
 
 -- qualquer usuário autenticado pode criar uma casa (ele vira membro em seguida)
 drop policy if exists households_insert on public.households;

@@ -5,7 +5,8 @@ import { EmptyState, ErrorState, Loading } from '@/components/ui/States';
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
-import { TransactionModal } from '@/components/TransactionModal';
+import { useOutletContext } from 'react-router-dom';
+import type { AppLayoutContextType } from '@/components/AppLayout';
 import { InlineCategory } from '@/components/InlineCategory';
 import { useAccounts, useCategories, useDeleteTransaction, useMembers, useTransactions } from '@/hooks/useHouseholdData';
 import { useSaveRule } from '@/hooks/useCategoryRules';
@@ -27,7 +28,7 @@ export default function Transactions() {
     setParams(next, { replace: true });
   };
 
-  const [open, setOpen] = useState(false);
+  const { openTxModal } = useOutletContext<AppLayoutContextType>();
   const [ruleFor, setRuleFor] = useState<TransactionRow | null>(null);
 
   const { data: accounts = [] } = useAccounts();
@@ -48,7 +49,7 @@ export default function Transactions() {
     <>
       <header className="mb-4 flex items-center justify-between">
         <h1 className="text-[26px] font-semibold tracking-tight">Transações</h1>
-        <Button size="sm" onClick={() => setOpen(true)}>+ Nova</Button>
+        <Button size="sm" onClick={() => openTxModal()}>+ Nova</Button>
       </header>
 
       <Card className="flex items-center justify-between p-3">
@@ -115,7 +116,6 @@ export default function Transactions() {
         ))}
       </div>
 
-      <TransactionModal open={open} onClose={() => setOpen(false)} />
       <RuleFromTransactionModal tx={ruleFor} onClose={() => setRuleFor(null)} />
     </>
   );
