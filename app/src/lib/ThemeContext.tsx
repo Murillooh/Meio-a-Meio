@@ -8,7 +8,11 @@ const ThemeCtx = createContext<{ theme: ThemeName; setTheme: (t: ThemeName) => v
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeName>(() => {
     const saved = localStorage.getItem(KEY);
-    return saved === 'claro' || saved === 'escuro' ? saved : 'escuro';
+    if (saved === 'claro' || saved === 'escuro') return saved;
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+    }
+    return 'escuro';
   });
 
   useEffect(() => {
@@ -17,6 +21,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.querySelector('meta[name="theme-color"]')
       ?.setAttribute('content', theme === 'claro' ? '#faf6ef' : '#1c1512');
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? 'escuro' : 'claro');
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   return (
     <ThemeCtx.Provider value={{ theme, setTheme, toggle: () => setTheme(theme === 'claro' ? 'escuro' : 'claro') }}>
