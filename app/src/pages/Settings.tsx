@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Loading } from '@/components/ui/States';
@@ -8,6 +8,7 @@ import { useCategoryRules } from '@/hooks/useCategoryRules';
 import { useEmergencyFund } from '@/hooks/useEmergency';
 import { useTheme } from '@/lib/ThemeContext';
 import { supabase } from '@/lib/supabase';
+import { subscribeToPush, unsubscribeFromPush, getPushSubscriptionStatus } from '@/lib/push';
 import { formatBRL, papelLabel } from '@/lib/format';
 import type { Papel } from '@/types';
 
@@ -24,6 +25,13 @@ export default function Settings() {
   const [nome, setNome] = useState(member?.nome ?? '');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
+  
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [pushLoading, setPushLoading] = useState(false);
+
+  useEffect(() => {
+    getPushSubscriptionStatus().then(setPushEnabled);
+  }, []);
 
   const saldo = accounts.reduce((s, a) => s + Number(a.saldo ?? 0), 0);
   const meses = fund?.despesa_mensal_media
@@ -36,6 +44,30 @@ export default function Settings() {
     const { error: e } = await supabase.from('members').update(patch).eq('id', member.id);
     if (e) return setError(e.message);
     await refreshMembership();
+  }
+
+  async function togglePush() {
+    if (!user || !household) return;
+    setPushLoading(true);
+    setError('');
+    try {
+      if (pushEnabled) {
+        await unsubscribeFromPush(user.id);
+        setPushEnabled(false);
+      } else {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          await subscribeToPush(user.id, household.id);
+          setPushEnabled(true);
+        } else {
+          setError('Permissão para notificações foi negada.');
+        }
+      }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setPushLoading(false);
+    }
   }
 
   return (
@@ -106,6 +138,22 @@ export default function Settings() {
             <span className="text-[12.5px] text-ink-faint">{papelLabel(m.papel)}</span>
           </Row>
         ))}
+      </Group>
+
+      <Group label="Notificações">
+        <Row>
+          <span className="flex-1">
+            <span className="block text-[14.5px]">Avisos e Lembretes</span>
+            <span className="mt-0.5 block text-[11.5px] text-ink-faint">Seja avisado quando algo for adicionado</span>
+          </span>
+          <button 
+            onClick={togglePush} 
+            disabled={pushLoading}
+            className={'relative inline-flex h-[31px] w-[51px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ' + (pushEnabled ? 'bg-accent' : 'bg-base-line')}
+          >
+            <span className={'pointer-events-none inline-block h-[27px] w-[27px] transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ' + (pushEnabled ? 'translate-x-[20px]' : 'translate-x-0')} />
+          </button>
+        </Row>
       </Group>
 
       <Group label="Aparência">
