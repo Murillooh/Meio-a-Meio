@@ -45,7 +45,7 @@ export default defineConfig({
           },
         ],
       },
-      devOptions: { enabled: false },
+      devOptions: { enabled: true },
     }),
   ],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },

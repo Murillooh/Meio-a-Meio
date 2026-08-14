@@ -20,7 +20,10 @@ export async function subscribeToPush(userId: string, householdId: string) {
     throw new Error('Notificações Push não são suportadas neste navegador.');
   }
 
-  const registration = await navigator.serviceWorker.ready;
+  const registration = await navigator.serviceWorker.getRegistration();
+  if (!registration) {
+    throw new Error('Service Worker não encontrado. Certifique-se de que o PWA está instalado.');
+  }
 
   let subscription = await registration.pushManager.getSubscription();
   if (!subscription) {

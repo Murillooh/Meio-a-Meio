@@ -55,13 +55,13 @@ export function TransactionModal({ open, onClose }: { open: boolean; onClose: ()
   return (
     <Modal open={open} title="Nova transação" onClose={onClose}>
       <form onSubmit={submit} className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-2 rounded-xl border border-base-line p-1">
+        <div className="flex gap-1.5 rounded-xl bg-base p-1">
           <button type="button" onClick={() => setSaida(true)}
-            className={'h-10 rounded-lg text-[13.5px] font-semibold ' + (saida ? 'bg-alert-bg text-alert' : 'text-ink-faint')}>
+            className={'flex-1 h-9 rounded-[10px] text-[13px] font-semibold transition-all ' + (saida ? 'bg-base-card text-alert shadow' : 'text-ink-faint hover:text-ink')}>
             Saída
           </button>
           <button type="button" onClick={() => setSaida(false)}
-            className={'h-10 rounded-lg text-[13.5px] font-semibold ' + (!saida ? 'bg-gold-dim text-gold-bright' : 'text-ink-faint')}>
+            className={'flex-1 h-9 rounded-[10px] text-[13px] font-semibold transition-all ' + (!saida ? 'bg-base-card text-calm shadow' : 'text-ink-faint hover:text-ink')}>
             Entrada
           </button>
         </div>

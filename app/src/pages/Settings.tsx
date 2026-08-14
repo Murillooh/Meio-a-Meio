@@ -55,6 +55,9 @@ export default function Settings() {
         await unsubscribeFromPush(user.id);
         setPushEnabled(false);
       } else {
+        if (!('Notification' in window)) {
+          throw new Error('Este navegador não suporta notificações. No iPhone, adicione o app à Tela de Início (Compartilhar > Adicionar à Tela de Início).');
+        }
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
           await subscribeToPush(user.id, household.id);
