@@ -122,7 +122,8 @@ h1.login-wordmark {
 
 /* ---------- card ---------- */
 .login-card {
-  flex: none; margin: 0 16px 16px; padding: 22px;
+  flex: none; margin: 0 16px 16px; padding: 26px 22px;
+  padding-bottom: calc(36px + env(safe-area-inset-bottom, 20px));
   border-radius: 30px; background-color: rgba(20, 13, 10, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
