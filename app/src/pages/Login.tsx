@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import './Login.css';
@@ -29,6 +29,15 @@ export default function Login() {
         } as React.CSSProperties
       };
     });
+  }, []);
+
+  // Prevent brown body background from showing during iOS overscroll
+  useEffect(() => {
+    const originalBg = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = '#0b0705';
+    return () => {
+      document.body.style.backgroundColor = originalBg;
+    };
   }, []);
 
   if (user) return <Navigate to="/" replace />;
