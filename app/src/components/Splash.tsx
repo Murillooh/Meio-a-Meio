@@ -8,11 +8,11 @@ export function Splash() {
       {/* Logo */}
       <div className="relative z-10 flex flex-col items-center animate-[boot-fade-in_1.2s_cubic-bezier(0.2,0.8,0.2,1)_both]">
         {/* Badge */}
-        <div className="relative w-[72px] h-[72px] mb-6">
-          <div className="absolute -inset-1 bg-[#f4b479]/30 rounded-full blur-[12px]"></div>
-          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white/5 border border-white/10 backdrop-blur-[8px] text-[#efc691] overflow-hidden">
+        <div className="relative w-[130px] h-[130px] mb-8">
+          <div className="absolute -inset-3 bg-[#f4b479]/25 rounded-full blur-[24px]"></div>
+          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white/5 border border-white/10 backdrop-blur-[8px] overflow-hidden">
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/15 via-transparent to-transparent"></div>
-            <img src="/logo-mam.png" alt="MaM" className="relative z-10 w-full h-full object-cover rounded-full" />
+            <img src="/logo-mam.png" alt="MaM" className="relative z-10 w-full h-full object-cover rounded-full scale-[1.03]" />
           </div>
         </div>
 
