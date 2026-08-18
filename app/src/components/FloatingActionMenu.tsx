@@ -17,22 +17,22 @@ export function FloatingActionMenu({ onAddTx, onScanQR }: { onAddTx: () => void,
   return (
     <div ref={ref} className="fixed bottom-[calc(env(safe-area-inset-bottom)+88px)] right-4 z-50 md:bottom-8 md:right-8 flex flex-col items-end gap-3">
       {open && (
-        <div className="flex flex-col items-end gap-2 mb-2 animate-in slide-in-from-bottom-2 fade-in duration-200">
+        <div className="flex flex-col mb-3 animate-in slide-in-from-bottom-2 fade-in duration-200 bg-base-card/90 backdrop-blur-xl border border-base-line rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden min-w-[220px]">
           <button
             onClick={() => { setOpen(false); onScanQR(); }}
-            className="flex items-center gap-3 px-4 py-2.5 bg-base-card border border-base-line rounded-2xl shadow-lg hover:bg-base transition-colors"
+            className="flex items-center justify-between gap-3 px-5 py-4 hover:bg-white/5 active:bg-white/10 transition-colors border-b border-base-line"
           >
             <span className="text-[15px] font-medium text-ink">Ler QR Code (NFC-e)</span>
-            <div className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent text-sm">
               📷
             </div>
           </button>
           <button
             onClick={() => { setOpen(false); onAddTx(); }}
-            className="flex items-center gap-3 px-4 py-2.5 bg-base-card border border-base-line rounded-2xl shadow-lg hover:bg-base transition-colors"
+            className="flex items-center justify-between gap-3 px-5 py-4 hover:bg-white/5 active:bg-white/10 transition-colors"
           >
             <span className="text-[15px] font-medium text-ink">Transação Manual</span>
-            <div className="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent text-sm">
               ✍️
             </div>
           </button>
