@@ -4,39 +4,39 @@
 
 /* Dois temas da casa. Trocados por data-theme no <html> (ThemeContext). */
 :root, [data-theme='escuro'] {
-  --bg: #111112;
-  --card: #1c1c1e;
+  --bg: #000000;
+  --card: #09090b;
   --line: rgba(255, 255, 255, 0.1);
   --ink: #ffffff;
-  --ink-muted: rgba(235, 235, 245, 0.6);
-  --ink-faint: rgba(235, 235, 245, 0.3);
-  --accent: #30d158;
-  --accent-bright: #32d74b;
-  --accent-dim: rgba(48, 209, 88, 0.15);
-  --accent-ink: #000000;
-  --calm: #64d2ff;
-  --alert: #ff453a;
-  --alert-bg: rgba(255, 69, 58, 0.1);
-  --alert-line: rgba(255, 69, 58, 0.2);
-  --glow: 0 0 20px rgba(48, 209, 88, 0.25);
+  --ink-muted: #a1a1aa;
+  --ink-faint: #52525b;
+  --accent: #8b5cf6;
+  --accent-bright: #a78bfa;
+  --accent-dim: rgba(139, 92, 246, 0.15);
+  --accent-ink: #ffffff;
+  --calm: #3b82f6;
+  --alert: #ef4444;
+  --alert-bg: rgba(239, 68, 68, 0.1);
+  --alert-line: rgba(239, 68, 68, 0.2);
+  --glow: 0 0 24px rgba(139, 92, 246, 0.35);
   --card-shadow: none;
 }
 
 [data-theme='claro'] {
-  --bg: #f2f2f7;
-  --card: #ffffff;
-  --line: rgba(60, 60, 67, 0.12);
-  --ink: #000000;
-  --ink-muted: rgba(60, 60, 67, 0.6);
-  --ink-faint: rgba(60, 60, 67, 0.3);
-  --accent: #28cd41;
-  --accent-bright: #34c759;
-  --accent-dim: rgba(40, 205, 65, 0.15);
+  --bg: #ffffff;
+  --card: #f4f4f5;
+  --line: rgba(0, 0, 0, 0.08);
+  --ink: #09090b;
+  --ink-muted: #71717a;
+  --ink-faint: #a1a1aa;
+  --accent: #7c3aed;
+  --accent-bright: #6d28d9;
+  --accent-dim: rgba(124, 58, 237, 0.1);
   --accent-ink: #ffffff;
-  --calm: #007aff;
-  --alert: #ff3b30;
-  --alert-bg: rgba(255, 59, 48, 0.1);
-  --alert-line: rgba(255, 59, 48, 0.2);
+  --calm: #2563eb;
+  --alert: #dc2626;
+  --alert-bg: rgba(220, 38, 38, 0.1);
+  --alert-line: rgba(220, 38, 38, 0.2);
   --glow: none;
   --card-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
 }
