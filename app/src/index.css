@@ -42,7 +42,7 @@
 }
 
 @layer base {
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; background-color: var(--bg); }
   html, body, #root { height: 100%; }
   body {
     @apply bg-base text-ink font-sans antialiased;
