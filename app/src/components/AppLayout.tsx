@@ -4,6 +4,9 @@ import { TabBar } from './TabBar';
 import { FloatingActionMenu } from './FloatingActionMenu';
 import { TransactionModal } from './TransactionModal';
 import { InstallPWA } from './InstallPWA';
+import { ScannerModal } from './ScannerModal';
+import { ReceiptItemsModal, type ReceiptItem } from './ReceiptItemsModal';
+import { supabase } from '@/lib/supabase';
 import type { TransactionRow } from '@/types';
 
 export type AppLayoutContextType = {
@@ -19,9 +22,38 @@ export function AppLayout() {
   const [txModalOpen, setTxModalOpen] = useState(false);
   const [ruleFor, setRuleFor] = useState<TransactionRow | null>(null);
 
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [receiptOpen, setReceiptOpen] = useState(false);
+  const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);
+  const [isParsing, setIsParsing] = useState(false);
+
   const openTxModal = (tx?: TransactionRow | null) => {
     setRuleFor(tx || null);
     setTxModalOpen(true);
+  };
+
+  const handleScan = async (url: string) => {
+    setScannerOpen(false);
+    setIsParsing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('parse-receipt', {
+        body: { url }
+      });
+      
+      if (error) throw error;
+      
+      if (data?.success && data?.items?.length > 0) {
+        setReceiptItems(data.items);
+        setReceiptOpen(true);
+      } else {
+        alert('Não foi possível ler os itens dessa nota (formato desconhecido ou sem itens).');
+      }
+    } catch (err: any) {
+      console.error('Erro ao ler nota:', err);
+      alert('Erro ao tentar ler a nota fiscal: ' + err.message);
+    } finally {
+      setIsParsing(false);
+    }
   };
 
   return (
@@ -31,11 +63,38 @@ export function AppLayout() {
         <Outlet context={{ openTxModal } satisfies AppLayoutContextType} />
       </main>
 
+      {/* Loading overlay for parsing */}
+      {isParsing && (
+        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-base-card p-6 rounded-2xl flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+            <p className="font-medium text-ink">Lendo nota fiscal...</p>
+          </div>
+        </div>
+      )}
+
       {/* Botão Flutuante (FAB) */}
-      <FloatingActionMenu onAddTx={() => openTxModal()} />
+      <FloatingActionMenu 
+        onAddTx={() => openTxModal()} 
+        onScanQR={() => setScannerOpen(true)}
+      />
 
       {/* Sugestão de Instalação (PWA) */}
       <InstallPWA />
+
+      {/* Modais de Leitura de Nota */}
+      <ScannerModal 
+        open={scannerOpen} 
+        onClose={() => setScannerOpen(false)} 
+        onScan={handleScan}
+      />
+      
+      <ReceiptItemsModal
+        open={receiptOpen}
+        onClose={() => setReceiptOpen(false)}
+        items={receiptItems}
+        totalItems={receiptItems.length}
+      />
 
       {/* Modal Global de Transação */}
       <TransactionModal 
