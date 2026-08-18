@@ -96,7 +96,7 @@ export default function Settings() {
             onChange={(e) => setNome(e.target.value)}
             onBlur={() => salvar({ nome: nome.trim() || null })}
             placeholder={user?.email?.split('@')[0]}
-            className="min-w-0 flex-1 rounded-xl border border-base-line bg-base px-3 py-2 text-right text-[14.5px] text-ink outline-none focus:border-accent"
+            className="min-w-0 flex-1 rounded-xl border border-base-line bg-base px-3 py-2 text-left text-[14.5px] text-ink outline-none focus:border-accent"
           />
         </Row>
         <Row divider>
