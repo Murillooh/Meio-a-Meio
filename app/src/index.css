@@ -4,41 +4,41 @@
 
 /* Dois temas da casa. Trocados por data-theme no <html> (ThemeContext). */
 :root, [data-theme='escuro'] {
-  --bg: #1c1512;
-  --card: #291e19;
-  --line: rgba(245, 236, 227, 0.09);
-  --ink: #f5ece3;
-  --ink-muted: rgba(245, 236, 227, 0.66);
-  --ink-faint: rgba(245, 236, 227, 0.45);
-  --accent: #f0a06a;
-  --accent-bright: #f7b98c;
-  --accent-dim: rgba(240, 160, 106, 0.16);
-  --accent-ink: #2b1c15;
-  --calm: #9db89a;
-  --alert: #e292a6;
-  --alert-bg: rgba(226, 146, 166, 0.1);
-  --alert-line: rgba(226, 146, 166, 0.28);
-  --glow: 0 0 18px rgba(240, 160, 106, 0.35);
+  --bg: #111112;
+  --card: #1c1c1e;
+  --line: rgba(255, 255, 255, 0.1);
+  --ink: #ffffff;
+  --ink-muted: rgba(235, 235, 245, 0.6);
+  --ink-faint: rgba(235, 235, 245, 0.3);
+  --accent: #30d158;
+  --accent-bright: #32d74b;
+  --accent-dim: rgba(48, 209, 88, 0.15);
+  --accent-ink: #000000;
+  --calm: #64d2ff;
+  --alert: #ff453a;
+  --alert-bg: rgba(255, 69, 58, 0.1);
+  --alert-line: rgba(255, 69, 58, 0.2);
+  --glow: 0 0 20px rgba(48, 209, 88, 0.25);
   --card-shadow: none;
 }
 
 [data-theme='claro'] {
-  --bg: #faf6ef;
-  --card: #fffdf9;
-  --line: rgba(46, 42, 36, 0.08);
-  --ink: #2e2a24;
-  --ink-muted: #7d7362;
-  --ink-faint: #9d927e;
-  --accent: #c05f3c;
-  --accent-bright: #a44b2c;
-  --accent-dim: #f3e3d5;
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --line: rgba(60, 60, 67, 0.12);
+  --ink: #000000;
+  --ink-muted: rgba(60, 60, 67, 0.6);
+  --ink-faint: rgba(60, 60, 67, 0.3);
+  --accent: #28cd41;
+  --accent-bright: #34c759;
+  --accent-dim: rgba(40, 205, 65, 0.15);
   --accent-ink: #ffffff;
-  --calm: #5c6b46;
-  --alert: #a8546a;
-  --alert-bg: #f7e7ea;
-  --alert-line: rgba(168, 84, 106, 0.24);
+  --calm: #007aff;
+  --alert: #ff3b30;
+  --alert-bg: rgba(255, 59, 48, 0.1);
+  --alert-line: rgba(255, 59, 48, 0.2);
   --glow: none;
-  --card-shadow: 0 1px 2px rgba(46, 42, 36, 0.05), 0 10px 24px rgba(46, 42, 36, 0.06);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
 }
 
 @layer base {
