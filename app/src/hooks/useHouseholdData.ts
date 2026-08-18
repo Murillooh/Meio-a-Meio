@@ -134,6 +134,19 @@ export function useDeleteTransaction() {
   });
 }
 
+/** Remove uma pessoa do grupo (RLS só deixa se você criou o grupo, ou é você mesmo saindo). */
+export function useRemoveMember() {
+  const hh = useHouseholdId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (memberId: string) => {
+      const { error } = await supabase.from('members').delete().eq('id', memberId);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: keys.members(hh ?? 'none') }); },
+  });
+}
+
 export function useCreateCategory() {
   const hh = useHouseholdId();
   const qc = useQueryClient();

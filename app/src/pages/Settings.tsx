@@ -2,19 +2,20 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Loading } from '@/components/ui/States';
+import { Modal } from '@/components/ui/Modal';
 import { useAuth } from '@/hooks/useAuth';
-import { useAccounts, useCategories, useMembers } from '@/hooks/useHouseholdData';
+import { useAccounts, useCategories, useMembers, useRemoveMember } from '@/hooks/useHouseholdData';
 import { useCategoryRules } from '@/hooks/useCategoryRules';
 import { useEmergencyFund } from '@/hooks/useEmergency';
 import { useTheme } from '@/lib/ThemeContext';
 import { supabase } from '@/lib/supabase';
 import { subscribeToPush, unsubscribeFromPush, getPushSubscriptionStatus } from '@/lib/push';
 import { formatBRL, papelLabel } from '@/lib/format';
-import type { Papel } from '@/types';
+import type { Member, Papel } from '@/types';
 
 /** Lista de configurações: grupos de linhas rótulo → valor, no estilo iOS. */
 export default function Settings() {
-  const { user, member, household, households, switchHousehold, signOut, refreshMembership } = useAuth();
+  const { user, member, household, households, switchHousehold, deleteHousehold, signOut, refreshMembership } = useAuth();
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const { data: members = [], isLoading: loadingMembers } = useMembers();
@@ -22,11 +23,17 @@ export default function Settings() {
   const { data: categories = [] } = useCategories();
   const { data: rules = [] } = useCategoryRules();
   const { data: fund } = useEmergencyFund();
+  const removeMember = useRemoveMember();
+
+  const isCreator = !!household && household.created_by === user?.id;
 
   const [nome, setNome] = useState(member?.nome ?? '');
   const [papel, setPapel] = useState(member?.papel ?? '');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
+  const [removeTarget, setRemoveTarget] = useState<Member | null>(null);
+  const [confirmDeleteGroup, setConfirmDeleteGroup] = useState(false);
+  const [deletingGroup, setDeletingGroup] = useState(false);
 
   const [pushEnabled, setPushEnabled] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
@@ -164,9 +171,81 @@ export default function Settings() {
             </div>
             <span className="flex-1 truncate text-[14.5px]">{m.nome ?? papelLabel(m.papel)}</span>
             <span className="text-[12.5px] text-ink-faint">{papelLabel(m.papel)}</span>
+            {isCreator && m.id !== member?.id && (
+              <button
+                onClick={() => setRemoveTarget(m)}
+                className="text-[11px] text-ink-faint hover:text-alert"
+              >
+                remover
+              </button>
+            )}
           </Row>
         ))}
+        {isCreator && (
+          <button
+            onClick={() => setConfirmDeleteGroup(true)}
+            className="flex min-h-[48px] w-full items-center border-t border-base-line px-4 py-2.5 text-left text-[13.5px] text-alert transition-colors hover:bg-alert-bg/40"
+          >
+            Excluir este grupo
+          </button>
+        )}
       </Group>
+
+      <Modal open={!!removeTarget} title="Remover pessoa" onClose={() => setRemoveTarget(null)}>
+        <p className="text-[14.5px] text-ink-muted">
+          Remover <strong className="text-ink">{removeTarget?.nome ?? papelLabel(removeTarget?.papel)}</strong> do grupo? Os lançamentos dela continuam no histórico, só deixam de ter uma pessoa vinculada.
+        </p>
+        {error && <p className="alert mt-4">{error}</p>}
+        <div className="mt-5 flex gap-3">
+          <Button variant="ghost" full onClick={() => setRemoveTarget(null)}>Cancelar</Button>
+          <Button
+            variant="danger"
+            full
+            disabled={removeMember.isPending}
+            onClick={async () => {
+              if (!removeTarget) return;
+              setError('');
+              try {
+                await removeMember.mutateAsync(removeTarget.id);
+                setRemoveTarget(null);
+              } catch (e) {
+                setError(e instanceof Error ? e.message : 'Não foi possível remover');
+              }
+            }}
+          >
+            {removeMember.isPending ? 'Removendo…' : 'Remover'}
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal open={confirmDeleteGroup} title="Excluir grupo" onClose={() => setConfirmDeleteGroup(false)}>
+        <p className="text-[14.5px] text-ink-muted">
+          Isso apaga <strong className="text-ink">{household?.nome}</strong> pra sempre: transações, categorias, contas e reserva de todo mundo. Não dá pra desfazer.
+        </p>
+        {error && <p className="alert mt-4">{error}</p>}
+        <div className="mt-5 flex gap-3">
+          <Button variant="ghost" full onClick={() => setConfirmDeleteGroup(false)}>Cancelar</Button>
+          <Button
+            variant="danger"
+            full
+            disabled={deletingGroup}
+            onClick={async () => {
+              setError('');
+              setDeletingGroup(true);
+              try {
+                await deleteHousehold();
+                setConfirmDeleteGroup(false);
+              } catch (e) {
+                setError(e instanceof Error ? e.message : 'Não foi possível excluir o grupo');
+              } finally {
+                setDeletingGroup(false);
+              }
+            }}
+          >
+            {deletingGroup ? 'Excluindo…' : 'Excluir pra sempre'}
+          </Button>
+        </div>
+      </Modal>
 
       <Group label="Notificações">
         <Row>

@@ -3,7 +3,7 @@ export type Papel = string;
 export type CategoriaTipo = 'escola' | 'emergencia' | 'geral' | 'livre';
 export type Origem = 'open_finance' | 'manual';
 
-export interface Household { id: string; nome: string; invite_code: string; created_at: string }
+export interface Household { id: string; nome: string; invite_code: string; created_by: string | null; created_at: string }
 
 export interface Member {
   id: string; household_id: string; user_id: string;

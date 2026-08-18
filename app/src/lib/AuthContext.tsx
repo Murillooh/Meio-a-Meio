@@ -23,6 +23,8 @@ export interface AuthValue {
   joinHousehold: (inviteCode: string, papel?: Papel | null) => Promise<Household>;
   /** Troca qual grupo está ativo (persiste a escolha). */
   switchHousehold: (householdId: string) => void;
+  /** Exclui o grupo ativo (só quem criou pode — RLS barra o resto). Apaga tudo em cascata. */
+  deleteHousehold: () => Promise<void>;
   refreshMembership: () => Promise<void>;
 }
 
@@ -208,6 +210,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return hh as Household;
     },
     switchHousehold,
+    deleteHousehold: async () => {
+      if (!household) throw new Error('Nenhum grupo ativo');
+      const { error } = await supabase.from('households').delete().eq('id', household.id);
+      if (error) throw error;
+      const rest = households.filter((m) => m.household.id !== household.id);
+      setHouseholds(rest);
+      if (rest[0]) switchHousehold(rest[0].household.id);
+      else {
+        setActiveHouseholdId(null);
+        localStorage.removeItem(ACTIVE_HOUSEHOLD_KEY);
+      }
+    },
     refreshMembership: async () => loadMembership(user?.id),
   }), [user, session, member, household, households, loading, loadMembership, switchHousehold]);
 
