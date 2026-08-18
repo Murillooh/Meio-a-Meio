@@ -14,7 +14,7 @@ const BUCKETS: { tipo: CategoriaTipo; label: string; cor: string }[] = [
 ];
 
 export default function Dashboard() {
-  const { household } = useAuth();
+  const { household, member } = useAuth();
   const month = currentMonth();
   const { data: accounts = [] } = useAccounts();
   const { data: members = [] } = useMembers();
@@ -51,7 +51,7 @@ export default function Dashboard() {
     <>
       <header className="mb-5">
         <p className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">{formatMonthLabel(month)}</p>
-        <h1 className="mt-1 text-[26px] font-semibold tracking-tight">{household?.nome}</h1>
+        <h1 className="mt-1 text-[26px] font-semibold tracking-tight">{member?.nome ?? household?.nome}</h1>
       </header>
 
       <Card accent className="glow-gold p-5 md:p-7">
