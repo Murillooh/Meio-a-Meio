@@ -104,7 +104,7 @@ export function ScannerModal({ open, onClose, onScan }: ScannerModalProps) {
           Aponte a câmera para o QR Code da Nota Fiscal de Consumidor (NFC-e).
         </p>
         
-        <Button variant="secondary" onClick={onClose} full>
+        <Button variant="ghost" onClick={onClose} full>
           Cancelar
         </Button>
       </div>

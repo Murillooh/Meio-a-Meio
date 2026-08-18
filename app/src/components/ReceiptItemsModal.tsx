@@ -99,7 +99,7 @@ export function ReceiptItemsModal({ open, onClose, items }: ReceiptItemsModalPro
           <Button disabled={loading} onClick={handleSaveAsSingle}>
             Salvar como Única Transação
           </Button>
-          <Button variant="secondary" disabled={loading} onClick={handleSaveMultiple}>
+          <Button variant="ghost" disabled={loading} onClick={handleSaveMultiple}>
             Salvar {items.length} Itens Separados
           </Button>
         </div>
