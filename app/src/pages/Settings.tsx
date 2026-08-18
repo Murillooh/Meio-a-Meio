@@ -169,14 +169,16 @@ export default function Settings() {
             <div className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full bg-accent-dim text-[12px] font-bold text-accent">
               {(m.nome ?? papelLabel(m.papel)).charAt(0).toUpperCase()}
             </div>
-            <span className="flex-1 truncate text-[14.5px]">{m.nome ?? papelLabel(m.papel)}</span>
-            <span className="text-[12.5px] text-ink-faint">{papelLabel(m.papel)}</span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[14.5px]">{m.nome ?? papelLabel(m.papel)}</span>
+              <span className="mt-0.5 block truncate text-[11.5px] text-ink-faint">{papelLabel(m.papel)}</span>
+            </span>
             {isCreator && m.id !== member?.id && (
               <button
                 onClick={() => setRemoveTarget(m)}
-                className="text-[11px] text-ink-faint hover:text-alert"
+                className="shrink-0 rounded-lg border border-alert-line px-2.5 py-1.5 text-[12px] font-medium text-alert transition-colors hover:bg-alert-bg"
               >
-                remover
+                Remover
               </button>
             )}
           </Row>
