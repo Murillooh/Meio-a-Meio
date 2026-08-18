@@ -183,10 +183,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     joinHousehold: async (inviteCode, papel = null) => {
       if (!user) throw new Error('Sem usuário autenticado');
+      // usa RPC (security definer) porque RLS de households não deixa ver a casa
+      // antes de virar membro dela — select direto sempre voltaria vazio aqui
       const { data: hh, error } = await supabase
-        .from('households')
-        .select('*')
-        .eq('invite_code', inviteCode.trim().toUpperCase())
+        .rpc('household_by_invite_code', { code: inviteCode.trim().toUpperCase() })
         .maybeSingle();
       if (error) throw error;
       if (!hh) throw new Error('Código de convite não encontrado');
