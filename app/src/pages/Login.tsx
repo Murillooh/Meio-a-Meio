@@ -37,7 +37,7 @@ export default function Login() {
   // Prevent brown body background from showing during iOS overscroll
   useEffect(() => {
     const originalBg = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = '#0b0705';
+    document.body.style.backgroundColor = '#000000';
     return () => {
       document.body.style.backgroundColor = originalBg;
     };
@@ -102,7 +102,7 @@ export default function Login() {
                 <span className="login-badge-glow"></span>
                 <div className="login-badge-core">
                   <span className="login-badge-shine"></span>
-                  <img src="/logo-mam.png" alt="MaM" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', zIndex: 2, borderRadius: '50%' }} />
+                  <div style={{ position: 'relative', zIndex: 2, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '38px', letterSpacing: '-1px', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>MM</div>
                 </div>
               </div>
               <h1 className="login-wordmark" style={{ fontSize: '36px' }}>Meio a Meio</h1>
