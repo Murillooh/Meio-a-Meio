@@ -17,8 +17,14 @@ export function ScannerModal({ open, onClose, onScan }: ScannerModalProps) {
   useEffect(() => {
     if (!open) {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(console.error);
-        scannerRef.current.clear();
+        try {
+          // Stop can throw if not fully started or already stopped
+          scannerRef.current.stop().catch(() => {});
+          // Clear can throw if the DOM element (#reader) is already unmounted
+          scannerRef.current.clear();
+        } catch (err) {
+          console.error("Erro ao limpar scanner:", err);
+        }
         scannerRef.current = null;
       }
       return;
@@ -74,8 +80,10 @@ export function ScannerModal({ open, onClose, onScan }: ScannerModalProps) {
 
     return () => {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(console.error);
-        scannerRef.current.clear();
+        try {
+          scannerRef.current.stop().catch(() => {});
+          scannerRef.current.clear();
+        } catch (err) {}
         scannerRef.current = null;
       }
     };
