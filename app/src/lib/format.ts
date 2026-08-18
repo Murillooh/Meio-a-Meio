@@ -31,4 +31,9 @@ export function shiftMonth(ym: string, delta: number) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
-export const papelLabel = (p?: string | null) => (p === 'mae' ? 'Mãe' : p === 'pai' ? 'Pai' : '—');
+/** Apelido/papel da pessoa no grupo — texto livre. Mantém o rótulo bonito pra dados antigos ('pai'/'mae'). */
+export const papelLabel = (p?: string | null) => {
+  if (p === 'mae') return 'Mãe';
+  if (p === 'pai') return 'Pai';
+  return p?.trim() || '—';
+};

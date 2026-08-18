@@ -1,4 +1,5 @@
-export type Papel = 'pai' | 'mae';
+/** Apelido livre da pessoa dentro do grupo (ex: "Mãe", "Namorada", "Amigo"). Texto livre — não é mais fixo em pai/mae. */
+export type Papel = string;
 export type CategoriaTipo = 'escola' | 'emergencia' | 'geral' | 'livre';
 export type Origem = 'open_finance' | 'manual';
 
@@ -6,7 +7,7 @@ export interface Household { id: string; nome: string; invite_code: string; crea
 
 export interface Member {
   id: string; household_id: string; user_id: string;
-  papel: Papel; nome: string | null; created_at: string;
+  papel: Papel | null; nome: string | null; created_at: string;
 }
 
 export interface Category {

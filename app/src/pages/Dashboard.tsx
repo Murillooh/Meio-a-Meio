@@ -2,16 +2,10 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, SectionTitle, StatCard } from '@/components/ui/Card';
 import { EmptyState, Loading } from '@/components/ui/States';
+import { Bar } from '@/components/Bar';
 import { useAuth } from '@/hooks/useAuth';
 import { useAccounts, useMembers, useTransactions } from '@/hooks/useHouseholdData';
 import { currentMonth, formatBRL, formatDayMonth, formatMonthLabel, papelLabel } from '@/lib/format';
-import type { CategoriaTipo } from '@/types';
-
-const BUCKETS: { tipo: CategoriaTipo; label: string; cor: string }[] = [
-  { tipo: 'escola', label: 'Escola', cor: '#d4a017' },
-  { tipo: 'emergencia', label: 'Emergência', cor: '#f0a3b1' },
-  { tipo: 'geral', label: 'Casa / Geral', cor: '#8ab0a0' },
-];
 
 export default function Dashboard() {
   const { household, member } = useAuth();
@@ -22,13 +16,18 @@ export default function Dashboard() {
 
   const saldoTotal = useMemo(() => accounts.reduce((s, a) => s + Number(a.saldo ?? 0), 0), [accounts]);
 
-  const porTipo = useMemo(() => {
-    const acc: Record<string, number> = {};
+  // top categorias do mês por gasto — reflete o que o grupo realmente cadastrou, não um molde fixo
+  const porCategoria = useMemo(() => {
+    const acc = new Map<string, { nome: string; cor: string; total: number }>();
     for (const t of txs) {
-      const tipo = t.categoria?.tipo ?? 'livre';
-      acc[tipo] = (acc[tipo] ?? 0) + Math.abs(Number(t.valor));
+      if (Number(t.valor) >= 0) continue;
+      const key = t.categoria?.id ?? 'sem-categoria';
+      const nome = t.categoria?.nome ?? 'Sem categoria';
+      const cor = t.categoria?.cor ?? '#9aa7d4';
+      const prev = acc.get(key);
+      acc.set(key, { nome, cor, total: (prev?.total ?? 0) + Math.abs(Number(t.valor)) });
     }
-    return acc;
+    return [...acc.values()].sort((a, b) => b.total - a.total).slice(0, 3);
   }, [txs]);
 
   const divisao = useMemo(() => {
@@ -44,7 +43,7 @@ export default function Dashboard() {
     });
     const maxAporte = Math.max(1, ...rows.map((r) => r.aportou));
     const maxGasto = Math.max(1, ...rows.map((r) => r.gastou));
-    return { rows, maxAporte, maxGasto };
+    return { rows: rows.slice(0, 3), maxAporte, maxGasto };
   }, [members, txs]);
 
   return (
@@ -62,14 +61,18 @@ export default function Dashboard() {
         </p>
       </Card>
 
-      <SectionTitle>Por finalidade</SectionTitle>
-      <div className="grid grid-cols-3 gap-2.5 md:gap-4">
-        {BUCKETS.map((b) => (
-          <StatCard key={b.tipo} dot={b.cor} label={b.label} value={formatBRL(porTipo[b.tipo] ?? 0)} sub="no mês" />
-        ))}
-      </div>
+      <SectionTitle action={<Link to="/categorias" className="text-[12.5px]">ver categorias</Link>}>Por finalidade</SectionTitle>
+      {porCategoria.length === 0 ? (
+        <Card><p className="text-[13.5px] text-ink-faint">Nenhum gasto categorizado neste mês ainda.</p></Card>
+      ) : (
+        <div className="grid grid-cols-3 gap-2.5 md:gap-4">
+          {porCategoria.map((c) => (
+            <StatCard key={c.nome} dot={c.cor} label={c.nome} value={formatBRL(c.total)} sub="no mês" />
+          ))}
+        </div>
+      )}
 
-      <SectionTitle>Divisão pai × mãe</SectionTitle>
+      <SectionTitle action={<Link to="/divisao" className="text-[12.5px]">ver tudo</Link>}>Divisão do grupo</SectionTitle>
       <Card className="flex flex-col gap-4">
         {divisao.rows.length === 0 && <p className="text-[13.5px] text-ink-faint">Sem membros para comparar.</p>}
         {divisao.rows.map((r) => (
@@ -105,17 +108,5 @@ export default function Dashboard() {
         ))}
       </Card>
     </>
-  );
-}
-
-function Bar({ label, value, max, cor }: { label: string; value: number; max: number; cor: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="w-14 text-[11.5px] text-ink-faint">{label}</span>
-      <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(100, (value / max) * 100)}%`, background: cor }} />
-      </div>
-      <span className="w-24 text-right font-mono text-[12.5px]">{formatBRL(value)}</span>
-    </div>
   );
 }

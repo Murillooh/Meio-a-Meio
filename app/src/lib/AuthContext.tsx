@@ -4,53 +4,71 @@ import { supabase } from './supabase';
 import { generateInviteCode } from './inviteCode';
 import type { Household, Member, Papel } from '@/types';
 
+export interface Membership { member: Member; household: Household }
+
 export interface AuthValue {
   user: User | null;
   session: Session | null;
   member: Member | null;
   household: Household | null;
+  /** Todos os grupos de que o usuário participa (não só o ativo). */
+  households: Membership[];
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
   signUpWithPassword: (email: string, password: string, nome?: string, telefone?: string) => Promise<void>;
   signOut: () => Promise<void>;
-  createHousehold: (nome: string, papel: Papel) => Promise<Household>;
-  joinHousehold: (inviteCode: string, papel?: Papel) => Promise<Household>;
+  createHousehold: (nome: string, papel: Papel | null) => Promise<Household>;
+  joinHousehold: (inviteCode: string, papel?: Papel | null) => Promise<Household>;
+  /** Troca qual grupo está ativo (persiste a escolha). */
+  switchHousehold: (householdId: string) => void;
   refreshMembership: () => Promise<void>;
 }
+
+const ACTIVE_HOUSEHOLD_KEY = 'casa:activeHousehold';
 
 export const AuthContext = createContext<AuthValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [member, setMember] = useState<Member | null>(null);
-  const [household, setHousehold] = useState<Household | null>(null);
+  const [households, setHouseholds] = useState<Membership[]>([]);
+  const [activeHouseholdId, setActiveHouseholdId] = useState<string | null>(
+    () => localStorage.getItem(ACTIVE_HOUSEHOLD_KEY),
+  );
   const [loading, setLoading] = useState(true);
 
   const user = session?.user ?? null;
 
+  const switchHousehold = useCallback((householdId: string) => {
+    setActiveHouseholdId(householdId);
+    localStorage.setItem(ACTIVE_HOUSEHOLD_KEY, householdId);
+  }, []);
+
+  // grupo ativo: o salvo em localStorage se o usuário ainda está nele, senão o primeiro
+  const active = households.find((m) => m.household.id === activeHouseholdId) ?? households[0] ?? null;
+  const member = active?.member ?? null;
+  const household = active?.household ?? null;
+
   const loadMembership = useCallback(async (uid: string | undefined) => {
     if (!uid) {
-      setMember(null);
-      setHousehold(null);
+      setHouseholds([]);
       return;
     }
     // tabelas ainda não existem: erro é tratado como "sem household"
     const { data, error } = await supabase
       .from('members')
       .select('*, household:households(*)')
-      .eq('user_id', uid)
-      .maybeSingle();
+      .eq('user_id', uid);
 
     if (error || !data) {
-      setMember(null);
-      setHousehold(null);
+      setHouseholds([]);
       return;
     }
-    const { household: hh, ...rest } = data as Member & { household: Household | null };
-    setMember(rest as Member);
-    setHousehold(hh ?? null);
+    const list = (data as (Member & { household: Household | null })[])
+      .filter((row): row is Member & { household: Household } => !!row.household)
+      .map(({ household: hh, ...rest }) => ({ member: rest as Member, household: hh }));
+    setHouseholds(list);
   }, []);
 
   useEffect(() => {
@@ -99,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     member,
     household,
+    households,
     loading,
     signInWithGoogle: async () => {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -133,8 +152,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     signOut: async () => {
       await supabase.auth.signOut();
-      setMember(null);
-      setHousehold(null);
+      setHouseholds([]);
+      localStorage.removeItem(ACTIVE_HOUSEHOLD_KEY);
     },
     createHousehold: async (nome, papel) => {
       if (!user) throw new Error('Sem usuário autenticado');
@@ -158,11 +177,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
       if (mErr) throw mErr;
 
-      setHousehold(hh as Household);
-      setMember(mb as Member);
+      setHouseholds((prev) => [...prev, { member: mb as Member, household: hh as Household }]);
+      switchHousehold((hh as Household).id);
       return hh as Household;
     },
-    joinHousehold: async (inviteCode, papel = 'mae') => {
+    joinHousehold: async (inviteCode, papel = null) => {
       if (!user) throw new Error('Sem usuário autenticado');
       const { data: hh, error } = await supabase
         .from('households')
@@ -184,12 +203,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
       if (mErr) throw mErr;
 
-      setHousehold(hh as Household);
-      setMember(mb as Member);
+      setHouseholds((prev) => [...prev, { member: mb as Member, household: hh as Household }]);
+      switchHousehold((hh as Household).id);
       return hh as Household;
     },
+    switchHousehold,
     refreshMembership: async () => loadMembership(user?.id),
-  }), [user, session, member, household, loading, loadMembership]);
+  }), [user, session, member, household, households, loading, loadMembership, switchHousehold]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

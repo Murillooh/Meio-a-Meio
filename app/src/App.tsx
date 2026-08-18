@@ -10,6 +10,7 @@ import Transactions from '@/pages/Transactions';
 import Categories from '@/pages/Categories';
 import Accounts from '@/pages/Accounts';
 import Piggy from '@/pages/Piggy';
+import Divisao from '@/pages/Divisao';
 import Rules from '@/pages/Rules';
 import Settings from '@/pages/Settings';
 
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/transacoes" element={<Transactions />} />
             <Route path="/cofrinho" element={<Piggy />} />
+            <Route path="/divisao" element={<Divisao />} />
             <Route path="/contas" element={<Accounts />} />
             <Route path="/categorias" element={<Categories />} />
             <Route path="/regras" element={<Rules />} />

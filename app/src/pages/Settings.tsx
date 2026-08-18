@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Loading } from '@/components/ui/States';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,7 +14,8 @@ import type { Papel } from '@/types';
 
 /** Lista de configurações: grupos de linhas rótulo → valor, no estilo iOS. */
 export default function Settings() {
-  const { user, member, household, signOut, refreshMembership } = useAuth();
+  const { user, member, household, households, switchHousehold, signOut, refreshMembership } = useAuth();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const { data: members = [], isLoading: loadingMembers } = useMembers();
   const { data: accounts = [] } = useAccounts();
@@ -23,9 +24,10 @@ export default function Settings() {
   const { data: fund } = useEmergencyFund();
 
   const [nome, setNome] = useState(member?.nome ?? '');
+  const [papel, setPapel] = useState(member?.papel ?? '');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
-  
+
   const [pushEnabled, setPushEnabled] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);
 
@@ -33,12 +35,18 @@ export default function Settings() {
     getPushSubscriptionStatus().then(setPushEnabled);
   }, []);
 
+  // ao trocar de grupo ativo, os campos de perfil precisam refletir o membro do novo grupo
+  useEffect(() => {
+    setNome(member?.nome ?? '');
+    setPapel(member?.papel ?? '');
+  }, [member?.id]);
+
   const saldo = accounts.reduce((s, a) => s + Number(a.saldo ?? 0), 0);
   const meses = fund?.despesa_mensal_media
     ? (Number(fund.meta_valor) / Number(fund.despesa_mensal_media)).toFixed(1).replace('.', ',')
     : null;
 
-  async function salvar(patch: { nome?: string | null; papel?: Papel }) {
+  async function salvar(patch: { nome?: string | null; papel?: Papel | null }) {
     if (!member) return;
     setError('');
     const { error: e } = await supabase.from('members').update(patch).eq('id', member.id);
@@ -75,7 +83,7 @@ export default function Settings() {
 
   return (
     <>
-      <p className="text-[11px] uppercase tracking-[0.11em] text-ink-faint">casa, pessoas e regras</p>
+      <p className="text-[11px] uppercase tracking-[0.11em] text-ink-faint">grupo, pessoas e regras</p>
       <h1 className="mt-1 text-[26px] font-semibold tracking-tight">Configurações</h1>
 
       <header className="mt-5 flex items-center gap-3.5">
@@ -100,28 +108,45 @@ export default function Settings() {
           />
         </Row>
         <Row divider>
-          <span className="flex-1 text-[14.5px]">Papel na casa</span>
-          <div className="flex gap-1.5 rounded-xl bg-base p-1">
-            {(['pai', 'mae'] as Papel[]).map((p) => (
-              <button
-                key={p}
-                onClick={() => salvar({ papel: p })}
-                aria-pressed={member?.papel === p}
-                className={'h-8 min-w-[56px] rounded-[10px] px-3 text-[13px] font-semibold transition-colors ' +
-                  (member?.papel === p ? 'bg-base-card text-accent shadow' : 'text-ink-faint')}
-              >
-                {papelLabel(p)}
-              </button>
-            ))}
-          </div>
+          <span className="shrink-0 text-[14.5px]">Como te chamam</span>
+          <input
+            value={papel}
+            onChange={(e) => setPapel(e.target.value)}
+            onBlur={() => salvar({ papel: papel.trim() || null })}
+            placeholder="Ex: Mãe, Pai, Namorado(a)"
+            className="min-w-0 flex-1 rounded-xl border border-base-line bg-base px-3 py-2 text-left text-[14.5px] text-ink outline-none focus:border-accent"
+          />
         </Row>
       </Group>
 
-      <Group label={household?.nome ?? 'A casa'}>
+      <Group label="Meus grupos">
+        {households.map(({ household: hh, member: m }) => (
+          <button
+            key={hh.id}
+            onClick={() => switchHousehold(hh.id)}
+            className={'flex min-h-[56px] w-full items-center gap-3 border-t border-base-line px-4 py-2.5 text-left first:border-t-0 transition-colors ' +
+              (hh.id === household?.id ? 'bg-accent-dim' : 'hover:bg-white/5')}
+          >
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[14.5px]">{hh.nome}</span>
+              <span className="mt-0.5 block text-[11.5px] text-ink-faint">{papelLabel(m.papel)}</span>
+            </span>
+            {hh.id === household?.id && <span aria-hidden className="text-accent">●</span>}
+          </button>
+        ))}
+        <button
+          onClick={() => navigate('/onboarding?add=1')}
+          className="flex min-h-[56px] w-full items-center gap-3 border-t border-base-line px-4 py-2.5 text-left text-[14.5px] text-accent transition-colors hover:bg-white/5"
+        >
+          + Criar ou entrar em outro grupo
+        </button>
+      </Group>
+
+      <Group label={household?.nome ?? 'Meu grupo'}>
         <Row>
           <span className="min-w-0 flex-1">
             <span className="block text-[14.5px]">Código de convite</span>
-            <span className="mt-0.5 block text-[11.5px] text-ink-faint">para quem mora com você</span>
+            <span className="mt-0.5 block text-[11.5px] text-ink-faint">pra quem você quiser convidar</span>
           </span>
           <span className="text-[16px] font-bold tracking-[0.12em] text-accent">{household?.invite_code}</span>
           <button
@@ -191,7 +216,7 @@ export default function Settings() {
       {error && <p className="alert mt-4">{error}</p>}
 
       <Button variant="ghost" full className="mt-6" onClick={() => signOut()}>Sair desta conta</Button>
-      <p className="mt-4 text-center text-[11.5px] text-ink-faint">Casa · dados de sandbox · v0.1</p>
+      <p className="mt-4 text-center text-[11.5px] text-ink-faint">Grupo · dados de sandbox · v0.1</p>
     </>
   );
 }

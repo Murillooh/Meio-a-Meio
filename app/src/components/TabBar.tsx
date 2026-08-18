@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 const tabs = [
   { to: '/', label: 'Início', glyph: '◉' },
   { to: '/transacoes', label: 'Transações', glyph: '≡' },
+  { to: '/divisao', label: 'Divisão', glyph: '⚖' },
   { to: '/cofrinho', label: 'Cofrinho', glyph: '◈' },
   { to: '/contas', label: 'Contas', glyph: '▤' },
   { to: '/ajustes', label: 'Ajustes', glyph: '⚙' },
