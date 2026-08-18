@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { TabBar } from './TabBar';
 import { FloatingActionMenu } from './FloatingActionMenu';
 import { TransactionModal } from './TransactionModal';
+import { InstallPWA } from './InstallPWA';
 import type { TransactionRow } from '@/types';
 
 export type AppLayoutContextType = {
@@ -32,6 +33,9 @@ export function AppLayout() {
 
       {/* Botão Flutuante (FAB) */}
       <FloatingActionMenu onAddTx={() => openTxModal()} />
+
+      {/* Sugestão de Instalação (PWA) */}
+      <InstallPWA />
 
       {/* Modal Global de Transação */}
       <TransactionModal 
