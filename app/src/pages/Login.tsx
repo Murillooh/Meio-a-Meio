@@ -100,9 +100,8 @@ export default function Login() {
             <div className="login-hero-inner">
               <div className="login-badge">
                 <span className="login-badge-glow"></span>
-                <div className="login-badge-core">
-                  <span className="login-badge-shine"></span>
-                  <div style={{ position: 'relative', zIndex: 2, fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: '38px', letterSpacing: '-1px', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>MM</div>
+                <div className="login-badge-core" style={{ backgroundColor: 'white', border: 'none' }}>
+                  <img src="/icon-512.png" alt="MaM" style={{ width: '115%', height: '115%', objectFit: 'cover', position: 'relative', zIndex: 2, borderRadius: '50%' }} />
                 </div>
               </div>
               <h1 className="login-wordmark" style={{ fontSize: '36px' }}>Meio a Meio</h1>

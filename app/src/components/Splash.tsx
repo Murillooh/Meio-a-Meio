@@ -10,9 +10,8 @@ export function Splash() {
         {/* Badge */}
         <div className="relative w-[130px] h-[130px] mb-8">
           <div className="absolute -inset-3 bg-[#8b5cf6]/25 rounded-full blur-[24px]"></div>
-          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white/5 border border-white/10 backdrop-blur-[8px] overflow-hidden">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/10 via-transparent to-transparent"></div>
-            <div className="relative z-10 font-['Bricolage_Grotesque'] font-bold text-[54px] tracking-[-2px] bg-gradient-to-br from-[#a78bfa] to-[#3b82f6] bg-clip-text text-transparent">MM</div>
+          <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white overflow-hidden shadow-lg border border-white/10">
+            <img src="/icon-512.png" alt="MaM" className="w-[115%] h-[115%] object-cover" />
           </div>
         </div>
 
