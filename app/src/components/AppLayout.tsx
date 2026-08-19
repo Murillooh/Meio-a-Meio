@@ -116,12 +116,11 @@ export function AppLayout() {
         onPhotoReceipt={() => photoInputRef.current?.click()}
       />
 
-      {/* Input de foto escondido — abre a câmera/galeria no celular */}
+      {/* Input de foto escondido — sem 'capture' o celular mostra a escolha entre câmera e galeria */}
       <input
         ref={photoInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         className="hidden"
         onChange={handlePhotoSelected}
       />
