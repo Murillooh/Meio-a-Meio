@@ -7,6 +7,7 @@ import { InstallPWA } from './InstallPWA';
 import { ScannerModal } from './ScannerModal';
 import { ReceiptItemsModal, type ReceiptItem } from './ReceiptItemsModal';
 import { supabase } from '@/lib/supabase';
+import { useRealtimeSync } from '@/hooks/useRealtimeSync';
 import type { TransactionRow } from '@/types';
 
 export type AppLayoutContextType = {
@@ -19,6 +20,8 @@ export type AppLayoutContextType = {
  * (as páginas usam .app-grid para distribuir os cards).
  */
 export function AppLayout() {
+  useRealtimeSync();
+
   const [txModalOpen, setTxModalOpen] = useState(false);
   const [ruleFor, setRuleFor] = useState<TransactionRow | null>(null);
 
