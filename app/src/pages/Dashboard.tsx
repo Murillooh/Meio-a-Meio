@@ -65,7 +65,10 @@ export default function Dashboard() {
       {porCategoria.length === 0 ? (
         <Card><p className="text-[13.5px] text-ink-faint">Nenhum gasto categorizado neste mês ainda.</p></Card>
       ) : (
-        <div className="grid grid-cols-3 gap-2.5 md:gap-4">
+        <div
+          className="grid gap-2.5 md:gap-4"
+          style={{ gridTemplateColumns: `repeat(${porCategoria.length}, minmax(0, 1fr))` }}
+        >
           {porCategoria.map((c) => (
             <StatCard key={c.nome} dot={c.cor} label={c.nome} value={formatBRL(c.total)} sub="no mês" />
           ))}
@@ -79,7 +82,9 @@ export default function Dashboard() {
           <div key={r.id} className="flex flex-col gap-2">
             <div className="flex items-baseline justify-between">
               <span className="text-[14.5px] font-medium">{r.nome}</span>
-              <span className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">{r.papel}</span>
+              {r.papel.trim().toLowerCase() !== r.nome.trim().toLowerCase() && (
+                <span className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">{r.papel}</span>
+              )}
             </div>
             <Bar label="Aportou" value={r.aportou} max={divisao.maxAporte} cor="#d4a017" />
             <Bar label="Gastou" value={r.gastou} max={divisao.maxGasto} cor="#f0a3b1" />

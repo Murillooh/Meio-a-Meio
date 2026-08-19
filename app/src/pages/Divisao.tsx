@@ -40,7 +40,9 @@ export default function Divisao() {
           <div key={r.id} className="flex flex-col gap-2">
             <div className="flex items-baseline justify-between">
               <span className="text-[14.5px] font-medium">{r.nome}</span>
-              <span className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">{r.papel}</span>
+              {r.papel.trim().toLowerCase() !== r.nome.trim().toLowerCase() && (
+                <span className="text-[11px] uppercase tracking-[0.1em] text-ink-faint">{r.papel}</span>
+              )}
             </div>
             <Bar label="Aportou" value={r.aportou} max={divisao.maxAporte} cor="#d4a017" />
             <Bar label="Gastou" value={r.gastou} max={divisao.maxGasto} cor="#f0a3b1" />
