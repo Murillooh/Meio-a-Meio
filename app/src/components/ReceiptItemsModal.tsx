@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,24 +17,45 @@ interface ReceiptItemsModalProps {
   totalItems: number;
 }
 
+/** Itens lidos (QR da NFC-e ou foto da nota) — confere e edita antes de virar transação. */
 export function ReceiptItemsModal({ open, onClose, items }: ReceiptItemsModalProps) {
   const { member } = useAuth();
   const create = useCreateTransaction();
+  const [draft, setDraft] = useState<ReceiptItem[]>(items);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  // reabre com os itens novos toda vez que uma leitura diferente chega
+  useEffect(() => {
+    if (open) setDraft(items);
+  }, [open, items]);
+
+  const total = draft.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const data = new Date().toISOString().slice(0, 10);
 
+  const updateItem = (i: number, patch: Partial<ReceiptItem>) => {
+    setDraft((prev) => prev.map((item, idx) => (idx === i ? { ...item, ...patch } : item)));
+  };
+
+  const removeItem = (i: number) => {
+    setDraft((prev) => prev.filter((_, idx) => idx !== i));
+  };
+
+  const addItem = () => {
+    setDraft((prev) => [...prev, { name: '', price: 0, quantity: 1 }]);
+  };
+
+  const validItems = draft.filter((i) => i.name.trim() && i.price > 0);
+
   const handleSaveAsSingle = async () => {
+    if (validItems.length === 0) return setError('Confere se os itens têm nome e preço.');
     setLoading(true);
     setError('');
     try {
-      const descricao = `Supermercado (${items.length} itens)`;
-      // Notas/Descrição estendida não existem no schema básico, podemos colocar no nome
+      const descricao = `Supermercado (${validItems.length} itens)`;
       await create.mutateAsync({
         descricao,
-        valor: -Math.abs(total),
+        valor: -Math.abs(validItems.reduce((s, i) => s + i.price * i.quantity, 0)),
         data,
         categoria_id: null,
         member_id: member?.id || null,
@@ -49,13 +70,13 @@ export function ReceiptItemsModal({ open, onClose, items }: ReceiptItemsModalPro
   };
 
   const handleSaveMultiple = async () => {
+    if (validItems.length === 0) return setError('Confere se os itens têm nome e preço.');
     setLoading(true);
     setError('');
     try {
-      // Cria uma transação para cada item
-      const promises = items.map(item => 
+      const promises = validItems.map((item) =>
         create.mutateAsync({
-          descricao: item.name,
+          descricao: item.name.trim(),
           valor: -Math.abs(item.price * item.quantity),
           data,
           categoria_id: null,
@@ -73,22 +94,57 @@ export function ReceiptItemsModal({ open, onClose, items }: ReceiptItemsModalPro
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="Itens da Nota">
+    <Modal open={open} onClose={onClose} title="Confere os itens da nota">
       <div className="flex flex-col gap-4 max-h-[80vh]">
+        <p className="text-[12.5px] text-ink-muted">Ajusta nome, preço e quantidade antes de salvar.</p>
+
         {error && <div className="text-alert text-sm">{error}</div>}
-        
-        <div className="bg-base border border-base-line rounded-xl p-3 max-h-[250px] overflow-y-auto flex flex-col gap-2">
-          {items.map((item, i) => (
-            <div key={i} className="flex justify-between text-[13px] border-b border-base-line pb-2 last:border-0 last:pb-0">
-              <span className="text-ink truncate pr-2 max-w-[70%]">{item.quantity}x {item.name}</span>
-              <span className="text-ink-muted font-medium shrink-0">
-                {(item.price * item.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </span>
+
+        <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-0.5">
+          {draft.map((item, i) => (
+            <div key={i} className="flex items-center gap-2 rounded-xl border border-base-line bg-base p-2">
+              <input
+                value={item.name}
+                onChange={(e) => updateItem(i, { name: e.target.value })}
+                placeholder="Nome do item"
+                className="min-w-0 flex-1 rounded-lg border border-base-line bg-base-card px-2 py-1.5 text-[13px] text-ink outline-none focus:border-accent"
+              />
+              <input
+                type="number"
+                min={1}
+                step={1}
+                value={item.quantity}
+                onChange={(e) => updateItem(i, { quantity: Math.max(1, Number(e.target.value) || 1) })}
+                className="w-12 shrink-0 rounded-lg border border-base-line bg-base-card px-1.5 py-1.5 text-center text-[13px] text-ink outline-none focus:border-accent"
+                aria-label="Quantidade"
+              />
+              <span className="shrink-0 text-[12px] text-ink-faint">×</span>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                value={item.price}
+                onChange={(e) => updateItem(i, { price: Math.max(0, Number(e.target.value) || 0) })}
+                className="w-20 shrink-0 rounded-lg border border-base-line bg-base-card px-1.5 py-1.5 text-right text-[13px] font-mono text-ink outline-none focus:border-accent"
+                aria-label="Preço unitário"
+              />
+              <button
+                onClick={() => removeItem(i)}
+                className="shrink-0 text-[12px] text-ink-faint hover:text-alert"
+                aria-label="Remover item"
+              >
+                ✕
+              </button>
             </div>
           ))}
+          {draft.length === 0 && <p className="py-4 text-center text-[13px] text-ink-faint">Nenhum item — adiciona manualmente ou fecha e tenta de novo.</p>}
         </div>
 
-        <div className="flex justify-between items-center py-2 px-1">
+        <button onClick={addItem} className="self-start text-[12.5px] text-accent hover:underline">
+          + Adicionar item
+        </button>
+
+        <div className="flex justify-between items-center py-2 px-1 border-t border-base-line">
           <span className="text-ink-muted font-medium">Total:</span>
           <span className="text-xl font-semibold text-alert">
             {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -100,7 +156,7 @@ export function ReceiptItemsModal({ open, onClose, items }: ReceiptItemsModalPro
             Salvar como Única Transação
           </Button>
           <Button variant="ghost" disabled={loading} onClick={handleSaveMultiple}>
-            Salvar {items.length} Itens Separados
+            Salvar {validItems.length} {validItems.length === 1 ? 'Item' : 'Itens'} Separados
           </Button>
         </div>
       </div>

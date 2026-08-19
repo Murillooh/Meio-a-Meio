@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-export function FloatingActionMenu({ onAddTx, onScanQR }: { onAddTx: () => void, onScanQR: () => void }) {
+export function FloatingActionMenu({ onAddTx, onScanQR, onPhotoReceipt }: { onAddTx: () => void, onScanQR: () => void, onPhotoReceipt: () => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -25,6 +25,15 @@ export function FloatingActionMenu({ onAddTx, onScanQR }: { onAddTx: () => void,
             <span className="text-[15px] font-medium text-ink">Ler QR Code (NFC-e)</span>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent text-sm">
               📷
+            </div>
+          </button>
+          <button
+            onClick={() => { setOpen(false); onPhotoReceipt(); }}
+            className="flex items-center justify-between gap-3 px-5 py-4 hover:bg-white/5 active:bg-white/10 transition-colors border-b border-base-line"
+          >
+            <span className="text-[15px] font-medium text-ink">Foto da Nota</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent text-sm">
+              🧾
             </div>
           </button>
           <button

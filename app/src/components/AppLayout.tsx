@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { TabBar } from './TabBar';
 import { FloatingActionMenu } from './FloatingActionMenu';
@@ -26,6 +26,7 @@ export function AppLayout() {
   const [receiptOpen, setReceiptOpen] = useState(false);
   const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);
   const [isParsing, setIsParsing] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   const openTxModal = (tx?: TransactionRow | null) => {
     setRuleFor(tx || null);
@@ -56,6 +57,41 @@ export function AppLayout() {
     }
   };
 
+  const handlePhotoSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // permite escolher o mesmo arquivo de novo depois
+    if (!file) return;
+
+    setIsParsing(true);
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const base64 = dataUrl.split(',')[1] ?? '';
+
+      const { data, error } = await supabase.functions.invoke('parse-receipt-photo', {
+        body: { image: base64, mediaType: file.type || 'image/jpeg' },
+      });
+
+      if (error) throw error;
+
+      if (data?.success && data?.items?.length > 0) {
+        setReceiptItems(data.items);
+        setReceiptOpen(true);
+      } else {
+        alert('Não consegui identificar itens nessa foto. Tenta tirar de novo com mais luz e foco na nota.');
+      }
+    } catch (err: any) {
+      console.error('Erro ao ler foto da nota:', err);
+      alert('Erro ao tentar ler a foto da nota: ' + err.message);
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
   return (
     <div className="min-h-full bg-base md:flex relative">
       <TabBar />
@@ -74,9 +110,20 @@ export function AppLayout() {
       )}
 
       {/* Botão Flutuante (FAB) */}
-      <FloatingActionMenu 
-        onAddTx={() => openTxModal()} 
+      <FloatingActionMenu
+        onAddTx={() => openTxModal()}
         onScanQR={() => setScannerOpen(true)}
+        onPhotoReceipt={() => photoInputRef.current?.click()}
+      />
+
+      {/* Input de foto escondido — abre a câmera/galeria no celular */}
+      <input
+        ref={photoInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={handlePhotoSelected}
       />
 
       {/* Sugestão de Instalação (PWA) */}
